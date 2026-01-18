@@ -4,7 +4,7 @@ import Hero from "@/components/Home/Hero";
 import Musicalnight from "@/components/Home/Musicalnight";
 import Eventdata from "@/components/Eventdata";
 import Aboutdept from "@/components/Home/Aboutdept";
-import DemoPage from "../components/Home/AboutComponent";
+import AboutPage from "@/components/Home/AboutComponent";
 import Currentsponsor from "@/components/currentsponsor";
 // import HomeClientWrapper from "@/components/Home/HomeClientWrapper";
 import Proshows from "@/components/Home/Proshows";
@@ -58,11 +58,8 @@ const Page = () => {
             </Marquee>
           </div>
         </div>
-        <div id="demo">
-          <DemoPage />
-        </div>
-        <div id="aboutdept">
-          <Aboutdept />
+        <div id="about">
+          <AboutPage />
         </div>
         <div id="events">
           <Eventdata />
