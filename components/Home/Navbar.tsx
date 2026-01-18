@@ -1,21 +1,20 @@
 "use client";
-import React from "react";
+
+import * as React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import TexusLogo from "../../public/assets/texus-color 3.png";
-import { useRouter } from "next/navigation";
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
 import Link from "next/link";
-import { signInWithGoogle, signOut } from "@/lib/auth";
-import { createClient } from "@/supabase/client";
-import { FaGoogle } from "react-icons/fa";
+import { usePathname, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import {
+  Home,
+  Calendar,
+  Info,
+  Globe,
+  Image as ImageIcon,
+  Handshake,
+} from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,144 +22,186 @@ import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { User } from "@supabase/supabase-js";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const Navbar = () => {
+import { signInWithGoogle, signOut } from "@/lib/auth";
+import { createClient } from "@/supabase/client";
+import type { User } from "@supabase/supabase-js";
+import { FaGoogle } from "react-icons/fa";
+
+type NavItem = {
+  id: string;
+  name: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+};
+
+const PAPER = {
+  bg: "#F7F4EE",
+  ink: "#123859",
+  accent: "#419FD9",
+  shadow: "#0E2A44",
+  white: "#F2F2F2",
+};
+
+const NAV_ITEMS: NavItem[] = [
+  { id: "home", name: "HOME", href: "/", icon: Home },
+  { id: "about", name: "ABOUT", href: "/about", icon: Info },
+  { id: "events", name: "EVENTS", href: "/#events", icon: Calendar },
+  { id: "summit", name: "GLOBAL SUMMIT", href: "/nilgiris", icon: Globe },
+  { id: "gallery", name: "GALLERY", href: "/gallery", icon: ImageIcon },
+  { id: "sponsors", name: "SPONSORS", href: "/sponsor", icon: Handshake },
+];
+
+export default function Navbar() {
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const pathname = usePathname();
+
+  const [isExpanded, setIsExpanded] = React.useState(false);
+  const [hovered, setHovered] = React.useState<string | null>(null);
+  const [activeId, setActiveId] = React.useState<string>("home");
+
   const [isHidden, setIsHidden] = React.useState(false);
+  const [hasScrolled, setHasScrolled] = React.useState(false);
+  const lastScrollY = React.useRef(0);
+
   const [isMobile, setIsMobile] = React.useState(false);
+
   const [user, setUser] = React.useState<User | null>(null);
   const [loading, setLoading] = React.useState(true);
-  const [lastScrollY, setLastScrollY] = React.useState(0);
-  const [hasScrolled, setHasScrolled] = React.useState(false);
   const supabase = createClient();
 
   React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    // Check initially
-    checkMobile();
-
-    // Add resize listener
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   React.useEffect(() => {
-    const handleScrollEffect = () => {
-      const currentScrollY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setHasScrolled(y > 80);
 
-      // Set background state based on scroll position
-      setHasScrolled(currentScrollY > 100);
+      if (y > lastScrollY.current) setIsHidden(true);
+      else setIsHidden(false);
 
-      // Determine if scrolling up or down
-      if (currentScrollY > lastScrollY) {
-        // Scrolling down - hide the navbar
-        setIsHidden(true);
-      } else {
-        // Scrolling up - show the navbar
-        setIsHidden(false);
-      }
-
-      // Update the last scroll position
-      setLastScrollY(currentScrollY);
+      lastScrollY.current = y;
     };
-
-    window.addEventListener("scroll", handleScrollEffect);
-    return () => window.removeEventListener("scroll", handleScrollEffect);
-  }, [lastScrollY]);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   React.useEffect(() => {
-    // Get initial session
+    const syncActiveFromUrl = () => {
+      const hash = typeof window !== "undefined" ? window.location.hash : "";
+
+      if (pathname === "/" && hash === "#events") {
+        setActiveId("events");
+        return;
+      }
+
+      const exact = NAV_ITEMS.find((i) => i.href === pathname);
+      if (exact) {
+        setActiveId(exact.id);
+        return;
+      }
+
+      if (pathname === "/") setActiveId("home");
+    };
+
+    syncActiveFromUrl();
+    window.addEventListener("hashchange", syncActiveFromUrl);
+    return () => window.removeEventListener("hashchange", syncActiveFromUrl);
+  }, [pathname]);
+
+  React.useEffect(() => {
     const getInitialSession = async () => {
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        setUser(session?.user ?? null);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error getting session:", error);
+        const { data } = await supabase.auth.getSession();
+        setUser(data.session?.user ?? null);
+      } finally {
         setLoading(false);
       }
     };
 
-    // Call getInitialSession
     getInitialSession();
 
-    // Listen for auth state changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // Cleanup subscription on unmount
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+    return () => data.subscription.unsubscribe();
+  }, [supabase]);
 
-  const navItems = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Events", href: "/#events" },
-    { name: "Global Summit", href: "/nilgiris" },
-    { name: "Gallery", href: "/gallery" },
-    { name: "Sponsors", href: "/sponsor" },
-  ];
+  const go = (href: string, id: string) => {
+    setActiveId(id);
 
-  const handleScroll = (href: string): void => {
-    // Remove leading slashes and hash symbol
-    const targetId = href.replace(/^\//, "").replace(/^#/, ""); // Remove any leading slash and #
-    const element = document.getElementById(targetId);
+    if (href.startsWith("/#")) {
+      const targetId = href.replace("/#", "");
+      const el = document.getElementById(targetId);
 
-    if (!element) {
+      if (pathname === "/" && el) {
+        window.history.replaceState(null, "", `/#${targetId}`);
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+
+      router.push("/");
+      setTimeout(() => {
+        const el2 = document.getElementById(targetId);
+        window.history.replaceState(null, "", `/#${targetId}`);
+        el2?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 350);
       return;
     }
 
-    // If the mobile menu is open, wait for it to close before scrolling
-    if (open) {
-      setOpen(false);
-      setTimeout(() => {
-        console.log(`Scrolling to ${targetId} after closing the menu.`);
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 300); // Wait for animation to complete
-    } else {
-      console.log(`Scrolling to ${targetId} immediately.`);
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    router.push(href);
   };
 
-  const renderAuthButton = () => {
-    if (loading) {
-      return <Skeleton className="h-10 w-[160px]" />;
-    }
+  const DesktopAuth = () => {
+    if (loading) return <Skeleton className="h-9 w-[110px] rounded-xl" />;
+
     if (!user) {
       return (
-        <Button
+        <button
           onClick={signInWithGoogle}
-          variant="outline"
-          className="text-[#FFC1EC] border-[#FFC1EC] flex items-center gap-2"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl font-extrabold transition active:translate-y-[1px]"
+          style={{
+            background: "#FFFFFF",
+            color: PAPER.ink,
+            border: `3px solid ${PAPER.ink}`,
+            boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = PAPER.accent;
+            e.currentTarget.style.color = "#FFFFFF";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "#FFFFFF";
+            e.currentTarget.style.color = PAPER.ink;
+          }}
         >
           <FaGoogle />
-          Login with Google
-        </Button>
+          Login
+        </button>
       );
     }
 
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-            <Avatar className="h-10 w-10">
+          <button
+            className="relative h-9 w-9 rounded-full overflow-hidden active:translate-y-[1px]"
+            style={{
+              border: `3px solid ${PAPER.ink}`,
+              background: `#FFFFFF url('/textures/paper.png')`,
+              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+            }}
+          >
+            <Avatar className="h-9 w-9">
               <AvatarImage
                 src={user.user_metadata?.avatar_url || ""}
                 alt={user.user_metadata?.full_name || ""}
@@ -169,8 +210,9 @@ const Navbar = () => {
                 {user.user_metadata?.full_name?.[0] || "U"}
               </AvatarFallback>
             </Avatar>
-          </Button>
+          </button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
@@ -182,15 +224,14 @@ const Navbar = () => {
               </p>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuItem className="text-[#FFC1EC] hover:bg-[#FFC1EC]/10 focus:bg-[#FFC1EC]/10 cursor-pointer">
+
+          <DropdownMenuItem className="cursor-pointer">
             <Link href="/profile" className="w-full">
               View Profile
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={signOut}
-            className="text-[#FFC1EC] hover:bg-[#FFC1EC]/10 focus:bg-[#FFC1EC]/10 cursor-pointer"
-          >
+
+          <DropdownMenuItem onClick={signOut} className="cursor-pointer">
             Logout
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -198,164 +239,210 @@ const Navbar = () => {
     );
   };
 
-  const renderMobileAuthButton = () => {
+  const MobileAuth = () => {
     if (loading) {
       return (
         <div className="flex flex-col gap-2 w-full">
-          <Skeleton className="h-[76px] w-full" />
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+          <Skeleton className="h-10 w-full rounded-xl" />
         </div>
       );
     }
+
     if (!user) {
       return (
-        <Button
-          variant="outline"
-          className="w-full justify-start text-[#FFC1EC] border-[#FFC1EC] flex items-center gap-2"
-          onClick={signInWithGoogle}
-        >
-          <FaGoogle />
-          Login with Google
-        </Button>
+        <div className="w-full flex justify-center">
+          <button
+            onClick={signInWithGoogle}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-extrabold transition active:translate-y-[1px]"
+            style={{
+              background: "#FFFFFF",
+              color: PAPER.ink,
+              border: `3px solid ${PAPER.ink}`,
+              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = PAPER.accent;
+              e.currentTarget.style.color = "#FFFFFF";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "#FFFFFF";
+              e.currentTarget.style.color = PAPER.ink;
+            }}
+          >
+            <FaGoogle />
+            Login with Google
+          </button>
+        </div>
       );
     }
 
     return (
-      <div className="flex  flex-col gap-2 w-full">
-        <div className="flex items-center gap-2 p-4 mb-2 border border-[#FFC1EC] rounded-lg bg-black/20">
-          <Avatar className="h-8 w-8">
-            <AvatarImage
-              src={user.user_metadata?.avatar_url || ""}
-              alt={user.user_metadata?.full_name || ""}
-            />
-            <AvatarFallback>
-              {user.user_metadata?.full_name?.[0] || "U"}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col w-full">
-            <span className="font-medium text-[#FFC1EC]">
-              {user.user_metadata?.full_name}
-            </span>
-            <p className="text-xs text-[#FFC1EC]/70 truncate">{user.email}</p>
-          </div>
-        </div>
-        <Link href="/profile" className="w-full">
+      <div className="w-full flex flex-col items-center gap-2">
+        <Link href="/profile" className="w-full" style={{ maxWidth: 520 }}>
           <Button
             variant="outline"
-            className="w-full justify-start text-[#FFC1EC] border-[#FFC1EC]"
+            className="w-full justify-center rounded-xl active:translate-y-[1px]"
+            style={{
+              background: "#FFFFFF",
+              color: PAPER.ink,
+              border: `3px solid ${PAPER.ink}`,
+              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+            }}
           >
             View Profile
           </Button>
         </Link>
-        <Button
-          variant="outline"
-          className="w-full justify-start text-[#FFC1EC] border-[#FFC1EC]"
-          onClick={signOut}
-        >
-          Logout
-        </Button>
+        <div className="w-full" style={{ maxWidth: 520 }}>
+          <Button
+            variant="outline"
+            className="w-full justify-center rounded-xl active:translate-y-[1px]"
+            style={{
+              background: "#FFFFFF",
+              color: PAPER.ink,
+              border: `3px solid ${PAPER.ink}`,
+              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+            }}
+            onClick={signOut}
+          >
+            Logout
+          </Button>
+        </div>
       </div>
     );
   };
 
   return (
-    <>
-      <motion.div
-        initial={{ y: -100 }}
-        animate={{
-          y: isHidden ? -100 : 0,
-          background: hasScrolled ? "rgba(0, 0, 0, 0.5)" : "transparent",
-          backdropFilter: hasScrolled ? "blur(8px)" : "none",
-        }}
-        transition={{
-          duration: 0.3,
-          ease: [0.25, 0.1, 0.25, 1],
-        }}
-        className="z-50 fixed w-full transition-all duration-200 flex justify-between items-center p-6"
-      >
-        <motion.div
-          className="w-full flex justify-between items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.2, delay: 0.1 }}
+    <motion.nav
+      initial={{ y: -120 }}
+      animate={{ y: isHidden ? -120 : 0, opacity: 1 }}
+      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+      className="fixed top-0 left-0 w-full z-50 pt-safe"
+    >
+      <div className="flex justify-center w-full pt-4 px-4">
+        <div
+          className="flex flex-col items-center"
+          onMouseEnter={() => {
+            if (!isMobile) setIsExpanded(true);
+          }}
+          onMouseLeave={() => {
+            if (!isMobile) setIsExpanded(false);
+            setHovered(null);
+          }}
         >
-          <div className="flex items-center">
+          <button
+            onClick={() => {
+              if (isMobile) setIsExpanded((p) => !p);
+              else router.push("/");
+              setActiveId("home");
+            }}
+            className="flex items-center justify-center"
+            style={{
+              background: `${PAPER.bg} url('/textures/paper.png')`,
+              backdropFilter: "none",
+              width: isExpanded ? "58px" : "190px",
+              height: isExpanded ? "48px" : "56px",
+              borderRadius: isExpanded ? "14px" : "28px",
+              border: `4px solid ${PAPER.ink}`,
+              boxShadow: `6px 6px 0 ${PAPER.shadow}`,
+              transition: "all 700ms cubic-bezier(0.16,1,0.3,1)",
+              transform: "rotate(-0.8deg)",
+            }}
+          >
             <Image
-              src={"/assets/texus-color 3.png"}
-              alt="Texus Logo"
-              width={800}
-              height={267}
-              className="h-8 md:h-12 w-auto"
-              onClick={() => router.push("/")}
-            />
-            {/* <Image
-              src={"/assets/srm-white.png"}
-              alt="Texus25 Logo"
-              width={800}
-              height={267}
-              className="scale-50 object-cover h-9 w-auto md:h-24 z-40"
+              src="/assets/texus-color 3.png"
+              alt="TEXUS Logo"
+              width={260}
+              height={90}
+              className="h-8 w-auto object-contain"
               priority
-            /> */}
-          </div>
+            />
+          </button>
 
-          <nav className="hidden md:flex justify-center items-center space-x-8">
-            {navItems.map((item, i) => (
-              <div key={i} className="relative group">
-                <Link href={item.href}>
-                  <Button
-                    className="text-white bg-transparent hover:text-white/80 hover:bg-transparent"
-                    onClick={() => handleScroll(item.href)}
-                  >
-                    <h2 className="text-[#FFC1EC] relative font-montserrat font-normal">
-                      {item.name}
-                      <span className="absolute left-0 bottom-[-2px] h-0.5 w-full bg-[#FFC1EC] transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-                    </h2>
-                  </Button>
-                </Link>
-              </div>
-            ))}
-          </nav>
+          <div
+            className="mt-2"
+            style={{
+              opacity: isExpanded ? 1 : 0,
+              pointerEvents: isExpanded ? "auto" : "none",
+              transform: isExpanded
+                ? "translateY(0) scale(1)"
+                : "translateY(-14px) scale(0.96)",
+              transition:
+                "opacity 500ms cubic-bezier(0.16,1,0.3,1), transform 500ms cubic-bezier(0.16,1,0.3,1)",
+            }}
+          >
+            <div
+              className={[
+                "rounded-2xl",
+                "flex flex-col md:inline-flex md:flex-row md:items-center md:gap-4",
+                "p-4",
+                "w-[92vw] md:w-fit",
+                "max-w-[92vw]",
+              ].join(" ")}
+              style={{
+                background: `${PAPER.bg} url('/textures/paper.png')`,
+                border: `4px solid ${PAPER.ink}`,
+                boxShadow: `6px 6px 0 ${PAPER.shadow}`,
+              }}
+            >
+              <div className="flex flex-wrap justify-center gap-2">
+                {NAV_ITEMS.map((item) => {
+                  const isActive = activeId === item.id;
+                  const isHovered = hovered === item.id;
+                  const Icon = item.icon;
 
-          <div className="hidden md:block">{renderAuthButton()}</div>
-          <div className="md:hidden">
-            <Sheet open={open} onOpenChange={setOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-white">
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetTitle></SheetTitle>
-              <SheetContent
-                side="right"
-                className="w-[300px] sm:w-[400px] border-[#FFC1EC] bg-black/50 backdrop-blur-md"
-              >
-                <nav className="flex flex-col gap-4 mt-10">
-                  {navItems.map((item, i) => (
-                    <Link key={i} href={item.href}>
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-start font-montserrat"
-                        onClick={() => {
-                          handleScroll(item.href);
-                          setOpen(false);
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        if (isMobile) setIsExpanded(false);
+                        go(item.href, item.id);
+                      }}
+                      onMouseEnter={() => setHovered(item.id)}
+                      onMouseLeave={() => setHovered(null)}
+                      className="relative flex items-center gap-2 px-3 py-2 rounded-xl transition-transform"
+                      title={item.name}
+                      style={{
+                        background: isActive ? PAPER.accent : "#FFFFFF",
+                        border: `3px solid ${PAPER.ink}`,
+                        boxShadow:
+                          isActive || isHovered
+                            ? `3px 3px 0 ${PAPER.shadow}`
+                            : `2px 2px 0 ${PAPER.shadow}`,
+                        transform: isHovered ? "translate(-1px,-1px)" : "none",
+                      }}
+                    >
+                      <div style={{ color: PAPER.ink, flexShrink: 0 }}>
+                        <Icon className="w-4 h-4 md:hidden" />
+                      </div>
+
+                      <span
+                        className="text-xs sm:text-sm font-extrabold tracking-wider"
+                        style={{
+                          color: PAPER.ink,
+                          opacity: isActive || isHovered ? 1 : 0.92,
                         }}
                       >
                         {item.name}
-                      </Button>
-                    </Link>
-                  ))}
-                </nav>
-                <div className="absolute bottom-6 left-6 right-6">
-                  {renderMobileAuthButton()}
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
-        </motion.div>
-      </motion.div>
-    </>
-  );
-};
+                      </span>
 
-export default Navbar;
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex justify-center mt-2 md:mt-0">
+                <div className="hidden md:flex">
+                  <DesktopAuth />
+                </div>
+                <div className="md:hidden w-full">
+                  <MobileAuth />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.nav>
+  );
+}
