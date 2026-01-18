@@ -162,8 +162,9 @@ const PaperButton = ({
 type PolaroidConfig = {
   src: string;
   alt: string;
-  desktop: React.CSSProperties;
-  mobile: React.CSSProperties;
+  desktop: React.CSSProperties; // only position props (left/right/top/bottom)
+  mobile: React.CSSProperties; // only position props
+  mobileScale: number;
 };
 
 const POLAROIDS: PolaroidConfig[] = [
@@ -171,25 +172,29 @@ const POLAROIDS: PolaroidConfig[] = [
     src: "/assets/gallery-hackathon/hackathon1.jpg",
     alt: "polaroid-1",
     desktop: { left: "4%", top: "14%" },
-    mobile: { left: "3%", top: "16%", transform: "scale(0.68)" },
+    mobile: { left: "3%", top: "16%" },
+    mobileScale: 0.68,
   },
   {
     src: "/assets/gallery-assets/texus-2k23/texus-2k23 (25).jpg",
     alt: "polaroid-2",
     desktop: { right: "4%", top: "16%" },
-    mobile: { right: "3%", bottom: "10%", transform: "scale(0.68)" },
+    mobile: { right: "3%", bottom: "10%" },
+    mobileScale: 0.68,
   },
   {
     src: "/assets/gallery-assets/texus25-gala-remastered/gala-6.jpg",
     alt: "polaroid-3",
     desktop: { left: "10%", bottom: "10%" },
-    mobile: { left: "3%", bottom: "8%", transform: "scale(0.64)" },
+    mobile: { left: "3%", bottom: "8%" },
+    mobileScale: 0.64,
   },
   {
     src: "/assets/gallery-assets/texus-2k24-gala/texus-2k24-gala (8).jpeg",
     alt: "polaroid-4",
     desktop: { right: "10%", bottom: "8%" },
-    mobile: { right: "3%", top: "34%", transform: "scale(0.64)" },
+    mobile: { right: "3%", top: "34%" },
+    mobileScale: 0.64,
   },
 ];
 
@@ -202,9 +207,8 @@ function useStableTilts(count: number) {
   return useMemo(() => {
     return Array.from({ length: count }).map((_, i) => {
       const r = seededNumber(i + 1);
-      const angle = (r * 20 - 10) || 4;
-      const hover = seededNumber(i + 42) * 2 - 1;
-      return { angle, hover };
+      const angle = (r * 20 - 10) || 4; // -10..+10
+      return { angle };
     });
   }, [count]);
 }
@@ -215,27 +219,29 @@ const Polaroid = ({
   baseRotate,
   stylePos,
   opacity = 0.45,
+  baseScale = 1,
 }: {
   src: string;
   alt: string;
   baseRotate: number;
   stylePos: React.CSSProperties;
   opacity?: number;
+  baseScale?: number;
 }) => {
   return (
     <motion.div
       className="absolute pointer-events-auto"
       style={{
         ...stylePos,
-        rotate: `${baseRotate}deg`,
+        // keep only positioning in style; Framer controls rotate/scale
       }}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 12, rotate: baseRotate, scale: baseScale }}
+      animate={{ opacity: 1, y: 0, rotate: baseRotate, scale: baseScale }}
       transition={{ duration: 0.45 }}
       whileHover={{
         y: -10,
         rotate: baseRotate + 1.5,
-        scale: 1.02,
+        scale: baseScale * 1.02,
       }}
     >
       <Tape className="-top-2 left-6 h-5 w-16" rotate={-6} />
@@ -260,6 +266,7 @@ const Polaroid = ({
             className="object-cover"
             sizes="(max-width: 768px) 55vw, 320px"
           />
+
           <div
             className="absolute inset-0"
             style={{
@@ -304,19 +311,17 @@ const SRM_IMAGES = [
 function ImageCard({
   src,
   alt,
-  className = "",
   aspect,
 }: {
   src: string;
   alt: string;
-  className?: string;
   aspect: string;
 }) {
   return (
     <motion.div
       whileHover={{ y: -6, rotate: -0.6 }}
       transition={{ type: "spring", stiffness: 420, damping: 22 }}
-      className={cn("relative overflow-hidden rounded-2xl", className)}
+      className="relative overflow-hidden rounded-2xl"
       style={{
         border: `3px solid ${PAPER.ink}`,
         boxShadow: `8px 8px 0 ${PAPER.shadow}`,
@@ -390,7 +395,6 @@ function SRMCarousel() {
         background: i === index ? PAPER.accent : "rgba(18,56,89,0.18)",
         border: `2px solid ${PAPER.ink}`,
         boxShadow: `2px 2px 0 ${PAPER.shadow}`,
-        transform: i === index ? "scale(1.05)" : "scale(1)",
       }}
     />
   );
@@ -513,6 +517,7 @@ export default function AboutPage() {
       {/* SECTION 1 */}
       <section className="relative min-h-[100svh] overflow-hidden">
         <PaperBase />
+
         <div className="absolute inset-0 opacity-[0.08]">
           <Image
             src="/assets/aboutbg.png"
@@ -523,6 +528,7 @@ export default function AboutPage() {
           />
         </div>
 
+        {/* Polaroids behind */}
         <div className="absolute inset-0 z-10 pointer-events-none">
           <div className="hidden md:block">
             {POLAROIDS.map((p, idx) => (
@@ -533,6 +539,7 @@ export default function AboutPage() {
                   baseRotate={tilts[idx].angle}
                   stylePos={p.desktop}
                   opacity={0.42}
+                  baseScale={1}
                 />
               </div>
             ))}
@@ -547,6 +554,7 @@ export default function AboutPage() {
                   baseRotate={tilts[idx].angle}
                   stylePos={p.mobile}
                   opacity={0.34}
+                  baseScale={p.mobileScale}
                 />
               </div>
             ))}
@@ -555,6 +563,7 @@ export default function AboutPage() {
 
         <Vignette />
 
+        {/* Content */}
         <div className="relative z-30 max-w-6xl mx-auto px-4 pt-[clamp(84px,10vh,120px)] pb-[clamp(56px,8vh,88px)]">
           <motion.div
             initial={{ opacity: 0, y: 26 }}
@@ -762,7 +771,6 @@ export default function AboutPage() {
                     </div>
                   </motion.div>
 
-                  {/* ✅ Carousel here */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.96 }}
                     whileInView={{ opacity: 1, scale: 1 }}
