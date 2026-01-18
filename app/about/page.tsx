@@ -1,318 +1,447 @@
 "use client";
-import Image from "next/image";
-import React from "react";
-import { motion } from "framer-motion";
-import "./about.css";
-// import AOS from "aos";
-// import "aos/dist/aos.css";
-// import Navbar from "@/components/Home/Navbar";
-import DemoPage from "../../components/Home/AboutComponent";
-import Aboutdept from "@/components/Home/Aboutdept";
-import Footer from "@/components/Home/Footer";
-import { Montserrat } from "next/font/google";
 
-// Load Montserrat font
+import React, { useMemo } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import AboutPage from "@/components/Home/AboutComponent";
+import { Montserrat } from "next/font/google";
+import { cn } from "@/lib/utils";
+
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-montserrat",
 });
 
+const PAPER = {
+  bg: "#F7F4EE",
+  ink: "#123859",
+  accent: "#419FD9",
+  teal: "#03738C",
+  olive: "#8C7503",
+  sand: "#A68160",
+  shadow: "#0E2A44",
+  white: "#FFFFFF",
+};
+
+const headingFont =
+  "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)";
+const bodyFont =
+  "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)";
+
+const PaperBase = ({ className = "" }: { className?: string }) => (
+  <div
+    className={cn("absolute inset-0", className)}
+    style={{
+      background: `${PAPER.bg} url('/textures/paper.png')`,
+      backgroundRepeat: "repeat",
+    }}
+  />
+);
+
+const Vignette = () => (
+  <div
+    className="absolute inset-0 pointer-events-none"
+    style={{
+      background:
+        "radial-gradient(circle at center, rgba(247,244,238,0) 0%, rgba(247,244,238,0.45) 62%, rgba(247,244,238,0.95) 100%)",
+    }}
+  />
+);
+
+const Tape = ({
+  className = "",
+  rotate = 0,
+  tint = "rgba(166,129,96,0.35)",
+}: {
+  className?: string;
+  rotate?: number;
+  tint?: string;
+}) => (
+  <div
+    className={cn("absolute rounded-md", className)}
+    style={{
+      background: tint,
+      border: `2px solid ${PAPER.ink}`,
+      transform: `rotate(${rotate}deg)`,
+      boxShadow: `2px 2px 0 rgba(14,42,68,0.15)`,
+    }}
+  />
+);
+
+const DoodleLine = ({ className = "" }: { className?: string }) => (
+  <div
+    className={cn("h-[6px] w-28 sm:w-36 md:w-44 rounded-full", className)}
+    style={{
+      background: PAPER.accent,
+      transform: "rotate(-2deg)",
+      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+      border: `2px solid ${PAPER.ink}`,
+    }}
+  />
+);
+
+const PaperPanel = ({
+  children,
+  className = "",
+  hover = true,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  hover?: boolean;
+}) => (
+  <motion.div
+    whileHover={hover ? { y: -6, rotate: -0.2 } : undefined}
+    transition={{ type: "spring", stiffness: 420, damping: 22 }}
+    className={cn("relative rounded-2xl", className)}
+    style={{
+      background: `${PAPER.bg} url('/textures/paper.png')`,
+      border: `4px solid ${PAPER.ink}`,
+      boxShadow: `10px 10px 0 ${PAPER.shadow}`,
+    }}
+  >
+    <Tape className="-top-3 left-10 h-6 w-24" rotate={-2} />
+    <Tape className="-top-3 right-10 h-6 w-24" rotate={2} />
+    {children}
+  </motion.div>
+);
+
+const Badge = ({
+  text,
+  tint = "rgba(65,159,217,0.14)",
+}: {
+  text: string;
+  tint?: string;
+}) => (
+  <span
+    className="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm font-extrabold tracking-wide select-none"
+    style={{
+      fontFamily: headingFont,
+      background: tint,
+      border: `3px solid ${PAPER.ink}`,
+      boxShadow: `4px 4px 0 ${PAPER.shadow}`,
+      color: PAPER.ink,
+    }}
+  >
+    {text}
+  </span>
+);
+
+function PolaroidCard({
+  role,
+  name,
+  desc,
+  img,
+  tint,
+}: {
+  role: string;
+  name: string;
+  desc: React.ReactNode;
+  img: string;
+  tint: string;
+}) {
+  return (
+    <motion.div
+      whileHover={{ y: -8, rotate: -0.6, scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 380, damping: 22 }}
+      className="relative"
+    >
+      <Tape className="-top-2 left-7 h-5 w-16" rotate={-6} />
+      <Tape className="-top-2 right-7 h-5 w-16" rotate={6} />
+
+      <div
+        className="rounded-2xl overflow-hidden"
+        style={{
+          background: PAPER.white,
+          border: `4px solid ${PAPER.ink}`,
+          boxShadow: `12px 12px 0 ${PAPER.shadow}`,
+        }}
+      >
+        <div className="relative w-full" style={{ aspectRatio: "1 / 1" }}>
+          <Image src={img} alt={name} fill className="object-cover" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "rgba(247,244,238,0.20)",
+              mixBlendMode: "multiply",
+            }}
+          />
+        </div>
+
+        <div className="p-5">
+          <div className="flex flex-wrap gap-2">
+            <Badge text={role} tint={tint} />
+          </div>
+
+          <h3
+            className="mt-3 text-lg sm:text-xl font-extrabold"
+            style={{ fontFamily: headingFont, color: PAPER.ink }}
+          >
+            {name}
+          </h3>
+
+          <div
+            className="mt-2 text-sm sm:text-[15px] leading-relaxed"
+            style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.86)" }}
+          >
+            {desc}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Page() {
-  // AOS.init();
-  React.useEffect(() => {
-    // Remove this effect entirely since we want scrolling
-    return () => {};
-  }, []);
+  const departmentHeads = useMemo(
+    () => [
+      { name: "Dr. J. Sutha", department: "CSE" },
+      { name: "Dr. Sankar Ram", department: "AIML & AI" },
+      { name: "Dr. J. Shiny Duela", department: "CS & GT" },
+      { name: "Dr. A. Umamageswari", department: "BDA & CC" },
+      { name: "Dr. Usha Ruby", department: "IoT & CSBS" },
+      { name: "Dr. Rajeswari Mukesh", department: "IT" },
+      { name: "Dr. N. V. S. Sree Rathna Lakshmi", department: "ECE" },
+      { name: "Dr. Srinivasan", department: "EEE" },
+      { name: "Dr. Mathivanan", department: "MECH" },
+      { name: "Dr. Senthil Velan", department: "Civil" },
+      { name: "Dr. Archana Hari", department: "Biotechnology" },
+      { name: "Dr. Ushus", department: "Bio Medical" },
+      { name: "Dr. Rema", department: "EFL" },
+      { name: "Dr. Balamurugan", department: "Physics" },
+      { name: "Dr. Shakila Sathish", department: "Maths" },
+      { name: "Dr. Helen P Kavitha", department: "Chemistry" },
+    ],
+    []
+  );
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
-  };
-
-  // Department Heads data
-  const departmentHeads = [
-    { name: "Dr. J. Sutha", department: "CSE" },
-    { name: "Dr. Sankar Ram", department: "AIML & AI" },
-    { name: "Dr. J. Shiny Duela", department: "CS & GT" },
-    { name: "Dr. A. Umamageswari", department: "BDA & CC" },
-    { name: "Dr. Usha Ruby", department: "IoT & CSBS" },
-    { name: "Dr. Rajeswari Mukesh", department: "IT" },
-    { name: "Dr. N. V. S. Sree Rathna Lakshmi", department: "ECE" },
-    { name: "Dr. Srinivasan", department: "EEE" },
-    { name: "Dr. Mathivanan", department: "MECH" },
-    { name: "Dr. Senthil Velan", department: "Civil" },
-    { name: "Dr. Archana Hari", department: "Biotechnology" },
-    { name: "Dr. Ushus", department: "Bio Medical" },
-    { name: "Dr. Rema", department: "EFL" },
-    { name: "Dr. Balamurugan", department: "Physics" },
-    { name: "Dr. Shakila Sathish", department: "Maths" },
-    { name: "Dr. Helen P Kavitha", department: "Chemistry" },
-  ];
-
-  // Split the department heads into two columns
   const leftColumnHeads = departmentHeads.slice(0, 8);
   const rightColumnHeads = departmentHeads.slice(8);
 
   return (
-    <div className={`w-full bg-black ${montserrat.variable}`}>
+    <div className={cn("w-full", montserrat.variable)}>
+      {/* Your paper-themed About component */}
       <div className="min-h-screen">
-        <DemoPage />
-      </div>
-      <div className="min-h-screen">
-        <Aboutdept />
+        <AboutPage />
       </div>
 
-      <div className="min-h-screen py-10 md:py-20 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-purple-900/10 z-0"></div>
+      {/* ORGANIZERS */}
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        <PaperBase />
+        <Vignette />
 
-        <motion.div
-          className="container mx-auto  px-4 relative top-0 md:top-32 lg:top-0 z-10"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-        >
-          <motion.h1
-            className="text-3xl md:text-5xl font-montserrat font-bold text-center mb-8 md:mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
-            variants={itemVariants}
+        <div className="relative z-10 max-w-7xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-120px" }}
+            transition={{ duration: 0.55 }}
+            className="text-center"
           >
-            TEXUS ORGANIZERS
-          </motion.h1>
-
-          <div className="flex flex-col items-center max-w-6xl mx-auto">
-            <motion.div
-              className="mb-10 md:mb-20 relative w-full max-w-[280px] md:max-w-[300px]"
-              variants={itemVariants}
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-extrabold"
+              style={{
+                fontFamily: headingFont,
+                color: PAPER.ink,
+                letterSpacing: "0.06em",
+                textShadow: "2px 2px 0 rgba(14,42,68,0.12)",
+              }}
             >
-              <motion.div
-                className="relative overflow-hidden rounded-xl"
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Image
-                  src="/assets/aboutImg/DeanET.webp"
-                  alt="Dr. M. Sakthi Ganesh"
-                  width={300}
-                  height={300}
-                  className="rounded-xl shadow-lg object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-              </motion.div>
+              TEXUS ORGANIZERS
+            </h2>
+            <div className="mt-3 flex justify-center">
+              <DoodleLine />
+            </div>
 
-              <motion.div
-                className="mt-6 text-center max-w-md mx-auto bg-black/30 backdrop-blur-sm p-4 rounded-xl border border-purple-500/20"
-                variants={cardVariants}
-              >
-                <h2 className="text-xl uppercase text-white mb-1 font-montserrat">
-                  Convener
-                </h2>
-                <h3 className="text-xl text-white mb-2 font-montserrat">
-                  Dr. M. Sakthi Ganesh
-                </h3>
-                <p className="text-gray-300 text-sm font-montserrat">
-                  Dean - Engineering and Technology
-                  <br />
-                  SRMIST, Ramapuram, Chennai
-                </p>
-              </motion.div>
-            </motion.div>
+            <p
+              className="mt-4 max-w-3xl mx-auto text-sm sm:text-base"
+              style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.82)" }}
+            >
+              The people who make the fest happen — planning, approvals, chaos
+              control, and keeping the vibe alive.
+            </p>
+          </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 w-full">
-              <motion.div
-                className="flex flex-col items-center"
-                variants={itemVariants}
-                custom={1}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.div
-                  className="relative overflow-hidden rounded-xl"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Image
-                    src="/assets/aboutImg/raja1.png"
-                    alt="Dr. Raja Kothandaraman"
-                    width={280}
-                    height={280}
-                    className="rounded-xl shadow-lg object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                </motion.div>
-
-                <motion.div
-                  className="mt-6 text-center max-w-md bg-black/30 backdrop-blur-sm p-4 rounded-xl border border-blue-500/20"
-                  variants={cardVariants}
-                >
-                  <h2 className="text-xl uppercase text-white mb-1 font-montserrat">
-                    Co-Convener
-                  </h2>
-                  <h3 className="text-xl text-white mb-2 font-montserrat">
-                    Dr. Raja Kothandaraman
-                  </h3>
-                  <p className="text-gray-300 text-sm font-montserrat">
-                    Chairperson - School of Computer Science and Engineering
+          {/* Layout: 1 big + 2 side */}
+          <div className="mt-10 grid gap-6 lg:grid-cols-3 lg:items-start">
+            {/* Convener (big) */}
+            <div className="lg:col-span-1 lg:sticky lg:top-24">
+              <PolaroidCard
+                role="Convener"
+                name="Dr. M. Sakthi Ganesh"
+                img="/assets/aboutImg/DeanET.webp"
+                tint="rgba(65,159,217,0.16)"
+                desc={
+                  <>
+                    Dean – Engineering and Technology
                     <br />
                     SRMIST, Ramapuram, Chennai
-                  </p>
-                </motion.div>
-              </motion.div>
+                  </>
+                }
+              />
+            </div>
 
-              <motion.div
-                className="flex flex-col items-center"
-                variants={itemVariants}
-                custom={2}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.div
-                  className="relative overflow-hidden rounded-xl"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Image
-                    src="/assets/aboutImg/vp.webp"
-                    alt="Dr. Balika J. Chelliah"
-                    width={280}
-                    height={280}
-                    className="rounded-xl shadow-lg object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                </motion.div>
-
-                <motion.div
-                  className="mt-6 text-center max-w-md bg-black/30 backdrop-blur-sm p-4 rounded-xl border border-cyan-500/20"
-                  variants={cardVariants}
-                >
-                  <h2 className="text-xl uppercase text-white mb-1 font-montserrat">
-                    Co-Convener
-                  </h2>
-                  <h3 className="text-xl text-white mb-2 font-montserrat">
-                    Dr. Balika J. Chelliah
-                  </h3>
-                  <p className="text-gray-300 text-sm font-montserrat">
-                    Vice Principal - Admin
+            {/* Co conveners */}
+            <div className="lg:col-span-2 grid sm:grid-cols-2 gap-6">
+              <PolaroidCard
+                role="Co-Convener"
+                name="Dr. Raja Kothandaraman"
+                img="/assets/aboutImg/raja1.png"
+                tint="rgba(3,115,140,0.14)"
+                desc={
+                  <>
+                    Chairperson – School of Computer Science and Engineering
                     <br />
                     SRMIST, Ramapuram, Chennai
-                  </p>
-                </motion.div>
-              </motion.div>
+                  </>
+                }
+              />
+
+              <PolaroidCard
+                role="Co-Convener"
+                name="Dr. Balika J. Chelliah"
+                img="/assets/aboutImg/vp.webp"
+                tint="rgba(140,117,3,0.14)"
+                desc={
+                  <>
+                    Vice Principal – Admin
+                    <br />
+                    SRMIST, Ramapuram, Chennai
+                  </>
+                }
+              />
             </div>
           </div>
-        </motion.div>
-      </div>
 
-      <div className="min-h-screen py-10 md:py-20 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-900/10 via-black to-blue-900/10 z-0"></div>
+         
+        </div>
+      </section>
 
-        <motion.div
-          className="container mx-auto px-4 relative z-10"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.h1 className="text-3xl md:text-5xl font-montserrat font-bold text-center mb-8 md:mb-16 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-600">
-            HEADS OF DEPARTMENTS
-          </motion.h1>
+      {/* HODS */}
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        <PaperBase />
+        <Vignette />
 
-          <div className="flex flex-col px-4 md:px-12 md:flex-row justify-center gap-8 md:gap-16 lg:gap-24">
-            <motion.div
-              className="flex-1 max-w-md"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+        <div className="relative z-10 max-w-7xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-120px" }}
+            transition={{ duration: 0.55 }}
+            className="text-center"
+          >
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-extrabold"
+              style={{
+                fontFamily: headingFont,
+                color: PAPER.ink,
+                letterSpacing: "0.06em",
+              }}
             >
-              <ul className="space-y-6">
-                {leftColumnHeads.map((head, index) => (
-                  <motion.li
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="border-b border-blue-500/30 pb-4 group"
-                    whileHover={{ x: 5 }}
-                  >
-                    <div className="flex items-start">
-                      <div className="h-6 w-1 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full mr-4 group-hover:h-full transition-all duration-300"></div>
-                      <div>
-                        <h3 className="text-white font-bold text-lg group-hover:text-blue-400 transition-colors font-montserrat">
-                          {head.name}
-                        </h3>
-                        <p className="text-indigo-300 text-sm font-montserrat">
-                          {head.department}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
+              HEADS OF DEPARTMENTS
+            </h2>
+            <div className="mt-3 flex justify-center">
+              <DoodleLine />
+            </div>
+          </motion.div>
 
-            <motion.div
-              className="flex-1 max-w-md"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <ul className="space-y-6">
-                {rightColumnHeads.map((head, index) => (
-                  <motion.li
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="border-b border-blue-500/30 pb-4 group"
-                    whileHover={{ x: 5 }}
-                  >
-                    <div className="flex items-start">
-                      <div className="h-6 w-1 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full mr-4 group-hover:h-full transition-all duration-300"></div>
-                      <div>
-                        <h3 className="text-white font-bold text-lg group-hover:text-blue-400 transition-colors font-montserrat">
-                          {head.name}
-                        </h3>
-                        <p className="text-indigo-300 text-sm font-montserrat">
-                          {head.department}
-                        </p>
+          <div className="mt-10">
+            <PaperPanel className="p-6 md:p-10" hover={false}>
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Left */}
+                <ul className="space-y-4">
+                  {leftColumnHeads.map((head, idx) => (
+                    <motion.li
+                      key={`${head.name}-${idx}`}
+                      whileHover={{ x: 6, rotate: -0.2 }}
+                      transition={{ type: "spring", stiffness: 420, damping: 22 }}
+                      className="p-4 rounded-2xl"
+                      style={{
+                        background: "rgba(255,255,255,0.45)",
+                        border: `3px solid rgba(18,56,89,0.20)`,
+                        boxShadow: `6px 6px 0 rgba(14,42,68,0.12)`,
+                      }}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="mt-1 h-6 w-2 rounded-full"
+                          style={{
+                            background: idx % 2 ? PAPER.teal : PAPER.accent,
+                            border: `2px solid ${PAPER.ink}`,
+                            boxShadow: `2px 2px 0 ${PAPER.shadow}`,
+                          }}
+                        />
+                        <div>
+                          <div
+                            className="font-extrabold text-base sm:text-lg"
+                            style={{ fontFamily: headingFont, color: PAPER.ink }}
+                          >
+                            {head.name}
+                          </div>
+                          <div
+                            className="text-sm"
+                            style={{
+                              fontFamily: bodyFont,
+                              color: "rgba(18,56,89,0.78)",
+                            }}
+                          >
+                            {head.department}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
+                    </motion.li>
+                  ))}
+                </ul>
+
+                {/* Right */}
+                <ul className="space-y-4">
+                  {rightColumnHeads.map((head, idx) => (
+                    <motion.li
+                      key={`${head.name}-${idx}`}
+                      whileHover={{ x: 6, rotate: 0.2 }}
+                      transition={{ type: "spring", stiffness: 420, damping: 22 }}
+                      className="p-4 rounded-2xl"
+                      style={{
+                        background: "rgba(255,255,255,0.45)",
+                        border: `3px solid rgba(18,56,89,0.20)`,
+                        boxShadow: `6px 6px 0 rgba(14,42,68,0.12)`,
+                      }}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="mt-1 h-6 w-2 rounded-full"
+                          style={{
+                            background: idx % 2 ? PAPER.olive : PAPER.sand,
+                            border: `2px solid ${PAPER.ink}`,
+                            boxShadow: `2px 2px 0 ${PAPER.shadow}`,
+                          }}
+                        />
+                        <div>
+                          <div
+                            className="font-extrabold text-base sm:text-lg"
+                            style={{ fontFamily: headingFont, color: PAPER.ink }}
+                          >
+                            {head.name}
+                          </div>
+                          <div
+                            className="text-sm"
+                            style={{
+                              fontFamily: bodyFont,
+                              color: "rgba(18,56,89,0.78)",
+                            }}
+                          >
+                            {head.department}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            </PaperPanel>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </section>
     </div>
   );
 }

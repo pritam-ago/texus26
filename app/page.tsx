@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Hero from "@/components/Home/Hero";
 import Musicalnight from "@/components/Home/Musicalnight";
 import Eventdata from "@/components/Eventdata";
-import Aboutdept from "@/components/Home/Aboutdept";
 import AboutPage from "@/components/Home/AboutComponent";
 import Currentsponsor from "@/components/currentsponsor";
 // import HomeClientWrapper from "@/components/Home/HomeClientWrapper";
