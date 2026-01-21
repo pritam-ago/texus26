@@ -60,34 +60,9 @@ const Page = () => {
         <div id="about">
           <AboutPage />
         </div>
-        <div id="events">
-          <Eventdata />
-        </div>
-        <div>
-          <Proshows />
-        </div>
         <div id="sponsor">
           <Currentsponsor />
         </div>
-
-        {/* Map Section */}
-        <div className="my-12 container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-8 font-thuast">
-            MAP
-          </h2>
-          <div className="flex justify-center">
-            <div className="relative w-full max-w-4xl aspect-[16/9] rounded-xl overflow-hidden shadow-lg">
-              <Image
-                src="/assets/map.png"
-                alt="Event Map"
-                fill
-                className="object-contain"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Next section */}
       </div>
     // </HomeClientWrapper>
   );

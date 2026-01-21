@@ -8,13 +8,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 const PAPER = {
-  bg: "#E6D6BF",
-  ink: "#2E3A2F",
-  accent: "#4F6F52",
-  teal: "#7D9D7B",
-  olive: "#5F6F63",
-  sand: "#B6C7B6",
-  shadow: "#2E3A2F",
+  bg: "#F7F4EE",
+  ink: "#123859",
+  accent: "#419FD9",
+  teal: "#03738C",
+  olive: "#8C7503",
+  sand: "#A68160",
+  shadow: "#0E2A44",
   white: "#FFFFFF",
 };
 
