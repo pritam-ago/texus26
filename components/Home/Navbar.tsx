@@ -47,11 +47,12 @@ const PAPER = {
 
 const NAV_ITEMS: NavItem[] = [
   { id: "home", name: "HOME", href: "/", icon: Home },
-  { id: "about", name: "ABOUT", href: "/about", icon: Info },
+  
   { id: "events", name: "EVENTS", href: "/#events", icon: Calendar },
-  { id: "summit", name: "GLOBAL SUMMIT", href: "/nilgiris", icon: Globe },
   { id: "gallery", name: "GALLERY", href: "/gallery", icon: ImageIcon },
+  { id: "summit", name: "GLOBAL SUMMIT", href: "/nilgiris", icon: Globe },
   { id: "sponsors", name: "SPONSORS", href: "/sponsor", icon: Handshake },
+  { id: "about", name: "ABOUT", href: "/about", icon: Info },
 ];
 
 export default function Navbar() {
