@@ -174,14 +174,13 @@ const Proshows = () => {
                 animate={isInView ? "visible" : "hidden"}
                 custom={4}
               >
-                {/* <Link href="/musical-night"> */}
+                <Link href="/events/musical-night">
                   <Button
-                    disabled
                     className="font-montserrat font-bold text-white text-xl bg-blue-600"
                   >
-                    Coming Soon
+                    Let's Rock!
                   </Button>
-                {/* </Link> */}
+                </Link>
               </motion.div>
             </div>
           </div>

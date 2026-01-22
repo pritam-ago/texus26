@@ -1,5 +1,5 @@
-import LoadingComponent from "@/components/Loading";
+import PaperLoadingComponent from "@/components/Home/PaperLoading";
 
 export default function Loading() {
-  return <LoadingComponent />;
+  return <PaperLoadingComponent />;
 }

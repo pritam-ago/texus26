@@ -95,7 +95,7 @@ const Maintenance = () => {
         {/* Buttons with CSS hover effects instead of motion */}
         <div className="flex flex-col sm:flex-row gap-5">
           <Link
-            href="mailto:support@texus.io"
+            href="mailto:srmtexus24@gmail.com"
             className="group relative px-8 py-3.5 bg-gradient-to-br from-[#FF4500] to-[#FF6E40] text-white font-medium rounded-lg transition-all duration-300 overflow-hidden shadow-lg shadow-[#FF4500]/20"
           >
             <span className="relative z-10 text-center font-montserrat w-full">

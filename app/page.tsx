@@ -1,14 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import Hero from "@/components/Home/Hero";
-import Musicalnight from "@/components/Home/Musicalnight";
-import Eventdata from "@/components/Eventdata";
+import Hero from "@/components/home/hero";
 import AboutPage from "@/components/Home/AboutComponent";
 import Currentsponsor from "@/components/currentsponsor";
-// import HomeClientWrapper from "@/components/Home/HomeClientWrapper";
-import Proshows from "@/components/Home/Proshows";
 import Marquee from "react-fast-marquee";
-import Image from "next/image";
 
 const Page = () => {
   const [isVisible, setIsVisible] = useState(true);

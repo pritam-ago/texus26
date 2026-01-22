@@ -19,140 +19,14 @@ const PAPER = {
   green: "#10B981",
 };
 
-const headingFont =
-  "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)";
-const bodyFont =
-  "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)";
-
-const PaperBase = ({ className = "" }: { className?: string }) => (
-  <div
-    className={cn("absolute inset-0", className)}
-    style={{
-      background: `${PAPER.bg} url('/textures/paper.png')`,
-      backgroundRepeat: "repeat",
-    }}
-  />
-);
-
-const Vignette = () => (
-  <div
-    className="absolute inset-0 pointer-events-none"
-    style={{
-      background:
-        "radial-gradient(circle at center, rgba(247,244,238,0) 0%, rgba(247,244,238,0.45) 62%, rgba(247,244,238,0.95) 100%)",
-    }}
-  />
-);
-
-const Tape = ({
-  className = "",
-  rotate = 0,
-  tint = "rgba(166,129,96,0.35)",
-}: {
-  className?: string;
-  rotate?: number;
-  tint?: string;
-}) => (
-  <div
-    className={cn("absolute rounded-md", className)}
-    style={{
-      background: tint,
-      border: `2px solid ${PAPER.ink}`,
-      transform: `rotate(${rotate}deg)`,
-      boxShadow: `2px 2px 0 rgba(14,42,68,0.15)`,
-    }}
-  />
-);
-
-const DoodleLine = ({ className = "" }: { className?: string }) => (
-  <div
-    className={cn("h-[6px] w-28 sm:w-32 md:w-40 rounded-full", className)}
-    style={{
-      background: PAPER.accent,
-      transform: "rotate(-2deg)",
-      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
-      border: `2px solid ${PAPER.ink}`,
-    }}
-  />
-);
-
-const PaperPanel = ({
-  children,
-  className = "",
-  hover = true,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  hover?: boolean;
-}) => (
-  <motion.div
-    whileHover={hover ? { y: -5, rotate: -0.2 } : undefined}
-    transition={{ type: "spring", stiffness: 420, damping: 22 }}
-    className={cn("relative rounded-2xl", className)}
-    style={{
-      background: `${PAPER.bg} url("/textures/paper.png")`,
-      border: `4px solid ${PAPER.ink}`,
-      boxShadow: `10px 10px 0 ${PAPER.shadow}`,
-    }}
-  >
-    {children}
-  </motion.div>
-);
-
-const InkBadge = ({ text, color }: { text: string; color: string }) => (
-  <motion.span
-    whileHover={{ y: -2, rotate: -1 }}
-    transition={{ type: "spring", stiffness: 500, damping: 22 }}
-    className="inline-flex items-center px-4 py-2 rounded-full text-sm md:text-base font-extrabold tracking-wide select-none"
-    style={{
-      background: "rgba(247,244,238,0.9)",
-      border: `3px solid ${PAPER.ink}`,
-      boxShadow: `4px 4px 0 ${PAPER.shadow}`,
-      color: PAPER.ink,
-      fontFamily: headingFont,
-    }}
-  >
-    <span
-      className="inline-block w-3 h-3 rounded-full mr-2"
-      style={{
-        background: color,
-        border: `2px solid ${PAPER.ink}`,
-        boxShadow: `1px 1px 0 ${PAPER.shadow}`,
-      }}
-    />
-    {text}
-  </motion.span>
-);
-
-const PaperButton = ({
-  children,
-  href,
-  tint = "rgba(65,159,217,0.16)",
-}: {
-  children: React.ReactNode;
-  href?: string;
-  tint?: string;
-}) => {
-  const btn = (
-    <motion.button
-      whileHover={{ y: -3, rotate: -0.5, scale: 1.01 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 450, damping: 18 }}
-      className="px-6 py-3 rounded-xl font-extrabold inline-flex justify-center items-center"
-      style={{
-        fontFamily: headingFont,
-        background: tint,
-        border: `3px solid ${PAPER.ink}`,
-        boxShadow: `6px 6px 0 ${PAPER.shadow}`,
-        color: PAPER.ink,
-      }}
-    >
-      {children}
-    </motion.button>
-  );
-
-  if (href) return <a href={href}>{btn}</a>;
-  return btn;
+const EVENTS_THEME = {
+  bg: "bg-black/90",
+  cardBg: "bg-black/40",
+  border: "border-gray-800",
+  text: "text-white",
+  textSecondary: "text-white/80",
+  accent: "text-purple-500",
+  gradient: "from-purple-500 via-pink-500 to-red-500",
 };
 
 type Sponsor = {
@@ -164,6 +38,7 @@ type Sponsor = {
   link?: string;
 };
 
+// Card component for sponsors with events theme
 const SponsorCard = ({
   sponsor,
   className,
@@ -172,15 +47,13 @@ const SponsorCard = ({
   className?: string;
 }) => (
   <motion.div
-    whileHover={{ y: -4, rotate: -0.5 }}
+    whileHover={{ y: -4, rotate: -0.5, scale: 1.02 }}
     transition={{ type: "spring", stiffness: 450, damping: 18 }}
-    className="relative rounded-xl overflow-hidden"
+    className="relative rounded-xl overflow-hidden border backdrop-blur-sm w-[160px] h-[140px]"
     style={{
-      background: "#1a1a1a",
-      border: `3px solid ${PAPER.ink}`,
-      boxShadow: `6px 6px 0 ${PAPER.shadow}`,
-      width: "160px",
-      height: "140px",
+      background: "rgba(0,0,0,0.4)",
+      borderColor: "rgba(168,85,247,0.3)",
+      boxShadow: "0 0 20px rgba(168,85,247,0.1)",
     }}
   >
     <div className="absolute inset-0 flex items-center justify-center p-4">
@@ -201,14 +74,12 @@ const TierSection = ({
   badgeColor,
   badgeText,
   sponsors,
-  tapeColor,
 }: {
   title: string;
   description: string;
   badgeColor: string;
   badgeText: string;
   sponsors: Sponsor[];
-  tapeColor?: string;
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px" });
@@ -245,45 +116,44 @@ const TierSection = ({
       transition={{ duration: 0.6 }}
       className="mb-16"
     >
-      <PaperPanel className="p-6 md:p-10" hover={false}>
-        <Tape
-          className="-top-3 left-10 h-6 w-24"
-          rotate={-2}
-          tint={tapeColor}
-        />
-        <Tape
-          className="-top-3 right-10 h-6 w-24"
-          rotate={2}
-          tint={tapeColor}
-        />
-
+      <div className="rounded-xl overflow-hidden border backdrop-blur-sm p-6 md:p-10"
+           style={{
+             background: "rgba(0,0,0,0.6)",
+             borderColor: "rgba(168,85,247,0.3)",
+           }}>
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <InkBadge text={badgeText} color={badgeColor} />
+            <motion.span
+              whileHover={{ y: -2, rotate: -1 }}
+              transition={{ type: "spring", stiffness: 500, damping: 22 }}
+              className="inline-flex items-center px-4 py-2 rounded-full text-sm md:text-base font-thuast tracking-wider"
+              style={{
+                background: "rgba(168,85,247,0.2)",
+                border: "1px solid rgba(168,85,247,0.5)",
+                color: "white",
+              }}
+            >
+              <span
+                className="inline-block w-3 h-3 rounded-full mr-2"
+                style={{
+                  background: badgeColor,
+                }}
+              />
+              {badgeText}
+            </motion.span>
           </div>
 
           <h2
-            className="text-3xl md:text-4xl font-extrabold mb-3"
-            style={{
-              fontFamily: headingFont,
-              color: PAPER.ink,
-              letterSpacing: "0.05em",
-            }}
+            className="text-3xl md:text-4xl font-thuast mb-3 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400"
           >
             {title}
           </h2>
 
           <div className="flex justify-center mb-4">
-            <DoodleLine />
+            <div className="h-1 w-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
           </div>
 
-          <p
-            className="text-base md:text-lg max-w-2xl mx-auto"
-            style={{
-              fontFamily: bodyFont,
-              color: "rgba(18,56,89,0.85)",
-            }}
-          >
+          <p className="text-base md:text-lg max-w-2xl mx-auto text-white/80 font-montserrat">
             {description}
           </p>
         </div>
@@ -295,7 +165,7 @@ const TierSection = ({
           animate={isInView ? "visible" : "hidden"}
         >
           {sponsors.map((sponsor) => (
-            <motion.div key={sponsor.id} variants={itemVariants}>
+            <motion.div key={sponsor.id} variants={itemVariants} className="w-[160px] h-[140px]">
               <SponsorCard
                 sponsor={sponsor}
                 className={sponsor.className}
@@ -303,7 +173,7 @@ const TierSection = ({
             </motion.div>
           ))}
         </motion.div>
-      </PaperPanel>
+      </div>
     </motion.div>
   );
 };
@@ -474,29 +344,15 @@ function CurrentSponsors() {
         transition={{ duration: 0.6 }}
         className="text-center mb-16"
       >
-        <h1
-          className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4"
-          style={{
-            fontFamily: headingFont,
-            color: PAPER.ink,
-            letterSpacing: "0.06em",
-            textShadow: "2px 2px 0 rgba(14,42,68,0.15)",
-          }}
-        >
-          Our 2025 Sponsors
+        <h1 className="text-white text-center font-thuast text-4xl md:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+          OUR 2025 SPONSORS
         </h1>
 
         <div className="flex justify-center mb-6">
-          <DoodleLine />
+          <div className="h-1 w-32 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
         </div>
 
-        <p
-          className="text-base md:text-lg max-w-2xl mx-auto"
-          style={{
-            fontFamily: bodyFont,
-            color: "rgba(18,56,89,0.85)",
-          }}
-        >
+        <p className="text-white/80 text-sm md:text-lg font-montserrat text-center max-w-2xl mx-auto">
           We extend our deepest gratitude to all our sponsors who have made
           TEXUS possible through their generous support and partnership.
         </p>
@@ -506,9 +362,48 @@ function CurrentSponsors() {
         title="Platinum Sponsors"
         description="Our exclusive premier partners making TEXUS 2025 possible"
         badgeText="PLATINUM"
-        badgeColor={PAPER.purple}
+        badgeColor={PAPER.ink}
         sponsors={platinumSponsors2025}
-        tapeColor="rgba(139,92,246,0.25)"
+      />
+
+      <TierSection
+        title="Gold Sponsors"
+        description="Our premium partners who make our event extraordinary"
+        badgeText="GOLD"
+        badgeColor={PAPER.ink}
+        sponsors={goldSponsors2025}
+      />
+
+      <TierSection
+        title="Silver Sponsors"
+        description="Key supporters bringing excellence to our event"
+        badgeText="SILVER"
+        badgeColor={PAPER.ink}
+        sponsors={silverSponsors2025}
+      />
+
+      <TierSection
+        title="Hackathon Sponsors"
+        description="Tech innovators powering our coding challenges and competition"
+        badgeText="HACKATHON"
+        badgeColor={PAPER.ink}
+        sponsors={hackathonSponsors2025}
+      />
+
+      <TierSection
+        title="Mobility Partner"
+        description="Keeping our event connected and accessible"
+        badgeText="MOBILITY"
+        badgeColor={PAPER.ink}
+        sponsors={mobilitySponsors2025}
+      />
+
+      <TierSection
+        title="Stall Sponsors"
+        description="Valued collaborators enriching the event experience"
+        badgeText="STALLS"
+        badgeColor={PAPER.ink}
+        sponsors={stallSponsors2025}
       />
 
       <TierSection
@@ -517,7 +412,6 @@ function CurrentSponsors() {
         badgeText="GOLD"
         badgeColor="#FFD700"
         sponsors={goldSponsors2025}
-        tapeColor="rgba(255,215,0,0.25)"
       />
 
       <TierSection
@@ -526,41 +420,37 @@ function CurrentSponsors() {
         badgeText="SILVER"
         badgeColor="#C0C0C0"
         sponsors={silverSponsors2025}
-        tapeColor="rgba(192,192,192,0.25)"
       />
 
       <TierSection
         title="Hackathon Sponsors"
         description="Tech innovators powering our coding challenges and competition"
         badgeText="HACKATHON"
-        badgeColor={PAPER.pink}
+        badgeColor="#EC4899"
         sponsors={hackathonSponsors2025}
-        tapeColor="rgba(236,72,153,0.25)"
       />
 
       <TierSection
         title="Mobility Partner"
         description="Keeping our event connected and accessible"
         badgeText="MOBILITY"
-        badgeColor={PAPER.green}
+        badgeColor="#10B981"
         sponsors={mobilitySponsors2025}
-        tapeColor="rgba(16,185,129,0.25)"
       />
 
       <TierSection
         title="Stall Sponsors"
         description="Valued collaborators enriching the event experience"
         badgeText="STALLS"
-        badgeColor={PAPER.teal}
+        badgeColor="#03738C"
         sponsors={stallSponsors2025}
-        tapeColor="rgba(3,115,140,0.25)"
       />
     </>
   );
 }
 
-// Main Sponsors Page Component
-export default function Sponsors() {
+// Main TexusSponsors Page Component
+export default function TexusSponsors() {
   const pageRef = useRef(null);
 
   const sponsor2019: Sponsor[] = [
@@ -572,6 +462,8 @@ export default function Sponsors() {
     { id: 6, logo: "/assets/sponsor/image2.png", link: "#" },
     { id: 7, logo: "/assets/sponsor/image3.png", link: "#" },
   ];
+
+
 
   const sponsor2023: Sponsor[] = [
     { id: 2, logo: "/assets/sponsor/image24.png", link: "#" },
@@ -607,10 +499,7 @@ export default function Sponsors() {
   ];
 
   return (
-    <div ref={pageRef} className="relative min-h-screen">
-      <PaperBase />
-      <Vignette />
-
+    <div ref={pageRef} className="relative min-h-screen bg-black">
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-16 md:py-24">
         {/* Current Sponsors Section */}
         <CurrentSponsors />
@@ -623,20 +512,12 @@ export default function Sponsors() {
           transition={{ duration: 0.6 }}
           className="text-center my-20"
         >
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4"
-            style={{
-              fontFamily: headingFont,
-              color: PAPER.ink,
-              letterSpacing: "0.06em",
-              textShadow: "2px 2px 0 rgba(14,42,68,0.15)",
-            }}
-          >
-            Previous Sponsors
+          <h1 className="text-white text-center font-thuast text-4xl md:text-6xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+            PREVIOUS SPONSORS
           </h1>
 
           <div className="flex justify-center">
-            <DoodleLine />
+            <div className="h-1 w-32 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
           </div>
         </motion.div>
 
@@ -645,9 +526,8 @@ export default function Sponsors() {
           title="2024 Sponsors"
           description="Our valued partners who made TEXUS 2024 an incredible success"
           badgeText="2024"
-          badgeColor="#FFD700"
+          badgeColor={PAPER.ink}
           sponsors={sponsor2024}
-          tapeColor="rgba(255,215,0,0.25)"
         />
 
         {/* 2023 Sponsors */}
@@ -655,9 +535,8 @@ export default function Sponsors() {
           title="2023 Sponsors"
           description="Key supporters who brought excellence to TEXUS 2023"
           badgeText="2023"
-          badgeColor="#C0C0C0"
+          badgeColor={PAPER.ink}
           sponsors={sponsor2023}
-          tapeColor="rgba(192,192,192,0.25)"
         />
 
         {/* 2019 Sponsors */}
@@ -665,9 +544,8 @@ export default function Sponsors() {
           title="2019 Sponsors"
           description="Valued collaborators who made TEXUS 2019 possible"
           badgeText="2019"
-          badgeColor={PAPER.accent}
+          badgeColor={PAPER.ink}
           sponsors={sponsor2019}
-          tapeColor="rgba(65,159,217,0.25)"
         />
 
         {/* Call to Action */}
@@ -678,40 +556,33 @@ export default function Sponsors() {
           transition={{ duration: 0.6 }}
           className="mt-20"
         >
-          <PaperPanel className="p-8 md:p-12 text-center">
-            <Tape className="-top-3 left-1/4 h-6 w-32" rotate={-3} />
-            <Tape className="-top-3 right-1/4 h-6 w-32" rotate={3} />
-
-            <h3
-              className="text-3xl md:text-4xl font-extrabold mb-4"
-              style={{
-                fontFamily: headingFont,
-                color: PAPER.ink,
-                letterSpacing: "0.05em",
-              }}
-            >
+          <div className="rounded-xl overflow-hidden border backdrop-blur-sm p-8 md:p-12 text-center"
+               style={{
+                 background: "rgba(0,0,0,0.6)",
+                 borderColor: "rgba(168,85,247,0.3)",
+               }}>
+            <h3 className="text-3xl md:text-4xl font-thuast mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
               Become a Sponsor
             </h3>
 
             <div className="flex justify-center mb-6">
-              <DoodleLine />
+              <div className="h-1 w-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
             </div>
 
-            <p
-              className="text-base md:text-lg max-w-2xl mx-auto mb-8"
-              style={{
-                fontFamily: bodyFont,
-                color: "rgba(18,56,89,0.85)",
-              }}
-            >
+            <p className="text-base md:text-lg max-w-2xl mx-auto mb-8 text-white/80 font-montserrat">
               Join our community of supporters and gain visibility for your
               brand at one of the most anticipated technical events.
             </p>
 
-            <PaperButton href="mailto:srmtexus24@gmail.com" tint="rgba(65,159,217,0.16)">
+            <motion.a
+              href="mailto:srmtexus24@gmail.com"
+              whileHover={{ y: -2, scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className="px-6 py-3 rounded-xl font-thuast text-white border border-purple-500/50 bg-purple-500/20 hover:bg-purple-500/30 transition-all duration-300 inline-block text-center"
+            >
               Contact Us
-            </PaperButton>
-          </PaperPanel>
+            </motion.a>
+          </div>
         </motion.div>
       </div>
     </div>

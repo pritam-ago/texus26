@@ -48,7 +48,7 @@ const PAPER = {
 const NAV_ITEMS: NavItem[] = [
   { id: "home", name: "HOME", href: "/", icon: Home },
   
-  { id: "events", name: "EVENTS", href: "/#events", icon: Calendar },
+  { id: "events", name: "EVENTS", href: "/events", icon: Calendar },
   { id: "gallery", name: "GALLERY", href: "/gallery", icon: ImageIcon },
   { id: "summit", name: "GLOBAL SUMMIT", href: "/nilgiris", icon: Globe },
   { id: "sponsors", name: "SPONSORS", href: "/sponsor", icon: Handshake },

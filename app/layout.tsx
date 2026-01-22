@@ -9,8 +9,7 @@ import {
   Poppins,
 } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Home/Navbar";
-import Footer from "@/components/Home/Footer";
+import ConditionalLayout from "@/components/ConditionalLayout";
 import Script from "next/script";
 
 import { Bungee_Shade } from "next/font/google";
@@ -95,9 +94,9 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="font-sans">
-        <Navbar />
-        {children}
-        <Footer />
+        <ConditionalLayout>
+          {children}
+        </ConditionalLayout>
       </body>
     </html>
   );

@@ -78,10 +78,10 @@ export default async function PaymentFailedPage({
             <p className="text-gray-400 text-sm text-center mt-6">
               If you continue to face issues, please contact support at{" "}
               <a
-                href="mailto:support@texus25.com"
+                href="mailto:srmtexus24@gmail.com"
                 className="text-blue-400 hover:underline hover:text-blue-300 transition-colors"
               >
-                support@texus.io
+                srmtexus24@gmail.com
               </a>
             </p>
           </div>

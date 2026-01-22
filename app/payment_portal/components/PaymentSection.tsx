@@ -220,8 +220,7 @@ export default function PaymentSection({
             <div className="mt-8 pt-5 border-t border-zinc-800">
               <p className="text-sm text-zinc-500 text-center">
                 Having trouble? Contact support at{" "}
-                <span className="text-fuchsia-400">support@texus.io</span>,
-                <span className="text-fuchsia-400">contact@texus.io</span>
+                <span className="text-fuchsia-400">srmtexus24@gmail.com</span>
               </p>
             </div>
           </>

@@ -132,7 +132,7 @@ const Hero = () => {
             <div className="hidden md:block w-px bg-gradient-to-b from-transparent via-white/20 to-transparent self-stretch my-2" />
 
             {/* Phase 2 */}
-            <Link href="/#events" className="group relative w-full md:w-[320px] cursor-pointer block">
+            <Link href="/events/#events" className="group relative w-full md:w-[320px] cursor-pointer block">
                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-500" />
               <div className="relative flex flex-col items-center justify-center bg-black/60 backdrop-blur-md border border-white/10 p-5 rounded-lg w-full h-full transform transition-transform hover:-translate-y-1 duration-300">
                 <span className="text-purple-400 font-montserrat font-bold tracking-[0.2em] text-xs sm:text-sm mb-2 uppercase">Phase 2</span>
