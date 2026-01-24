@@ -7,6 +7,7 @@ import {
   Inter,
   Rock_Salt,
   Poppins,
+  Teko,
 } from "next/font/google";
 import "./globals.css";
 import ConditionalLayout from "@/components/ConditionalLayout";
@@ -70,6 +71,12 @@ const rockSalt = Rock_Salt({
   variable: "--font-rocksalt",
 });
 
+const teko = Teko({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-teko",
+});
+
 export const metadata: Metadata = {
   title: "Texus'26",
   description: "Texus'26",
@@ -84,7 +91,7 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${geistSans.variable} ${mont.variable} dark ${geistMono.variable} ${bangers.className} ${inter.variable} ${montserrat.variable} ${rockSalt.variable} ${bungeeshade.variable} ${poppins.variable}`}
+      className={`${geistSans.variable} ${mont.variable} dark ${geistMono.variable} ${bangers.className} ${inter.variable} ${montserrat.variable} ${rockSalt.variable} ${bungeeshade.variable} ${poppins.variable} ${teko.variable}`}
     >
       <head>
         <link rel="icon" href="/favicon.ico" type="image/ico" sizes="32x32" />

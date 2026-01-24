@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Hero from "@/components/home/hero";
+import Hero from "@/components/Home/Hero";
 import AboutPage from "@/components/Home/AboutComponent";
 import Currentsponsor from "@/components/currentsponsor";
 import Marquee from "react-fast-marquee";
