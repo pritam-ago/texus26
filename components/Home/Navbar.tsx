@@ -38,11 +38,11 @@ type NavItem = {
 };
 
 const PAPER = {
-  bg: "#F7F4EE",
-  ink: "#123859",
-  accent: "#419FD9",
-  shadow: "#0E2A44",
-  white: "#F2F2F2",
+  bg: "#F2F2F2",
+  ink: "#12590F",
+  accent: "#79A677",
+  shadow: "#12590F",
+  white: "#FFFFFF",
 };
 
 const NAV_ITEMS: NavItem[] = [

@@ -6,13 +6,11 @@ import { motion, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const PAPER = {
-  bg: "#F7F4EE",
-  ink: "#123859",
-  accent: "#419FD9",
-  teal: "#03738C",
-  olive: "#8C7503",
-  sand: "#A68160",
-  shadow: "#0E2A44",
+  bg: "#F2F2F2",
+  ink: "#12590F",
+  accent: "#79A677",
+  lightAccent: "#ABBFA8",
+  shadow: "#12590F",
   white: "#FFFFFF",
   purple: "#8B5CF6",
   pink: "#EC4899",
@@ -39,7 +37,7 @@ const Vignette = () => (
     className="absolute inset-0 pointer-events-none"
     style={{
       background:
-        "radial-gradient(circle at center, rgba(247,244,238,0) 0%, rgba(247,244,238,0.45) 62%, rgba(247,244,238,0.95) 100%)",
+        "radial-gradient(circle at center, rgba(242,242,242,0) 0%, rgba(242,242,242,0.45) 62%, rgba(242,242,242,0.95) 100%)",
     }}
   />
 );
@@ -47,19 +45,16 @@ const Vignette = () => (
 const Tape = ({
   className = "",
   rotate = 0,
-  tint = "rgba(166,129,96,0.35)",
 }: {
   className?: string;
   rotate?: number;
-  tint?: string;
 }) => (
-  <div
-    className={cn("absolute rounded-md", className)}
+  <img
+    src="/textures/tape.png"
+    alt="tape"
+    className={cn("absolute w-20 h-auto", className)}
     style={{
-      background: tint,
-      border: `2px solid ${PAPER.ink}`,
-      transform: `rotate(${rotate}deg)`,
-      boxShadow: `2px 2px 0 rgba(14,42,68,0.15)`,
+      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
     }}
   />
 );
@@ -201,14 +196,12 @@ const TierSection = ({
   badgeColor,
   badgeText,
   sponsors,
-  tapeColor,
 }: {
   title: string;
   description: string;
   badgeColor: string;
   badgeText: string;
   sponsors: Sponsor[];
-  tapeColor?: string;
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px" });
@@ -247,14 +240,12 @@ const TierSection = ({
     >
       <PaperPanel className="p-6 md:p-10" hover={false}>
         <Tape
-          className="-top-3 left-10 h-6 w-24"
+          className="-top-4 left-10"
           rotate={-2}
-          tint={tapeColor}
         />
         <Tape
-          className="-top-3 right-10 h-6 w-24"
+          className="-top-4 right-10"
           rotate={2}
-          tint={tapeColor}
         />
 
         <div className="text-center mb-8">
@@ -503,57 +494,51 @@ function CurrentSponsors() {
       </motion.div>
 
       <TierSection
-        title="Platinum Sponsors"
-        description="Our exclusive premier partners making TEXUS 2025 possible"
-        badgeText="PLATINUM"
+        title="Title Sponsors"
+        description="Our Flagship Partners"
+        badgeText="TITLE"
         badgeColor={PAPER.purple}
-        sponsors={platinumSponsors2025}
-        tapeColor="rgba(139,92,246,0.25)"
+        sponsors={titleSponsors2025}
       />
 
       <TierSection
         title="Gold Sponsors"
-        description="Our premium partners who make our event extraordinary"
+        description="Shining bright with support"
         badgeText="GOLD"
-        badgeColor="#FFD700"
-        sponsors={goldSponsors2025}
-        tapeColor="rgba(255,215,0,0.25)"
-      />
+          badgeColor="#FFD700"
+          sponsors={goldSponsors2024}
+        />
 
       <TierSection
         title="Silver Sponsors"
-        description="Key supporters bringing excellence to our event"
+        description="Solid contributions making a difference"
         badgeText="SILVER"
-        badgeColor="#C0C0C0"
-        sponsors={silverSponsors2025}
-        tapeColor="rgba(192,192,192,0.25)"
-      />
+          badgeColor="#C0C0C0"
+          sponsors={silverSponsors2024}
+        />
 
       <TierSection
-        title="Hackathon Sponsors"
-        description="Tech innovators powering our coding challenges and competition"
-        badgeText="HACKATHON"
+        title="Beauty Sponsors"
+        description="Bringing elegance to every detail"
+        badgeText="BEAUTY"
         badgeColor={PAPER.pink}
-        sponsors={hackathonSponsors2025}
-        tapeColor="rgba(236,72,153,0.25)"
+        sponsors={beautySponsors2025}
       />
 
       <TierSection
-        title="Mobility Partner"
-        description="Keeping our event connected and accessible"
-        badgeText="MOBILITY"
+        title="Food & Beverage Sponsors"
+        description="Nourishing partnerships for every moment"
+        badgeText="FOOD"
         badgeColor={PAPER.green}
-        sponsors={mobilitySponsors2025}
-        tapeColor="rgba(16,185,129,0.25)"
+        sponsors={foodSponsors2025}
       />
 
       <TierSection
         title="Stall Sponsors"
         description="Valued collaborators enriching the event experience"
         badgeText="STALLS"
-        badgeColor={PAPER.teal}
+        badgeColor={PAPER.lightAccent}
         sponsors={stallSponsors2025}
-        tapeColor="rgba(3,115,140,0.25)"
       />
     </>
   );
@@ -647,7 +632,6 @@ export default function Sponsors() {
           badgeText="2024"
           badgeColor="#FFD700"
           sponsors={sponsor2024}
-          tapeColor="rgba(255,215,0,0.25)"
         />
 
         {/* 2023 Sponsors */}
@@ -657,7 +641,6 @@ export default function Sponsors() {
           badgeText="2023"
           badgeColor="#C0C0C0"
           sponsors={sponsor2023}
-          tapeColor="rgba(192,192,192,0.25)"
         />
 
         {/* 2019 Sponsors */}
@@ -667,7 +650,6 @@ export default function Sponsors() {
           badgeText="2019"
           badgeColor={PAPER.accent}
           sponsors={sponsor2019}
-          tapeColor="rgba(65,159,217,0.25)"
         />
 
         {/* Call to Action */}
@@ -679,8 +661,8 @@ export default function Sponsors() {
           className="mt-20"
         >
           <PaperPanel className="p-8 md:p-12 text-center">
-            <Tape className="-top-3 left-1/4 h-6 w-32" rotate={-3} />
-            <Tape className="-top-3 right-1/4 h-6 w-32" rotate={3} />
+            <Tape className="-top-4 left-1/4" rotate={-3} />
+            <Tape className="-top-4 right-1/4" rotate={3} />
 
             <h3
               className="text-3xl md:text-4xl font-extrabold mb-4"

@@ -8,13 +8,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 const PAPER = {
-  bg: "#F7F4EE",
-  ink: "#123859",
-  accent: "#419FD9",
-  teal: "#03738C",
-  olive: "#8C7503",
-  sand: "#A68160",
-  shadow: "#0E2A44",
+  bg: "#F2F2F2",
+  ink: "#12590F",
+  accent: "#79A677",
+  lightAccent: "#ABBFA8",
+  shadow: "#12590F",
   white: "#FFFFFF",
 };
 
@@ -46,19 +44,17 @@ const Vignette = () => (
 const Tape = ({
   className = "",
   rotate = 0,
-  tint = "rgba(166,129,96,0.35)",
 }: {
   className?: string;
   rotate?: number;
   tint?: string;
 }) => (
-  <div
-    className={cn("absolute rounded-md", className)}
+  <img
+    src="/textures/tape.png"
+    alt="tape"
+    className={cn("absolute w-20 h-auto", className)}
     style={{
-      background: tint,
-      border: `2px solid ${PAPER.ink}`,
-      transform: `rotate(${rotate}deg)`,
-      boxShadow: `2px 2px 0 rgba(14,42,68,0.15)`,
+      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
     }}
   />
 );
@@ -119,8 +115,8 @@ const PaperPanel = ({
       boxShadow: `10px 10px 0 ${PAPER.shadow}`,
     }}
   >
-    <Tape className="-top-3 left-10 h-6 w-24" rotate={-2} />
-    <Tape className="-top-3 right-10 h-6 w-24" rotate={2} />
+    <Tape className="-top-4 left-10" rotate={-2} />
+    <Tape className="-top-4 right-10" rotate={2} />
     {children}
   </motion.div>
 );
@@ -129,7 +125,7 @@ const PaperButton = ({
   children,
   href,
   onClick,
-  tint = "rgba(65,159,217,0.16)",
+  tint = "rgba(121,166,119,0.3)",
 }: {
   children: React.ReactNode;
   href?: string;
@@ -244,8 +240,8 @@ const Polaroid = ({
         scale: baseScale * 1.02,
       }}
     >
-      <Tape className="-top-2 left-6 h-5 w-16" rotate={-6} />
-      <Tape className="-top-2 right-6 h-5 w-16" rotate={6} />
+      <Tape className="-top-4 left-6" rotate={-6} />
+      <Tape className="-top-4 right-6" rotate={6} />
 
       <div
         className="relative"
@@ -438,10 +434,10 @@ function SRMCarousel() {
 
           <div className="flex items-center justify-between gap-3">
             <div className="flex gap-2">
-              <ControlBtn tint="rgba(65,159,217,0.14)" onClick={prev}>
+              <ControlBtn tint="rgba(121,166,119,0.3)" onClick={prev}>
                 ←
               </ControlBtn>
-              <ControlBtn tint="rgba(3,115,140,0.12)" onClick={next}>
+              <ControlBtn tint="rgba(171,191,168,0.3)" onClick={next}>
                 →
               </ControlBtn>
             </div>
@@ -473,10 +469,10 @@ function SRMCarousel() {
 
         <div className="mt-4 flex items-center justify-between gap-3">
           <div className="flex gap-2">
-            <ControlBtn tint="rgba(65,159,217,0.14)" onClick={prev}>
+            <ControlBtn tint="rgba(121,166,119,0.3)" onClick={prev}>
               ←
             </ControlBtn>
-            <ControlBtn tint="rgba(3,115,140,0.12)" onClick={next}>
+            <ControlBtn tint="rgba(171,191,168,0.3)" onClick={next}>
               →
             </ControlBtn>
           </div>
@@ -574,9 +570,9 @@ export default function AboutPage() {
           >
             <div className="flex flex-wrap justify-center gap-2 max-w-4xl">
               <InkTag text="Innovation" dot={PAPER.accent} />
-              <InkTag text="Culture" dot={PAPER.teal} />
-              <InkTag text="Non-Tech + Tech" dot={PAPER.olive} />
-              <InkTag text="Music Night" dot={PAPER.sand} />
+              <InkTag text="Culture" dot={PAPER.lightAccent} />
+              <InkTag text="Non-Tech + Tech" dot={PAPER.accent} />
+              <InkTag text="Music Night" dot={PAPER.lightAccent} />
             </div>
 
             <h1
@@ -606,8 +602,8 @@ export default function AboutPage() {
               </p>
 
               <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
-                <PaperButton tint="rgba(65,159,217,0.16)">Feb 2026</PaperButton>
-                <PaperButton tint="rgba(3,115,140,0.14)">
+                <PaperButton tint="rgba(121,166,119,0.3)">Feb 2026</PaperButton>
+                <PaperButton tint="rgba(171,191,168,0.3)">
                   SRM IST Ramapuram
                 </PaperButton>
               </div>
@@ -678,10 +674,10 @@ export default function AboutPage() {
                 </p>
 
                 <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3">
-                  <PaperButton tint="rgba(140,117,3,0.14)">
+                  <PaperButton tint="rgba(121,166,119,0.3)">
                     Feb 14 & 15
                   </PaperButton>
-                  <PaperButton href="/nilgiris" tint="rgba(3,115,140,0.14)">
+                  <PaperButton href="/nilgiris" tint="rgba(171,191,168,0.3)">
                     Open Phase 1 →
                   </PaperButton>
                 </div>
@@ -711,10 +707,10 @@ export default function AboutPage() {
                 </p>
 
                 <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3">
-                  <PaperButton tint="rgba(65,159,217,0.16)">
+                  <PaperButton tint="rgba(121,166,119,0.3)">
                     Feb 27 & 28
                   </PaperButton>
-                  <PaperButton href="/#events" tint="rgba(65,159,217,0.12)">
+                  <PaperButton href="/#events" tint="rgba(171,191,168,0.3)">
                     Explore Events →
                   </PaperButton>
                 </div>
@@ -766,8 +762,8 @@ export default function AboutPage() {
                     </p>
                     <div className="flex flex-wrap gap-2 pt-2">
                       <InkTag text="20,000+ students" dot={PAPER.accent} />
-                      <InkTag text="A++ NAAC" dot={PAPER.teal} />
-                      <InkTag text="Industry exposure" dot={PAPER.sand} />
+                      <InkTag text="A++ NAAC" dot={PAPER.lightAccent} />
+                      <InkTag text="Industry exposure" dot={PAPER.accent} />
                     </div>
                   </motion.div>
 
@@ -792,7 +788,7 @@ export default function AboutPage() {
         style={{
           scaleX: smoothProgress,
           transformOrigin: "0%",
-          background: `linear-gradient(to right, ${PAPER.accent}, ${PAPER.teal})`,
+          background: `linear-gradient(to right, ${PAPER.accent}, ${PAPER.lightAccent})`,
         }}
       />
     </div>

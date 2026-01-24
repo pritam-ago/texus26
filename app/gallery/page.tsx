@@ -6,13 +6,11 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const PAPER = {
-  bg: "#F7F4EE",
-  ink: "#123859",
-  accent: "#419FD9",
-  teal: "#03738C",
-  olive: "#8C7503",
-  sand: "#A68160",
-  shadow: "#0E2A44",
+  bg: "#F2F2F2",
+  ink: "#12590F",
+  accent: "#79A677",
+  lightAccent: "#ABBFA8",
+  shadow: "#12590F",
   white: "#FFFFFF",
   purple: "#8B5CF6",
   pink: "#EC4899",
@@ -39,7 +37,7 @@ const Vignette = () => (
     className="fixed inset-0 pointer-events-none"
     style={{
       background:
-        "radial-gradient(circle at center, rgba(247,244,238,0) 0%, rgba(247,244,238,0.45) 62%, rgba(247,244,238,0.95) 100%)",
+        "radial-gradient(circle at center, rgba(242,242,242,0) 0%, rgba(242,242,242,0.45) 62%, rgba(242,242,242,0.95) 100%)",
     }}
   />
 );
@@ -47,19 +45,17 @@ const Vignette = () => (
 const Tape = ({
   className = "",
   rotate = 0,
-  tint = "rgba(166,129,96,0.35)",
 }: {
   className?: string;
   rotate?: number;
   tint?: string;
 }) => (
-  <div
-    className={cn("absolute rounded-md z-10", className)}
+  <img
+    src="/textures/tape.png"
+    alt="tape"
+    className={cn("absolute w-20 h-auto z-10", className)}
     style={{
-      background: tint,
-      border: `2px solid ${PAPER.ink}`,
-      transform: `rotate(${rotate}deg)`,
-      boxShadow: `2px 2px 0 rgba(14,42,68,0.15)`,
+      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
     }}
   />
 );
@@ -129,7 +125,7 @@ const PolaroidCard = ({
     >
       {/* Tape on top */}
       <Tape
-        className="-top-3 left-1/4 h-5 w-16"
+        className="-top-4 left-1/4"
         rotate={-6}
         tint="rgba(166,129,96,0.4)"
       />
@@ -468,7 +464,7 @@ export default function Gallery() {
             title="TEXUS 2025 Launch"
             subtitle="Where rhythm meets unity—students come together to create unforgettable moments"
             badgeText="2025"
-            badgeColor={PAPER.olive}
+            badgeColor={PAPER.accent}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {flashmob2025.map((image, index) => (
@@ -488,7 +484,7 @@ export default function Gallery() {
             title="TEXUS 2K24 Hackathon"
             subtitle="Where innovation meets code—teams collaborate, compete, and create solutions that shape the future"
             badgeText="2024"
-            badgeColor={PAPER.teal}
+            badgeColor={PAPER.lightAccent}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {hackathonImages2024.map((image, index) => (
@@ -508,7 +504,7 @@ export default function Gallery() {
             title="TEXUS 2K24 Gala"
             subtitle="A night of celebration, connection, and unforgettable memories"
             badgeText="2024"
-            badgeColor={PAPER.sand}
+            badgeColor={PAPER.accent}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {galaImages2024.map((image, index) => (

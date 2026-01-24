@@ -8,13 +8,11 @@ import { FaWhatsapp, FaInstagram, FaEnvelope, FaMapMarkerAlt } from "react-icons
 import { cn } from "@/lib/utils";
 
 const PAPER = {
-  bg: "#F7F4EE",
-  ink: "#123859",
-  accent: "#419FD9",
-  teal: "#03738C",
-  olive: "#8C7503",
-  sand: "#A68160",
-  shadow: "#0E2A44",
+  bg: "#F2F2F2",
+  ink: "#12590F",
+  accent: "#79A677",
+  lightAccent: "#ABBFA8",
+  shadow: "#12590F",
 };
 
 const headingFont =
@@ -25,19 +23,17 @@ const bodyFont =
 const Tape = ({
   className = "",
   rotate = 0,
-  tint = "rgba(166,129,96,0.35)",
 }: {
   className?: string;
   rotate?: number;
   tint?: string;
 }) => (
-  <div
-    className={cn("absolute rounded-md", className)}
+  <img
+    src="/textures/tape.png"
+    alt="tape"
+    className={cn("absolute w-20 h-auto", className)}
     style={{
-      background: tint,
-      border: `2px solid ${PAPER.ink}`,
-      transform: `rotate(${rotate}deg)`,
-      boxShadow: `2px 2px 0 rgba(14,42,68,0.15)`,
+      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
     }}
   />
 );
@@ -58,8 +54,8 @@ const PaperPanel = ({
       boxShadow: `12px 12px 0 ${PAPER.shadow}`,
     }}
   >
-    <Tape className="-top-3 left-10 h-6 w-24" rotate={-2} />
-    <Tape className="-top-3 right-10 h-6 w-24" rotate={2} />
+    <Tape className="-top-4 left-10" rotate={-2} />
+    <Tape className="-top-4 right-10" rotate={2} />
     {children}
   </div>
 );
@@ -83,7 +79,7 @@ const LinkItem = ({
       <span
         className="inline-block h-2.5 w-2.5 rounded-full"
         style={{
-          background: "rgba(65,159,217,0.35)",
+          background: PAPER.accent,
           border: `2px solid ${PAPER.ink}`,
           boxShadow: `2px 2px 0 ${PAPER.shadow}`,
         }}
@@ -155,7 +151,7 @@ function Footer() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(247,244,238,0) 0%, rgba(247,244,238,0.55) 62%, rgba(247,244,238,0.98) 100%)",
+            "radial-gradient(circle at center, rgba(242,242,242,0) 0%, rgba(242,242,242,0.55) 62%, rgba(242,242,242,0.98) 100%)",
         }}
       />
 
@@ -221,9 +217,8 @@ function Footer() {
               }}
             >
               <Tape
-                className="-top-2 left-10 h-5 w-20"
+                className="-top-4 left-10"
                 rotate={-5}
-                tint="rgba(65,159,217,0.20)"
               />
               <div
                 className="text-sm sm:text-base font-semibold"
@@ -347,7 +342,7 @@ function Footer() {
                 <IconBtn
                   href="https://www.instagram.com/texus_2k25/"
                   label="Instagram"
-                  tint="rgba(65,159,217,0.16)"
+                  tint="rgba(121,166,119,0.3)"
                 >
                   <FaInstagram size={22} />
                 </IconBtn>
@@ -355,7 +350,7 @@ function Footer() {
                 <IconBtn
                   href="https://whatsapp.com/channel/0029VaMS5354Spk9aQF91m3q"
                   label="WhatsApp"
-                  tint="rgba(3,115,140,0.14)"
+                  tint="rgba(171,191,168,0.3)"
                 >
                   <FaWhatsapp size={22} />
                 </IconBtn>

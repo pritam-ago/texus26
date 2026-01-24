@@ -14,14 +14,15 @@ const montserrat = Montserrat({
 });
 
 const PAPER = {
-  bg: "#F7F4EE",
-  ink: "#123859",
-  accent: "#419FD9",
-  teal: "#03738C",
-  olive: "#8C7503",
-  sand: "#A68160",
-  shadow: "#0E2A44",
+  bg: "#F2F2F2",
+  ink: "#12590F",
+  accent: "#79A677",
+  lightAccent: "#ABBFA8",
+  shadow: "#12590F",
   white: "#FFFFFF",
+  purple: "#8B5CF6",
+  pink: "#EC4899",
+  green: "#10B981",
 };
 
 const headingFont =
@@ -44,7 +45,7 @@ const Vignette = () => (
     className="absolute inset-0 pointer-events-none"
     style={{
       background:
-        "radial-gradient(circle at center, rgba(247,244,238,0) 0%, rgba(247,244,238,0.45) 62%, rgba(247,244,238,0.95) 100%)",
+        "radial-gradient(circle at center, rgba(242,242,242,0) 0%, rgba(242,242,242,0.45) 62%, rgba(242,242,242,0.95) 100%)",
     }}
   />
 );
@@ -52,19 +53,16 @@ const Vignette = () => (
 const Tape = ({
   className = "",
   rotate = 0,
-  tint = "rgba(166,129,96,0.35)",
 }: {
   className?: string;
   rotate?: number;
-  tint?: string;
 }) => (
-  <div
-    className={cn("absolute rounded-md", className)}
+  <img
+    src="/textures/tape.png"
+    alt="tape"
+    className={cn("absolute w-20 h-auto", className)}
     style={{
-      background: tint,
-      border: `2px solid ${PAPER.ink}`,
-      transform: `rotate(${rotate}deg)`,
-      boxShadow: `2px 2px 0 rgba(14,42,68,0.15)`,
+      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
     }}
   />
 );
@@ -100,15 +98,15 @@ const PaperPanel = ({
       boxShadow: `10px 10px 0 ${PAPER.shadow}`,
     }}
   >
-    <Tape className="-top-3 left-10 h-6 w-24" rotate={-2} />
-    <Tape className="-top-3 right-10 h-6 w-24" rotate={2} />
+    <Tape className="-top-4 left-10" rotate={-2} />
+    <Tape className="-top-4 right-10" rotate={2} />
     {children}
   </motion.div>
 );
 
 const Badge = ({
   text,
-  tint = "rgba(65,159,217,0.14)",
+  tint = "rgba(121,166,119,0.3)",
 }: {
   text: string;
   tint?: string;
@@ -146,8 +144,8 @@ function PolaroidCard({
       transition={{ type: "spring", stiffness: 380, damping: 22 }}
       className="relative"
     >
-      <Tape className="-top-2 left-7 h-5 w-16" rotate={-6} />
-      <Tape className="-top-2 right-7 h-5 w-16" rotate={6} />
+      <Tape className="-top-4 left-7" rotate={-6} />
+      <Tape className="-top-4 right-7" rotate={6} />
 
       <div
         className="rounded-2xl overflow-hidden"
@@ -366,7 +364,7 @@ export default function Page() {
                         <div
                           className="mt-1 h-6 w-2 rounded-full"
                           style={{
-                            background: idx % 2 ? PAPER.teal : PAPER.accent,
+                            background: idx % 2 ? PAPER.lightAccent : PAPER.accent,
                             border: `2px solid ${PAPER.ink}`,
                             boxShadow: `2px 2px 0 ${PAPER.shadow}`,
                           }}
@@ -411,7 +409,7 @@ export default function Page() {
                         <div
                           className="mt-1 h-6 w-2 rounded-full"
                           style={{
-                            background: idx % 2 ? PAPER.olive : PAPER.sand,
+                            background: idx % 2 ? PAPER.accent : PAPER.lightAccent,
                             border: `2px solid ${PAPER.ink}`,
                             boxShadow: `2px 2px 0 ${PAPER.shadow}`,
                           }}

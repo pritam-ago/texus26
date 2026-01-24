@@ -2,409 +2,647 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import gsap from "gsap";
+import { gsap } from "gsap";
+import { cn } from "@/lib/utils";
 
-const quickerPoint = 0.2;
-
-const sat = (x: number) => {
-  return Math.min(Math.max(x, 0), 1);
+const PAPER = {
+  bg: "#F2F2F2",
+  ink: "#12590F",
+  accent: "#79A677",
+  lightAccent: "#ABBFA8",
+  shadow: "#12590F",
 };
 
-const remap01 = (a: number, b: number, t: number) => {
-  return sat((t - a) / (b - a));
+const headingFont =
+  "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)";
+const bodyFont =
+  "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)";
+
+// Magnetic button effect
+const MagneticButton = ({
+  children,
+  href,
+  className = "",
+}: {
+  children: React.ReactNode;
+  href: string;
+  className?: string;
+}) => {
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    const button = ref.current;
+    if (!button) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = button.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+
+      gsap.to(button, {
+        x: x * 0.3,
+        y: y * 0.3,
+        duration: 0.3,
+        ease: "power2.out",
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(button, {
+        x: 0,
+        y: 0,
+        duration: 0.5,
+        ease: "elastic.out(1, 0.3)",
+      });
+    };
+
+    button.addEventListener("mousemove", handleMouseMove);
+    button.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      button.removeEventListener("mousemove", handleMouseMove);
+      button.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
+
+  return (
+    <a ref={ref} href={href} className={className}>
+      {children}
+    </a>
+  );
 };
 
-const remap = (a: number, b: number, c: number, d: number, t: number) => {
-  return sat(remap01(a, b, t) * (d - c) + c);
+// Morphing blob background
+const MorphingBlob = ({ delay = 0 }: { delay?: number }) => {
+  return (
+    <motion.div
+      className="absolute rounded-full blur-3xl opacity-30"
+      initial={{ scale: 0.8 }}
+      animate={{
+        scale: [0.8, 1.2, 0.9, 1.1, 0.8],
+        x: [0, 50, -30, 40, 0],
+        y: [0, -40, 30, -20, 0],
+        rotate: [0, 90, 180, 270, 360],
+      }}
+      transition={{
+        duration: 20,
+        delay,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+      style={{
+        width: "400px",
+        height: "400px",
+        background: `radial-gradient(circle, ${PAPER.accent}, ${PAPER.lightAccent})`,
+      }}
+    />
+  );
 };
 
-class TextSketch {
-  static defaultEase = "expo.inOut";
-  static edgeSize = 0.07;
+// Scrambled text reveal effect
+const ScrambleText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
+  const [displayText, setDisplayText] = useState(text);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  _rendererBounds: { width: number; height: number } = { width: 1, height: 1 };
-  _translateOffset = { x: 0, y: 0 };
-  _textValue: string;
-  _ctx: CanvasRenderingContext2D | null;
-  _pixelRatio = 1;
-  _textMeasures = { width: 0, height: 0, fontSize: 0 };
-  _transitionTl: gsap.core.Timeline | null = null;
-  _scrollRatio = 0;
-  _scrollRatioQuicker = 0;
-  _scrollRatioRest = 0;
+  useEffect(() => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+    let iteration = 0;
+    const totalIterations = text.length;
 
-  constructor(text: string, ctx: CanvasRenderingContext2D | null) {
-    this._ctx = ctx;
-    this._textValue = text;
-  }
+    setTimeout(() => {
+      setIsAnimating(true);
+      const interval = setInterval(() => {
+        setDisplayText(
+          text
+            .split("")
+            .map((char, index) => {
+              if (index < iteration) {
+                return text[index];
+              }
+              if (char === " ") return " ";
+              return chars[Math.floor(Math.random() * chars.length)];
+            })
+            .join("")
+        );
 
-  _drawBackground() {
-    if (!this._ctx) return;
+        iteration += 1 / 3;
 
-    this._ctx.beginPath();
+        if (iteration >= totalIterations) {
+          clearInterval(interval);
+          setDisplayText(text);
+          setIsAnimating(false);
+        }
+      }, 30);
 
-    const segments = 20;
+      return () => clearInterval(interval);
+    }, delay);
+  }, [text, delay]);
 
-    const widthSegments = Math.ceil(this._rendererBounds.width / segments);
-    this._ctx.moveTo(this._rendererBounds.width, this._rendererBounds.height);
-    this._ctx.lineTo(0, this._rendererBounds.height);
+  return <span>{displayText}</span>;
+};
 
-    const t = (1 - this._scrollRatioRest) * this._rendererBounds.height;
-    const amplitude = this._rendererBounds.width * 0.1 * Math.sin(this._scrollRatioRest * Math.PI);
+// Staggered word reveal
+const StaggeredText = ({
+  text,
+  delay = 0,
+}: {
+  text: string;
+  delay?: number;
+}) => {
+  const words = text.split(" ");
 
-    this._ctx.lineTo(0, t);
+  return (
+    <span className="flex flex-wrap justify-center gap-x-2">
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 20, rotateX: -90 }}
+          animate={{ opacity: 1, y: 0, rotateX: 0 }}
+          transition={{
+            delay: delay + i * 0.1,
+            duration: 0.6,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="inline-block"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </span>
+  );
+};
 
-    for (let index = 0; index <= widthSegments; index++) {
-      const n = segments * index;
-      const r = t - Math.sin((n / this._rendererBounds.width) * Math.PI) * amplitude;
+// Rotating badge
+const RotatingBadge = ({ text, radius = 50 }: { text: string; radius?: number }) => {
+  return (
+    <motion.div
+      className="relative"
+      style={{ width: radius * 2, height: radius * 2 }}
+      animate={{ rotate: 360 }}
+      transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+    >
+      {text.split("").map((char, i) => {
+        const angle = (360 / text.length) * i;
+        return (
+          <span
+            key={i}
+            className="absolute font-bold text-xs sm:text-sm"
+            style={{
+              fontFamily: bodyFont,
+              color: PAPER.ink,
+              left: "50%",
+              top: "50%",
+              transform: `rotate(${angle}deg) translateY(-${radius}px)`,
+              transformOrigin: "0 0",
+            }}
+          >
+            {char}
+          </span>
+        );
+      })}
+    </motion.div>
+  );
+};
 
-      this._ctx.lineTo(n, r);
-    }
+// Tree illustration
+const TreeSVG = ({ className = "", size = 120 }: { className?: string; size?: number }) => (
+  <svg
+    width={size}
+    height={size * 1.5}
+    viewBox="0 0 120 180"
+    fill="none"
+    className={className}
+  >
+    {/* Foliage layers - from top to bottom */}
+    <path
+      d="M60 30 L110 60 L85 60 L100 90 L80 90 L90 120 L60 120 L30 120 L40 90 L20 90 L35 60 L10 60 Z"
+      fill={PAPER.accent}
+      stroke={PAPER.ink}
+      strokeWidth="3"
+      strokeLinejoin="round"
+    />
+    {/* Decorative circles on foliage */}
+    <circle cx="45" cy="70" r="8" fill={PAPER.lightAccent} opacity="0.6" />
+    <circle cx="75" cy="65" r="10" fill={PAPER.lightAccent} opacity="0.6" />
+    <circle cx="60" cy="50" r="7" fill={PAPER.lightAccent} opacity="0.6" />
+    {/* Tree trunk */}
+    <rect
+      x="50"
+      y="120"
+      width="20"
+      height="60"
+      fill="#8B6F47"
+      stroke={PAPER.ink}
+      strokeWidth="3"
+    />
+  </svg>
+);
 
-    this._ctx.fillStyle = "rgb(244,244,244)";
-    this._ctx.fill();
-  }
-
-  _clipRect() {
-    if (!this._ctx) return;
-    const edgeRounded = Math.round(this._rendererBounds.width * TextSketch.edgeSize);
-    const leftX = edgeRounded;
-
-    this._ctx.beginPath();
-    this._ctx.rect(leftX, 0, this._rendererBounds.width - 2 * leftX, this._rendererBounds.height);
-    this._ctx.clip();
-  }
-
-  _scaleContext() {
-    if (!this._ctx) return;
-
-    const desiredScale = 1 - 0.51 * this._scrollRatioRest;
-    const scale = desiredScale * this._pixelRatio;
-    const sFactor = (scale - 1 * this._pixelRatio) * 0.5;
-    const tX = -this._rendererBounds.width * sFactor;
-    const tY = -this._rendererBounds.height * sFactor;
-    this._ctx.setTransform(scale, 0, 0, scale, tX, tY);
-  }
-
-  _drawText() {
-    if (!this._ctx) return;
-    this._ctx.fillStyle = "#000000";
-    this._ctx.fillText(
-      this._textValue,
-      this._textMeasures.width * this._scrollRatioRest * 0.53 * 0.5 +
-        this._rendererBounds.width * TextSketch.edgeSize +
-        this._translateOffset.x -
-        this._textMeasures.width * this._scrollRatioQuicker * 0.52 -
-        this._textMeasures.width * 0.01,
-      this._rendererBounds.height / 2 +
-        this._textMeasures.height / 2 +
-        this._translateOffset.y -
-        this._textMeasures.width * -this._scrollRatioRest * 0.05 * 0
-    );
-  }
-
-  update(updateInfo: { delta: number; slowDownFactor: number; time: number }) {
-    if (!this._ctx) return;
-
-    this._ctx.font = `bold ${this._textMeasures.fontSize}px teko`;
-
-    if (this._ctx) this._ctx.globalCompositeOperation = "source-over";
-    this._ctx.fillStyle = "rgba(0,0,0,1)";
-    this._ctx.fillRect(0, 0, this._rendererBounds.width, this._rendererBounds.height);
-
-    if (this._ctx) this._ctx.globalCompositeOperation = "source-over";
-    this._drawBackground();
-    if (this._ctx) this._ctx.globalCompositeOperation = "xor";
-
-    this._ctx.save();
-    this._clipRect();
-    this._scaleContext();
-
-    this._drawText();
-    this._ctx.restore();
-  }
-
-  _animateOffsetY(destination: number, duration: number) {
-    return gsap.to(this._translateOffset, {
-      y: destination,
-      duration,
-      ease: TextSketch.defaultEase,
-    });
-  }
-
-  _animateOffsetX(destination: number, duration: number) {
-    return gsap.to(this._translateOffset, {
-      x: destination,
-      duration,
-      ease: TextSketch.defaultEase,
-    });
-  }
-
-  _updateFontSize() {
-    if (!this._ctx) return;
-    this._ctx.font = `bold ${this._textMeasures.fontSize}px teko`;
-
-    const metrics = this._ctx.measureText(this._textValue);
-    const actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
-
-    this._textMeasures.height = actualHeight;
-    this._textMeasures.width = metrics.width;
-  }
-
-  setRendererBounds(bounds: { width: number; height: number }) {
-    this._rendererBounds = bounds;
-    if (!this._ctx) return;
-
-    this._textMeasures.fontSize = this._rendererBounds.width * 0.417;
-    this._updateFontSize();
-  }
-
-  setPixelRatio(value: number) {
-    this._pixelRatio = value;
-  }
-
-  setScrollRatio(value: number) {
-    this._scrollRatio = value;
-  }
-
-  setScrollRatioQuicker(value: number) {
-    this._scrollRatioQuicker = value;
-  }
-
-  setScrollRatioRest(value: number) {
-    this._scrollRatioRest = value;
-  }
-
-  animateIn() {
-    this._transitionTl = gsap.timeline();
-  }
-
-  destroy() {
-    this._transitionTl && this._transitionTl.kill();
-  }
-}
+// Grass illustration
+const GrassSVG = ({ className = "" }: { className?: string }) => (
+  <svg width="100%" height="60" viewBox="0 0 1000 60" fill="none" className={className} preserveAspectRatio="none">
+    <path
+      d="M0 60 L0 40 Q50 20, 100 40 Q150 20, 200 40 Q250 20, 300 40 Q350 20, 400 40 Q450 20, 500 40 Q550 20, 600 40 Q650 20, 700 40 Q750 20, 800 40 Q850 20, 900 40 Q950 20, 1000 40 L1000 60 Z"
+      fill={PAPER.accent}
+      stroke={PAPER.ink}
+      strokeWidth="2"
+    />
+  </svg>
+);
 
 const Hero = () => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const captionWrapperRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [shouldReveal, setShouldReveal] = useState(false);
   const [isClient, setIsClient] = useState(false);
-
-  const [scrollRatio, setScrollRatio] = useState(0);
-  const [scrollRatioQuicker, setScrollRatioQuicker] = useState(0);
-  const [scrollRatioRest, setScrollRatioRest] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  useEffect(() => {
-    if (!isClient || !scrollContainerRef.current) return;
-
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const containerHeight = captionWrapperRef.current?.getBoundingClientRect().height || 1000;
-      const windowHeight = window.innerHeight;
-
-      const scrollPadded = sat(scrollY / (containerHeight - windowHeight));
-      const scrollPaddedQuicker = remap(0, quickerPoint, 0, 1, scrollPadded);
-      const scrollPaddedRest = remap(quickerPoint * 2, quickerPoint * 3, 0, 1, scrollPadded);
-
-      setScrollRatio(scrollPadded);
-      setScrollRatioQuicker(scrollPaddedQuicker);
-      setScrollRatioRest(scrollPaddedRest);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isClient]);
-
-  useEffect(() => {
-    if (!isClient) return;
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const textSketch = new TextSketch("TEXUS26", ctx);
-
-    const resizeCanvas = () => {
-      const container = captionWrapperRef.current;
-      if (!container) return;
-
-      const clientRect = container.getBoundingClientRect();
-      const pixelRatio = Math.min(window.devicePixelRatio, 2);
-
-      canvas.width = clientRect.width * pixelRatio;
-      canvas.height = clientRect.height * pixelRatio;
-      canvas.style.width = clientRect.width + "px";
-      canvas.style.height = clientRect.height + "px";
-      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-
-      textSketch.setRendererBounds({ width: clientRect.width, height: clientRect.height });
-      textSketch.setPixelRatio(pixelRatio);
-    };
-
-    const loadFonts = async () => {
-      try {
-        await document.fonts.ready;
-        textSketch.animateIn();
-        setShouldReveal(true);
-      } catch {
-        textSketch.animateIn();
-        setShouldReveal(true);
-      }
-    };
-
-    resizeCanvas();
-    loadFonts();
-
-    let rafId: number;
-
-    const render = (time: number) => {
-      const container = captionWrapperRef.current;
-      if (!container) return;
-
-      ctx.fillStyle = "rgba(0,0,0,1)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      textSketch.setScrollRatio(scrollRatio);
-      textSketch.setScrollRatioQuicker(scrollRatioQuicker);
-      textSketch.setScrollRatioRest(scrollRatioRest);
-      textSketch.update({ delta: 16, slowDownFactor: 1, time });
-      rafId = requestAnimationFrame(render);
-    };
-
-    rafId = requestAnimationFrame(render);
-
-    const handleResize = () => resizeCanvas();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", handleResize);
-      textSketch.destroy();
-    };
-  }, [isClient, scrollRatio, scrollRatioQuicker, scrollRatioRest]);
+  // Trees are now static (no animation)
 
   if (!isClient) {
     return (
-      <div className="relative w-full h-screen overflow-hidden bg-black">
+      <div className="relative w-full min-h-screen overflow-hidden" style={{ background: PAPER.bg }}>
         <div className="absolute inset-0 flex flex-col justify-center items-center">
-          <div className="text-center mt-32">
-            <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-stretch justify-center w-full max-w-5xl px-2">
-              <div className="group relative w-full md:w-[320px] cursor-pointer block">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-500" />
-                <div className="relative flex flex-col items-center justify-center bg-black/60 backdrop-blur-md border border-white/10 p-5 rounded-lg w-full h-full transform transition-transform hover:-translate-y-1 duration-300">
-                  <span className="text-pink-400 font-bold tracking-[0.2em] text-xs sm:text-sm mb-2 uppercase">
-                    Phase 1
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl text-white mb-2 text-center tracking-wide">
-                    GLOBAL SUMMIT
-                  </h3>
-                  <div className="w-12 h-0.5 bg-pink-500/50 mb-3" />
-                  <div className="flex items-center gap-2 text-white/90">
-                    <span className="text-lg font-medium">FEB 14 & 15</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="hidden md:block w-px bg-gradient-to-b from-transparent via-white/20 to-transparent self-stretch my-2" />
-
-              <div className="group relative w-full md:w-[320px] cursor-pointer block">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-500" />
-                <div className="relative flex flex-col items-center justify-center bg-black/60 backdrop-blur-md border border-white/10 p-5 rounded-lg w-full h-full transform transition-transform hover:-translate-y-1 duration-300">
-                  <span className="text-purple-400 font-bold tracking-[0.2em] text-xs sm:text-sm mb-2 uppercase">
-                    Phase 2
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl text-white mb-2 text-center tracking-wide">
-                    TEXUS&apos;26
-                  </h3>
-                  <div className="w-12 h-0.5 bg-purple-500/50 mb-3" />
-                  <div className="flex items-center gap-2 text-white/90">
-                    <span className="text-lg font-medium">FEB 27 & 28</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div className="text-center">Loading...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div ref={scrollContainerRef} className="relative w-full h-screen overflow-hidden bg-black">
-      <div
-        ref={captionWrapperRef}
-        className="absolute inset-0 w-full h-full"
-        style={{ height: "400vh" }}
-      >
-        <div className="sticky top-0 left-0 w-full h-screen overflow-hidden">
-          <canvas ref={canvasRef} className="w-full h-full" />
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: shouldReveal ? 1 : 0 }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0 flex flex-col justify-center items-center"
-          >
-            <div className="text-center mt-32">
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1, duration: 0.8 }}
-                className="flex flex-col md:flex-row gap-6 md:gap-12 items-stretch justify-center w-full max-w-5xl px-2"
-              >
-                <a
-                  href="/nilgiris"
-                  className="group relative w-full md:w-[320px] cursor-pointer block"
-                >
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-500" />
-                  <div className="relative flex flex-col items-center justify-center bg-black/60 backdrop-blur-md border border-white/10 p-5 rounded-lg w-full h-full transform transition-transform hover:-translate-y-1 duration-300">
-                    <span className="text-pink-400 font-bold tracking-[0.2em] text-xs sm:text-sm mb-2 uppercase">
-                      Phase 1
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl text-white mb-2 text-center tracking-wide">
-                      GLOBAL SUMMIT
-                    </h3>
-                    <div className="w-12 h-0.5 bg-pink-500/50 mb-3" />
-                    <div className="flex items-center gap-2 text-white/90">
-                      <span className="text-lg font-medium">FEB 14 & 15</span>
-                    </div>
-                  </div>
-                </a>
-
-                <div className="hidden md:block w-px bg-gradient-to-b from-transparent via-white/20 to-transparent self-stretch my-2" />
-
-                <a
-                  href="/events/#events"
-                  className="group relative w-full md:w-[320px] cursor-pointer block"
-                >
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg blur opacity-40 group-hover:opacity-80 transition duration-500" />
-                  <div className="relative flex flex-col items-center justify-center bg-black/60 backdrop-blur-md border border-white/10 p-5 rounded-lg w-full h-full transform transition-transform hover:-translate-y-1 duration-300">
-                    <span className="text-purple-400 font-bold tracking-[0.2em] text-xs sm:text-sm mb-2 uppercase">
-                      Phase 2
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl text-white mb-2 text-center tracking-wide">
-                      TEXUS&apos;26
-                    </h3>
-                    <div className="w-12 h-0.5 bg-purple-500/50 mb-3" />
-                    <div className="flex items-center gap-2 text-white/90">
-                      <span className="text-lg font-medium">FEB 27 & 28</span>
-                    </div>
-                  </div>
-                </a>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
+    <div className="relative w-full min-h-screen overflow-hidden">
+      {/* Paper background with texture */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `${PAPER.bg} url('/textures/paper.png')`,
+            backgroundRepeat: "repeat",
+          }}
+        />
       </div>
+
+      {/* Morphing blobs */}
+      <div className="absolute inset-0 overflow-hidden">
+        <MorphingBlob delay={0} />
+        <MorphingBlob delay={5} />
+      </div>
+
+      {/* Trees on sides */}
+      <div className="absolute bottom-0 left-0 hidden lg:block">
+        <TreeSVG size={150} />
+      </div>
+      <div className="absolute bottom-0 left-[10%] hidden md:block">
+        <TreeSVG size={120} />
+      </div>
+      <div className="absolute bottom-0 right-0 hidden lg:block" style={{ transform: "scaleX(-1)" }}>
+        <TreeSVG size={150} />
+      </div>
+      <div className="absolute bottom-0 right-[10%] hidden md:block" style={{ transform: "scaleX(-1)" }}>
+        <TreeSVG size={120} />
+      </div>
+
+      {/* Grass at bottom */}
+      <div className="absolute bottom-0 left-0 right-0">
+        <GrassSVG />
+      </div>
+
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-16 sm:py-20">
+        {/* Rotating badge */}
+        <motion.div
+          className="absolute top-4 sm:top-10 right-4 sm:right-10"
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: 1, duration: 1, type: "spring" }}
+        >
+          <div
+            className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center"
+            style={{
+              background: PAPER.accent,
+              border: `3px sm:border-4 solid ${PAPER.ink}`,
+              boxShadow: `6px 6px 0 ${PAPER.shadow}`,
+            }}
+          >
+            <RotatingBadge text="★ FEB ★ 2026" radius={window.innerWidth < 640 ? 30 : 45} />
+            <div
+              className="absolute inset-0 flex items-center justify-center text-xl sm:text-2xl font-extrabold"
+              style={{ fontFamily: headingFont, color: PAPER.ink }}
+            >
+              '26
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Main title with 3D perspective */}
+        <motion.div 
+          className="text-center mb-8 sm:mb-12 md:mb-16 mt-16 sm:mt-0" 
+          style={{ perspective: "1000px" }}
+        >
+          <motion.div
+            initial={{ opacity: 0, rotateX: -90, z: -200 }}
+            animate={{ opacity: 1, rotateX: 0, z: 0 }}
+            transition={{ delay: 0.3, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transformStyle: "preserve-3d" }}
+            className="flex justify-center items-center"
+          >
+            {/* Hero Logo Video */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
+              style={{
+                filter: `drop-shadow(4px 4px 0 ${PAPER.shadow})`,
+              }}
+            >
+              <source src="/assets/texus-animating.mp4" type="video/mp4" />
+            </video>
+          </motion.div>
+
+          {/* Subtitle with stagger effect */}
+          <motion.div
+            className="mt-4 sm:mt-6 md:mt-8 text-base sm:text-xl md:text-2xl lg:text-3xl px-4"
+            style={{
+              fontFamily: bodyFont,
+              color: PAPER.ink,
+            }}
+          >
+            <StaggeredText text="SRM IST Ramapuram's Flagship Festival" delay={1.8} />
+          </motion.div>
+
+          {/* Feature tags */}
+          <motion.div
+            className="flex flex-wrap gap-2 sm:gap-3 justify-center mt-4 sm:mt-6 px-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.2, duration: 0.6 }}
+          >
+            {["🌱 Go Green", "🎨 Culture", "💻 Tech", "🎵 Music"].map((tag, i) => (
+              <motion.span
+                key={tag}
+                whileHover={{ y: -5, scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400 }}
+                className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold text-xs sm:text-sm"
+                style={{
+                  fontFamily: bodyFont,
+                  background: PAPER.lightAccent,
+                  border: `2px sm:border-3 solid ${PAPER.ink}`,
+                  boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                  color: PAPER.ink,
+                }}
+              >
+                {tag}
+              </motion.span>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Phase cards with tilt effect */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl w-full px-4">
+          {/* Phase 1 */}
+          <MagneticButton href="/nilgiris" className="block">
+            <motion.div
+              initial={{ opacity: 0, x: -50, rotateY: -45 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 2.5, duration: 0.8, type: "spring" }}
+              whileHover={{
+                scale: 1.02,
+                rotateZ: 1,
+                boxShadow: `12px 12px 0 ${PAPER.shadow}`,
+              }}
+              className="relative p-6 sm:p-8 rounded-2xl group touch-manipulation"
+              style={{
+                background: `${PAPER.bg} url('/textures/paper.png')`,
+                border: `3px sm:border-4 solid ${PAPER.ink}`,
+                boxShadow: `8px 8px 0 ${PAPER.shadow}`,
+                transformStyle: "preserve-3d",
+              }}
+            >
+              {/* Tape decoration */}
+              <img 
+                src="/textures/tape.png" 
+                alt="tape"
+                className="absolute -top-4 sm:-top-5 left-6 sm:left-8 w-16 sm:w-20 h-auto"
+                style={{ transform: "rotate(-3deg)" }}
+              />
+              <img 
+                src="/textures/tape.png" 
+                alt="tape"
+                className="absolute -top-4 sm:-top-5 right-6 sm:right-8 w-16 sm:w-20 h-auto"
+                style={{ transform: "rotate(3deg) scaleX(-1)" }}
+              />
+
+              {/* Badge */}
+              <div
+                className="inline-flex items-center px-3 py-1 sm:py-1.5 rounded-full mb-3 sm:mb-4"
+                style={{
+                  background: PAPER.accent,
+                  border: `2px sm:border-3 solid ${PAPER.ink}`,
+                  boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                }}
+              >
+                <span
+                  className="text-xs sm:text-sm font-extrabold"
+                  style={{ fontFamily: headingFont, color: PAPER.ink }}
+                >
+                  PHASE 1
+                </span>
+              </div>
+
+              {/* Title */}
+              <h3
+                className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-2 sm:mb-3"
+                style={{ fontFamily: headingFont, color: PAPER.ink }}
+              >
+                GLOBAL SUMMIT
+              </h3>
+
+              {/* Description */}
+              <p
+                className="text-sm sm:text-base mb-3 sm:mb-4"
+                style={{ fontFamily: bodyFont, color: PAPER.ink, opacity: 0.8 }}
+              >
+                Sustainability • Go-Green • Community Impact
+              </p>
+
+              {/* Date */}
+              <div
+                className="inline-flex items-center px-3 sm:px-4 py-2 rounded-xl"
+                style={{
+                  background: PAPER.lightAccent,
+                  border: `2px sm:border-3 solid ${PAPER.ink}`,
+                  boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                }}
+              >
+                <span
+                  className="text-base sm:text-lg font-bold"
+                  style={{ fontFamily: bodyFont, color: PAPER.ink }}
+                >
+                  📅 FEB 14 & 15
+                </span>
+              </div>
+
+              {/* Hover arrow */}
+              <motion.div
+                className="absolute bottom-4 sm:bottom-6 right-4 sm:right-6"
+                animate={{ x: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" className="w-6 h-6 sm:w-8 sm:h-8">
+                  <path
+                    d="M8 16H24M24 16L16 8M24 16L16 24"
+                    stroke={PAPER.ink}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.div>
+            </motion.div>
+          </MagneticButton>
+
+          {/* Phase 2 */}
+          <MagneticButton href="/events/#events" className="block">
+            <motion.div
+              initial={{ opacity: 0, x: 50, rotateY: 45 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 2.7, duration: 0.8, type: "spring" }}
+              whileHover={{
+                scale: 1.02,
+                rotateZ: -1,
+                boxShadow: `12px 12px 0 ${PAPER.shadow}`,
+              }}
+              className="relative p-6 sm:p-8 rounded-2xl group touch-manipulation"
+              style={{
+                background: `${PAPER.bg} url('/textures/paper.png')`,
+                border: `3px sm:border-4 solid ${PAPER.ink}`,
+                boxShadow: `8px 8px 0 ${PAPER.shadow}`,
+                transformStyle: "preserve-3d",
+              }}
+            >
+              {/* Tape decoration */}
+              <img 
+                src="/textures/tape.png" 
+                alt="tape"
+                className="absolute -top-4 sm:-top-5 left-6 sm:left-8 w-16 sm:w-20 h-auto"
+                style={{ transform: "rotate(-3deg)" }}
+              />
+              <img 
+                src="/textures/tape.png" 
+                alt="tape"
+                className="absolute -top-4 sm:-top-5 right-6 sm:right-8 w-16 sm:w-20 h-auto"
+                style={{ transform: "rotate(3deg) scaleX(-1)" }}
+              />
+
+              {/* Badge */}
+              <div
+                className="inline-flex items-center px-3 py-1 sm:py-1.5 rounded-full mb-3 sm:mb-4"
+                style={{
+                  background: PAPER.lightAccent,
+                  border: `2px sm:border-3 solid ${PAPER.ink}`,
+                  boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                }}
+              >
+                <span
+                  className="text-xs sm:text-sm font-extrabold"
+                  style={{ fontFamily: headingFont, color: PAPER.ink }}
+                >
+                  PHASE 2
+                </span>
+              </div>
+
+              {/* Title */}
+              <h3
+                className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-2 sm:mb-3"
+                style={{ fontFamily: headingFont, color: PAPER.ink }}
+              >
+                TEXUS'26
+              </h3>
+
+              {/* Description */}
+              <p
+                className="text-sm sm:text-base mb-3 sm:mb-4"
+                style={{ fontFamily: bodyFont, color: PAPER.ink, opacity: 0.8 }}
+              >
+                Tech Events • Workshops • Hackathon • Music Night
+              </p>
+
+              {/* Date */}
+              <div
+                className="inline-flex items-center px-3 sm:px-4 py-2 rounded-xl"
+                style={{
+                  background: PAPER.accent,
+                  border: `2px sm:border-3 solid ${PAPER.ink}`,
+                  boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                }}
+              >
+                <span
+                  className="text-base sm:text-lg font-bold"
+                  style={{ fontFamily: bodyFont, color: PAPER.ink }}
+                >
+                  📅 FEB 27 & 28
+                </span>
+              </div>
+
+              {/* Hover arrow */}
+              <motion.div
+                className="absolute bottom-4 sm:bottom-6 right-4 sm:right-6"
+                animate={{ x: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" className="w-6 h-6 sm:w-8 sm:h-8">
+                  <path
+                    d="M8 16H24M24 16L16 8M24 16L16 24"
+                    stroke={PAPER.ink}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.div>
+            </motion.div>
+          </MagneticButton>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 10, 0] }}
+          transition={{
+            opacity: { delay: 3, duration: 0.5 },
+            y: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+          }}
+          className="absolute bottom-6 sm:bottom-10"
+        >
+          <div
+            className="px-4 sm:px-6 py-2 sm:py-3 rounded-full"
+            style={{
+              background: PAPER.lightAccent,
+              border: `2px sm:border-3 solid ${PAPER.ink}`,
+              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+            }}
+          >
+            <span
+              className="text-xs sm:text-sm font-bold"
+              style={{ fontFamily: bodyFont, color: PAPER.ink }}
+            >
+              ↓ Scroll to explore
+            </span>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(242,242,242,0) 30%, rgba(242,242,242,0.5) 70%, rgba(242,242,242,0.9) 100%)",
+        }}
+      />
     </div>
   );
 };
