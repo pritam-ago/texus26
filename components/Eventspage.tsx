@@ -260,31 +260,6 @@ const Eventspage = () => {
         />
       ),
     },
-    {
-      title: "WALKATHON",
-      color: "text-green-500",
-      pointer: "🚶🏻",
-      bg: "bg-gradient-to-b from-[#09FF00] to-[#AE8A1C]",
-      description: (
-        <span className="text-sm md:text-base text-justify font-montserrat">
-          <span>
-            Join us for the Walkathon at TEXUS &apos;25, a powerful step towards
-            a drug-free society. This event is more than just a walk it&apos;s a
-            movement to raise awareness about the dangers of substance abuse and
-            promote a healthier, addiction-free future.
-          </span>
-        </span>
-      ),
-      content: (
-        <Image
-          src={"/assets/events/gogreen.png"}
-          alt="laptop"
-          width={1920}
-          height={1080}
-          className="h-64 w-64"
-        />
-      ),
-    },
   ];
 
   return (

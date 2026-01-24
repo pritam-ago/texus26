@@ -249,18 +249,6 @@ export default function Gallery() {
     { src: "/assets/gallery-hackathon/hackathon9.jpg", alt: "Hackathon 9" },
   ];
 
-  const walkathon2025 = [
-    { src: "/assets/gallery-assets/walkathon/walkathon1.jpg", alt: "Walkathon 1" },
-    { src: "/assets/gallery-assets/walkathon/walkathon2.jpg", alt: "Walkathon 2" },
-    { src: "/assets/gallery-assets/walkathon/walkathon3.jpg", alt: "Walkathon 3" },
-    { src: "/assets/gallery-assets/walkathon/walkathon4.jpg", alt: "Walkathon 4" },
-    { src: "/assets/gallery-assets/walkathon/walkathon5.jpg", alt: "Walkathon 5" },
-    { src: "/assets/gallery-assets/walkathon/walkathon6.jpg", alt: "Walkathon 6" },
-    { src: "/assets/gallery-assets/walkathon/walkathon7.jpg", alt: "Walkathon 7" },
-    { src: "/assets/gallery-assets/walkathon/walkathon8.jpg", alt: "Walkathon 8" },
-    { src: "/assets/gallery-assets/walkathon/walkathon9.jpg", alt: "Walkathon 9" },
-  ];
-
   const bloodDonation2025 = [
     { src: "/assets/gallery-assets/blooddonation/BD1.jpg", alt: "Blood Donation 1" },
     { src: "/assets/gallery-assets/blooddonation/BD2.jpg", alt: "Blood Donation 2" },
@@ -388,26 +376,6 @@ export default function Gallery() {
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {hackathon2025.map((image, index) => (
-              <PolaroidCard
-                key={index}
-                src={image.src}
-                alt={image.alt}
-                rotate={getRandomRotation(index)}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* TEXUS 2025 WALKATHON */}
-        <section className="mb-32">
-          <SectionHeader
-            title="TEXUS 2025 Walkathon"
-            subtitle="Steps of solidarity, miles of purpose—students walk together for a common cause"
-            badgeText="2025"
-            badgeColor={PAPER.green}
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {walkathon2025.map((image, index) => (
               <PolaroidCard
                 key={index}
                 src={image.src}

@@ -112,7 +112,7 @@ export const Header = () => {
         Engineering and Technology, set for March 28-29, 2025. This two-day
         event features a 24-hour international hackathon, 20+ technical events,
         and 15+ non-technical competitions. Attendees can also take part in a
-        blood donation camp, an eco-awareness walkathon, and an electrifying
+        blood donation camp and an electrifying
         musical night. More than just a fest, TEXUS &apos;25 is a global
         platform for students to showcase their skills and drive innovation.
       </p>

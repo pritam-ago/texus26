@@ -195,20 +195,7 @@ export default function Eventdata() {
       featured: false,
       disabled: true,
     },
-    {
-      id: "walkathon",
-      title: "WALKATHON",
-      shortDescription:
-        "Join our movement towards a drug-free society and cleaner beaches.",
-      color: "text-emerald-500",
-      colorValue: "emerald",
-      bgColor: "bg-emerald-500/10",
-      borderColor: "border-emerald-500/50",
-      buttonText: "Coming Soon",
-      buttonLink: "/walkathon",
-      disabled: true,
-      featured: false,
-    },
+
     {
       id: "go-greener",
       title: "GO GREENER",
@@ -235,7 +222,6 @@ export default function Eventdata() {
   const bloodDonationEvent = events.find(
     (event) => event.id === "blood-donation"
   );
-  const walkathonEvent = events.find((event) => event.id === "walkathon");
   const souvenirEvent = events.find((event) => event.id === "souvenir");
   const goGreenerEvent = events.find((event) => event.id === "go-greener");
 
@@ -337,9 +323,9 @@ export default function Eventdata() {
         )}
       </motion.div>
 
-      {/* Third row: Blood Donation, Walkathon, Souvenir, Go Greener (4 columns) */}
+      {/* Third row: Blood Donation, Souvenir, Go Greener (3 columns) */}
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
@@ -357,22 +343,6 @@ export default function Eventdata() {
             buttonLink={bloodDonationEvent.buttonLink}
             isExternal={bloodDonationEvent.isExternal}
             disabled={bloodDonationEvent.disabled}
-          />
-        )}
-
-        {walkathonEvent && (
-          <EventCard
-            key="walkathon"
-            index={5}
-            title={walkathonEvent.title}
-            description={walkathonEvent.shortDescription}
-            color={walkathonEvent.color}
-            bgColor={walkathonEvent.bgColor}
-            borderColor={walkathonEvent.borderColor}
-            buttonText={walkathonEvent.buttonText}
-            buttonLink={walkathonEvent.buttonLink}
-            isExternal={walkathonEvent.isExternal}
-            disabled={walkathonEvent.disabled}
           />
         )}
 

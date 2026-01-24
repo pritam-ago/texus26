@@ -337,8 +337,7 @@ const AboutPage = () => {
                 24-hour international-level hackathon, 35+ technical events, 15+
                 non-technical competitions, and 7 workshops. Beyond
                 competitions, attendees can participate in a blood donation
-                camp, a walkathon advocating for a drug-free society, and an
-                electrifying musical night. More than just a fest, TEXUS
+                camp and an electrifying musical night. More than just a fest, TEXUS
                 &apos;26 is a global platform for students to showcase their
                 skills and drive innovation.
               </p>
