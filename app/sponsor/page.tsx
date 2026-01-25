@@ -547,7 +547,7 @@ export default function Sponsors() {
       <PaperBase />
       <Vignette />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-16 md:py-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-24 sm:pt-28 md:pt-32 pb-16 md:pb-24">
         {/* Current Sponsors Section */}
         <CurrentSponsors />
 

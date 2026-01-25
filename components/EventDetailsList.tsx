@@ -1,4 +1,5 @@
 import EventDetails from "./EventDetails";
+import { PaperHeading, PaperText, PAPER } from "@/components/PaperComponents";
 
 type Event = {
   id: number;
@@ -20,10 +21,10 @@ export default function EventDetailsList({
 }: EventDetailsListProps) {
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white font-montserrat">{title}</h2>
+      <PaperHeading size="3xl">{title}</PaperHeading>
 
       {events.length === 0 ? (
-        <p className="text-gray-400 font-montserrat">No events found.</p>
+        <PaperText opacity={0.7}>No events found.</PaperText>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => (

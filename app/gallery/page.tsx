@@ -277,7 +277,7 @@ export default function Gallery() {
         ))}
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-24 sm:pt-28 md:pt-32 pb-20">
         {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

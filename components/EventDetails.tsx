@@ -1,8 +1,13 @@
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
 import { CalendarClock, MapPin, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { 
+  PaperSimpleCard, 
+  PaperHeading, 
+  PaperText,
+  PAPER,
+  bodyFont
+} from "@/components/PaperComponents";
 
 type EventDetailsProps = {
   id: number;
@@ -20,16 +25,20 @@ export default function EventDetails({
   buttonText = "View Event",
 }: EventDetailsProps) {
   return (
-    <Card className="bg-black/50 border-purple-500 hover:border-purple-400 hover:shadow-purple-500/40 transition-colors">
-      <CardContent className="p-4 space-y-4">
-        <h3 className="text-xl text-white font-montserrat font-medium">
+    <PaperSimpleCard className="hover:scale-[1.02] transition-transform">
+      <div className="space-y-4">
+        {/* Event Name */}
+        <PaperHeading size="xl" className="mb-0">
           {name}
-        </h3>
+        </PaperHeading>
 
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-gray-300">
-            <CalendarClock size={20} className="text-purple-400" />
-            <span className="font-montserrat">
+        {/* Date & Time and Venue */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <div style={{ color: PAPER.accent }}>
+              <CalendarClock size={20} />
+            </div>
+            <PaperText className="mb-0" opacity={0.9}>
               {new Date(datetime).toLocaleString("en-US", {
                 month: "long",
                 day: "numeric",
@@ -37,28 +46,39 @@ export default function EventDetails({
                 minute: "2-digit",
                 hour12: true,
               })}
-            </span>
+            </PaperText>
           </div>
 
-          <div className="flex items-center gap-2 text-gray-300">
-            <MapPin size={20} className="text-purple-400" />
-            <span className="font-montserrat">{venue}</span>
+          <div className="flex items-center gap-3">
+            <div style={{ color: PAPER.accent }}>
+              <MapPin size={20} />
+            </div>
+            <PaperText className="mb-0" opacity={0.9}>
+              {venue}
+            </PaperText>
           </div>
         </div>
 
+        {/* Button */}
         <Link href={`/event/${id}`} className="block">
-          <motion.div
-            whileHover={{ scale: 1.02 }}
+          <motion.button
+            whileHover={{ y: -2, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full"
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="w-full px-4 py-2.5 rounded-xl font-bold inline-flex justify-center items-center gap-2"
+            style={{
+              fontFamily: bodyFont,
+              background: "rgba(121,166,119,0.3)",
+              color: PAPER.ink,
+              border: `2px solid ${PAPER.ink}`,
+              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+            }}
           >
-            <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-montserrat">
-              {buttonText}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </motion.div>
+            {buttonText}
+            <ArrowRight className="h-4 w-4" />
+          </motion.button>
         </Link>
-      </CardContent>
-    </Card>
+      </div>
+    </PaperSimpleCard>
   );
 }

@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Button } from "./ui/button";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Suspense } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { 
+  PAPER, 
+  PaperHeading, 
+  PaperText, 
+  Tape,
+  headingFont,
+  bodyFont 
+} from "@/components/PaperComponents";
 
 const ModelWrapper = ({
   children,
@@ -54,75 +62,97 @@ const ModelWrapper = ({
 // Define an interface for your event props
 interface EventProps {
   title: string;
-  color: string;
-  bg: string;
   pointer: string;
   description: React.ReactNode;
   content: React.ReactNode;
+  tintColor: string; // for subtle colored tint
 }
 
-// Card component without animations
+// Card component with paper theme
 const EventCard = ({ event, index }: { event: EventProps; index: number }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
-    <div
-      className={`${event.bg} p-5 rounded-xl shadow-lg relative overflow-hidden 
-        backdrop-blur-sm bg-opacity-90 border border-white/10 flex flex-col
-        h-full transition-all hover:scale-[1.02]`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      whileHover={{ 
+        y: -6, 
+        scale: 1.02,
+        boxShadow: `12px 12px 0 ${PAPER.shadow}` 
+      }}
+      className="relative p-5 rounded-2xl flex flex-col h-full"
+      style={{
+        background: `${PAPER.bg} url("/textures/paper.png")`,
+        border: `3px solid ${PAPER.ink}`,
+        boxShadow: `8px 8px 0 ${PAPER.shadow}`,
+      }}
     >
+      <Tape className="-top-4 left-6" rotate={-4} />
+      
       <div className="relative z-10 h-full flex flex-col">
-        <div className="absolute top-3 right-3 text-2xl z-20">
+        <div className="absolute top-0 right-0 text-3xl z-20">
           {event.pointer}
         </div>
 
-        <div className="flex justify-center items-center mb-3">
+        <div className="flex justify-center items-center mb-4">
           <div className="relative">{event.content}</div>
         </div>
 
         <h2
-          className="text-xl md:text-2xl font-bold font-montserrat text-white py-2 
-          tracking-tight relative border-b border-white/20 mb-2"
+          className="text-xl md:text-2xl font-bold py-2 tracking-tight border-b-2 mb-3"
+          style={{
+            fontFamily: headingFont,
+            color: PAPER.ink,
+            borderColor: event.tintColor,
+          }}
         >
           {event.title}
         </h2>
 
         <div
-          className="flex-grow text-white text-justify font-montserrat text-sm md:text-base 
-          leading-relaxed mb-3"
+          className="flex-grow text-justify text-sm md:text-base leading-relaxed mb-4"
+          style={{
+            fontFamily: bodyFont,
+            color: "rgba(18,56,89,0.86)",
+          }}
         >
           {event.description}
         </div>
 
         <div className="mt-auto">
-          <Button
-            className="bg-white/20 hover:bg-white/30 
-            text-white font-medium rounded-full px-4 py-2 w-full"
+          <motion.button
+            whileHover={{ y: -2, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="w-full px-4 py-2 rounded-xl font-bold"
+            style={{
+              fontFamily: bodyFont,
+              background: event.tintColor,
+              color: PAPER.ink,
+              border: `2px solid ${PAPER.ink}`,
+              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+            }}
           >
             Learn More
-          </Button>
+          </motion.button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const Eventspage = () => {
-  const content = [
+  const content: EventProps[] = [
     {
       title: "TECHNICAL EVENTS",
-      color: "text-white",
-      bg: "bg-gradient-to-b from-[#FF104C] to-[#122D99]",
       pointer: "💻",
+      tintColor: "rgba(255,16,76,0.15)",
       description: (
-        <span className="text-sm md:text-base text-justify font-montserrat">
-          <span>
-            Experience 40+ exhilarating tech events at Texus Fest! From
-            workshops to coding challenges, and AI showcases, join us for a
-            dynamic celebration of innovation and learning.
-          </span>
+        <span>
+          Experience 40+ exhilarating tech events at Texus Fest! From
+          workshops to coding challenges, and AI showcases, join us for a
+          dynamic celebration of innovation and learning.
         </span>
       ),
       content: (
@@ -131,183 +161,220 @@ const Eventspage = () => {
           alt="laptop"
           width={1920}
           height={1080}
-          className="h-64 w-64"
+          className="h-48 w-48 md:h-56 md:w-56"
         />
       ),
     },
     {
       title: "NON TECHNICAL EVENTS",
-      color: "text-[#E1DB90]",
       pointer: "🎮",
-      bg: "bg-gradient-to-b from-[#FFF710] to-[#122D99]",
+      tintColor: "rgba(255,247,16,0.2)",
       description: (
-        <span className="text-sm md:text-base text-justify font-montserrat">
-          <span>
-            Embark on a journey of creativity and inspiration with our lineup of
-            15+ non-technical events at Texus Fest! Join us for an unforgettable
-            experience filled with exploration, connection, and celebration of
-            the arts!
-          </span>
+        <span>
+          Embark on a journey of creativity and inspiration with our lineup of
+          15+ non-technical events at Texus Fest! Join us for an unforgettable
+          experience filled with exploration, connection, and celebration of
+          the arts!
         </span>
       ),
       content: (
         <Image
           src={"/assets/events/joystick.png"}
-          alt="laptop"
+          alt="joystick"
           width={1920}
           height={1080}
-          className="h-64 w-64"
+          className="h-48 w-48 md:h-56 md:w-56"
         />
       ),
     },
     {
       title: "BLOOD DONATION CAMP",
-      color: "text-red-600",
       pointer: "💉",
-      bg: "bg-gradient-to-b from-[#FF0000] to-[#252525]",
+      tintColor: "rgba(255,0,0,0.12)",
       description: (
-        <span className="text-sm md:text-base text-justify font-montserrat">
-          <span>
-            Save lives and make a difference at our Blood Donation Camp during
-            Texus Fest! Join us in giving the gift of life by donating blood.
-            Together, let&apos;s support a noble cause and spread hope and
-            compassion.
-          </span>
+        <span>
+          Save lives and make a difference at our Blood Donation Camp during
+          Texus Fest! Join us in giving the gift of life by donating blood.
+          Together, let&apos;s support a noble cause and spread hope and
+          compassion.
         </span>
       ),
       content: (
         <Image
           src={"/assets/events/blooddonation.png"}
-          alt="laptop"
+          alt="blood donation"
           width={1920}
           height={1080}
-          className="h-64 w-64"
+          className="h-48 w-48 md:h-56 md:w-56"
         />
       ),
     },
     {
       title: "WORKSHOPS",
-      color: "text-emerald-500",
       pointer: "🎤",
-      bg: "bg-gradient-to-b from-[#00FFAE] to-[#0022A7]",
+      tintColor: "rgba(0,255,174,0.15)",
       description: (
-        <span className="text-sm md:text-base text-justify font-montserrat">
-          <span>
-            Enhance your skills at TEXUS &apos;25 with 7+ expert-led workshops
-            designed to provide hands-on learning and industry insights.
-            Don&apos;t miss this chance to upskill and explore new
-            possibilities!
-          </span>
+        <span>
+          Enhance your skills at TEXUS &apos;26 with 7+ expert-led workshops
+          designed to provide hands-on learning and industry insights.
+          Don&apos;t miss this chance to upskill and explore new
+          possibilities!
         </span>
       ),
       content: (
         <Image
           src={"/assets/events/podium.png"}
-          alt="laptop"
+          alt="podium"
           width={1920}
           height={1080}
-          className="h-64 w-64"
+          className="h-48 w-48 md:h-56 md:w-56"
         />
       ),
     },
     {
       title: "HACKATHON",
-      color: "text-orange-500",
       pointer: "👾",
-      bg: "bg-gradient-to-b from-[#FF4800] to-[#FF0000]",
+      tintColor: "rgba(255,72,0,0.15)",
       description: (
-        <span className="text-sm md:text-base text-justify font-montserrat">
-          <span>
-            Join HackVerse, empowering tech-savvy youth in India with
-            problem-solving skills and global connections. Attend our hybrid
-            event for a 24-hour in-person hackathon, embracing Web3 with leading
-            tech companies.Sign up now for a promising future.
-          </span>
+        <span>
+          Join HackVerse, empowering tech-savvy youth in India with
+          problem-solving skills and global connections. Attend our hybrid
+          event for a 24-hour in-person hackathon, embracing Web3 with leading
+          tech companies. Sign up now for a promising future.
         </span>
       ),
       content: (
         <Image
           src={"/assets/events/hackathon.png"}
-          alt="laptop"
+          alt="hackathon"
           width={1920}
           height={1080}
-          className="h-64 w-64"
+          className="h-48 w-48 md:h-56 md:w-56"
         />
       ),
     },
     {
       title: "Souvenir",
-      color: "text-pink-500",
       pointer: "📗",
-      bg: "bg-gradient-to-b from-[#FF104C] to-[#4f003d]",
+      tintColor: "rgba(255,16,76,0.15)",
       description: (
-        <span className="text-sm md:text-base text-justify font-montserrat">
-          <span>
-            Celebrate the spirit of TEXUS &apos;25 with Souvenir, a collection
-            of memories, creativity, and achievements from the fest. Featuring
-            student-written essays, event highlights, and cherished moments,
-            Souvenir preserves the essence of this grand celebration.
-          </span>
+        <span>
+          Celebrate the spirit of TEXUS &apos;26 with Souvenir, a collection
+          of memories, creativity, and achievements from the fest. Featuring
+          student-written essays, event highlights, and cherished moments,
+          Souvenir preserves the essence of this grand celebration.
         </span>
       ),
       content: (
         <Image
           src={"/assets/events/sov.png"}
-          alt="laptop"
+          alt="souvenir"
           width={1920}
           height={1080}
-          className="h-64 w-64"
+          className="h-48 w-48 md:h-56 md:w-56"
         />
       ),
     },
   ];
 
   return (
-    <div className="py-12 w-full bg-black relative overflow-hidden">
+    <div 
+      className="py-12 w-full relative overflow-hidden"
+      style={{
+        background: `${PAPER.bg} url('/textures/paper.png')`,
+      }}
+    >
       <div className="flex flex-col w-full mx-auto max-w-6xl px-4 md:px-6 mb-8">
-        <div className="relative inline-block mb-2">
-          <h1 className="md:text-5xl text-3xl font-thuast text-white">
-            Events
-          </h1>
-          <div className="absolute -bottom-1 left-0 h-1 bg-gradient-to-r from-purple-600 to-blue-600 w-full rounded-full" />
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="relative inline-block mb-4"
+        >
+          <PaperHeading size="4xl">Events</PaperHeading>
+          <motion.div 
+            className="h-1 rounded-full mt-2"
+            style={{ 
+              background: `linear-gradient(to right, ${PAPER.accent}, ${PAPER.lightAccent})`,
+              width: "100%"
+            }}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          />
+        </motion.div>
 
-        <p className="text-md md:text-lg font-montserrat font-light text-gray-300 mb-6 max-w-2xl">
-          <span className="text-purple-400 font-medium">TEXUS &apos;25</span> -
+        <PaperText className="text-base md:text-lg mb-6 max-w-2xl" opacity={0.9}>
+          <span style={{ color: PAPER.accent, fontWeight: "600" }}>TEXUS &apos;26</span> -
           EXPLORE THE EXCITING EVENTS OF THE LARGEST TECH FEST
-        </p>
+        </PaperText>
 
         <div className="mb-8">
-          <Button
-            className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-full 
-            font-medium tracking-wide hover:opacity-90 transition duration-300"
+          <motion.button
+            whileHover={{ y: -2, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="px-6 py-2.5 rounded-xl font-bold"
+            style={{
+              fontFamily: bodyFont,
+              background: `linear-gradient(to right, ${PAPER.accent}, ${PAPER.lightAccent})`,
+              color: PAPER.ink,
+              border: `2px solid ${PAPER.ink}`,
+              boxShadow: `4px 4px 0 ${PAPER.shadow}`,
+            }}
           >
             Register Now
-          </Button>
+          </motion.button>
         </div>
       </div>
 
       <div className="w-full mx-auto px-4 md:px-6 max-w-6xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-fr">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
           {content.map((event, index) => (
             <EventCard key={index} event={event} index={index} />
           ))}
         </div>
       </div>
 
-      <div className="mt-12 text-center max-w-3xl mx-auto px-4">
-        <h2 className="text-xl md:text-2xl font-thuast text-white mb-3">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mt-12 text-center max-w-3xl mx-auto px-4"
+      >
+        <h2 
+          className="text-2xl md:text-3xl mb-4"
+          style={{
+            fontFamily: headingFont,
+            color: PAPER.ink,
+          }}
+        >
           Ready to be part of{" "}
-          <span className="text-purple-400">TEXUS &apos;25</span>?
+          <span style={{ color: PAPER.accent }}>TEXUS &apos;26</span>?
         </h2>
-        <p className="text-gray-300 mb-6 font-montserrat">
+        <PaperText className="mb-6 text-base">
           Don&apos;t miss out on the most anticipated tech fest of the year.
           Register now to participate in events, workshops, and more!
-        </p>
-        <Button className="bg-white text-purple-800 hover:bg-purple-100 font-bold py-2 px-6 rounded-full transition duration-300">
+        </PaperText>
+        <motion.button
+          whileHover={{ y: -2, scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          className="px-6 py-2.5 rounded-xl font-bold"
+          style={{
+            fontFamily: bodyFont,
+            background: PAPER.white,
+            color: PAPER.ink,
+            border: `3px solid ${PAPER.ink}`,
+            boxShadow: `5px 5px 0 ${PAPER.shadow}`,
+          }}
+        >
           JOIN THE EXCITEMENT
-        </Button>
-      </div>
+        </motion.button>
+      </motion.div>
     </div>
   );
 };

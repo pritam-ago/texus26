@@ -83,11 +83,13 @@ const PaperButton = ({
   href,
   onClick,
   tint = "rgba(121,166,119,0.3)",
+  className = "",
 }: {
   children: React.ReactNode;
   href?: string;
   onClick?: () => void;
   tint?: string;
+  className?: string;
 }) => {
   const btn = (
     <motion.button
@@ -95,7 +97,7 @@ const PaperButton = ({
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 400, damping: 20 }}
       onClick={onClick}
-      className="px-3 sm:px-4 py-2 rounded-xl font-bold inline-flex justify-center items-center w-full sm:w-auto whitespace-nowrap"
+      className={cn("px-3 sm:px-4 py-2 rounded-xl font-bold inline-flex justify-center items-center whitespace-nowrap", className)}
       style={{
         fontFamily: bodyFont,
         background: tint,
@@ -481,9 +483,9 @@ export default function AboutPage() {
           />
         </div>
 
-        {/* Polaroids behind */}
+        {/* Polaroids behind - Hidden on mobile for cleaner look */}
         <div className="absolute inset-0 z-10 pointer-events-none">
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             {POLAROIDS.map((p, idx) => (
               <div key={p.alt} className="pointer-events-auto">
                 <Polaroid
@@ -498,16 +500,17 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <div className="md:hidden">
-            {[POLAROIDS[0], POLAROIDS[1]].map((p, idx) => (
-              <div key={`m-${p.alt}`} className="pointer-events-auto">
+          {/* Show minimal polaroids on tablet only */}
+          <div className="hidden md:block lg:hidden">
+            {[POLAROIDS[0], POLAROIDS[2]].map((p, idx) => (
+              <div key={`t-${p.alt}`} className="pointer-events-auto">
                 <Polaroid
                   src={p.src}
                   alt={p.alt}
                   baseRotate={tilts[idx].angle}
-                  stylePos={p.mobile}
-                  opacity={0.34}
-                  baseScale={p.mobileScale}
+                  stylePos={p.desktop}
+                  opacity={0.28}
+                  baseScale={0.8}
                 />
               </div>
             ))}
@@ -517,23 +520,25 @@ export default function AboutPage() {
         <Vignette />
 
         {/* Content */}
-        <div className="relative z-30 max-w-6xl mx-auto px-4 pt-[clamp(84px,10vh,120px)] pb-[clamp(56px,8vh,88px)]">
+        <div className="relative z-30 max-w-6xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
           <motion.div
             initial={{ opacity: 0, y: 26 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-120px" }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col items-center text-center gap-4"
+            className="flex flex-col items-center text-center gap-3 sm:gap-4"
           >
-            <div className="flex flex-wrap justify-center gap-2 max-w-4xl">
+            {/* Badges */}
+            <div className="flex flex-wrap justify-center gap-2 max-w-4xl px-2">
               <InkTag text="Innovation" dot={PAPER.accent} />
               <InkTag text="Culture" dot={PAPER.lightAccent} />
               <InkTag text="Non-Tech + Tech" dot={PAPER.accent} />
               <InkTag text="Music Night" dot={PAPER.lightAccent} />
             </div>
 
+            {/* Title */}
             <h1
-              className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.05]"
+              className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] px-4"
               style={{
                 fontFamily: headingFont,
                 color: PAPER.ink,
@@ -541,30 +546,89 @@ export default function AboutPage() {
                 textShadow: "2px 2px 0 rgba(14,42,68,0.15)",
               }}
             >
-              TEXUS’26
+              TEXUS'26
             </h1>
 
             <DoodleLine />
 
-            <PaperPanel className="w-full max-w-4xl p-5 sm:p-6 md:p-8">
+            {/* Description Card */}
+            <PaperPanel className="w-full max-w-4xl p-4 sm:p-5 md:p-6 lg:p-8">
               <p
-                className="text-base sm:text-lg md:text-xl leading-relaxed"
+                className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed"
                 style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.92)" }}
               >
-                TEXUS ’26 is SRM IST Ramapuram’s flagship fest where{" "}
+                TEXUS '26 is SRM IST Ramapuram's flagship fest where{" "}
                 <b>hackathons meet hype</b>, <b>workshops meet wins</b>, and{" "}
                 <b>culture meets chaos</b>. Two days packed with competitions,
-                showcases, community drives, and the kind of moments you’ll clip
+                showcases, community drives, and the kind of moments you'll clip
                 forever.
               </p>
 
-              <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
-                <PaperButton tint="rgba(121,166,119,0.3)">Feb 2026</PaperButton>
-                <PaperButton tint="rgba(171,191,168,0.3)">
-                  SRM IST Ramapuram
+              {/* Buttons */}
+              <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 justify-center">
+                <PaperButton tint="rgba(121,166,119,0.3)" className="w-full sm:w-auto">
+                  📅 Feb 2026
+                </PaperButton>
+                <PaperButton tint="rgba(171,191,168,0.3)" className="w-full sm:w-auto">
+                  📍 SRM IST Ramapuram
                 </PaperButton>
               </div>
             </PaperPanel>
+
+            {/* Mobile Polaroid Gallery - Only on mobile */}
+            <div className="md:hidden mt-8 w-full max-w-lg">
+              <div className="grid grid-cols-2 gap-3 px-2">
+                {POLAROIDS.slice(0, 2).map((p, idx) => (
+                  <motion.div
+                    key={`mobile-${p.alt}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 + idx * 0.1, duration: 0.5 }}
+                    className="relative"
+                  >
+                    <div
+                      className="relative rounded-xl overflow-hidden"
+                      style={{
+                        background: PAPER.white,
+                        border: `3px solid ${PAPER.ink}`,
+                        boxShadow: `6px 6px 0 ${PAPER.shadow}`,
+                        transform: idx % 2 === 0 ? 'rotate(-2deg)' : 'rotate(2deg)',
+                      }}
+                    >
+                      <Tape className="-top-3 left-3" rotate={-6} />
+                      <div className="relative w-full aspect-[4/3]">
+                        <Image
+                          src={p.src}
+                          alt={p.alt}
+                          fill
+                          className="object-cover"
+                        />
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            background: "rgba(247,244,238,0.15)",
+                            mixBlendMode: "multiply",
+                          }}
+                        />
+                      </div>
+                      <div
+                        className="px-3 py-2 text-center"
+                        style={{
+                          background: PAPER.white,
+                          borderTop: `2px solid rgba(18,56,89,0.12)`,
+                          fontFamily: bodyFont,
+                          color: PAPER.ink,
+                          fontSize: "0.7rem",
+                        }}
+                      >
+                        TEXUS '26
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -572,33 +636,33 @@ export default function AboutPage() {
       
       {/* SECTION 3 */}
       <section
-        className="relative py-16 md:py-24 overflow-hidden"
+        className="relative py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden"
         style={{
           background: `${PAPER.bg} url('/textures/paper.png')`,
           backgroundRepeat: "repeat",
         }}
       >
-        <div className="relative z-10 max-w-7xl mx-auto px-4">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <Card className="border-0 bg-transparent">
             <CardContent className="p-0">
-              <PaperPanel className="p-6 md:p-10" hover={false}>
-                <div className="grid lg:grid-cols-2 gap-10 items-center">
+              <PaperPanel className="p-4 sm:p-6 md:p-8 lg:p-10" hover={false}>
+                <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10 items-center">
                   <motion.div
                     initial={{ opacity: 0, x: -18 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: false, margin: "-120px" }}
                     transition={{ duration: 0.55 }}
-                    className="space-y-4"
+                    className="space-y-3 sm:space-y-4"
                   >
                     <h2
-                      className="text-3xl md:text-4xl font-extrabold"
+                      className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold"
                       style={{ fontFamily: headingFont, color: PAPER.ink }}
                     >
                       About SRM IST Ramapuram
                     </h2>
                     <DoodleLine />
                     <p
-                      className="text-base md:text-lg leading-relaxed"
+                      className="text-sm xs:text-base sm:text-base md:text-lg leading-relaxed"
                       style={{
                         fontFamily: bodyFont,
                         color: "rgba(18,56,89,0.86)",

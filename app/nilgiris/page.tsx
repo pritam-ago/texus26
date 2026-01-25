@@ -80,7 +80,7 @@ const NilgirisPage = () => {
       </div>
 
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex flex-col justify-center items-center px-4 md:px-20 pt-20">
+      <section className="relative min-h-[60vh] flex flex-col justify-center items-center px-4 md:px-20 pt-28 sm:pt-32 md:pt-36">
         <motion.div
           initial="initial"
           animate="animate"
