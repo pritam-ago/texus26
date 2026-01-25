@@ -6,38 +6,14 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaWhatsapp, FaInstagram, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import {
+  PAPER,
+  headingFont,
+  bodyFont,
+  Tape,
+} from "@/components/PaperComponents";
 
-const PAPER = {
-  bg: "#F2F2F2",
-  ink: "#12590F",
-  accent: "#79A677",
-  lightAccent: "#ABBFA8",
-  shadow: "#12590F",
-};
-
-const headingFont =
-  "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)";
-const bodyFont =
-  "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)";
-
-const Tape = ({
-  className = "",
-  rotate = 0,
-}: {
-  className?: string;
-  rotate?: number;
-  tint?: string;
-}) => (
-  <img
-    src="/textures/tape.png"
-    alt="tape"
-    className={cn("absolute w-20 h-auto", className)}
-    style={{
-      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
-    }}
-  />
-);
-
+// Updated PaperPanel to match Hero section style (simple border)
 const PaperPanel = ({
   children,
   className = "",
@@ -50,8 +26,8 @@ const PaperPanel = ({
     style={{
       background: `${PAPER.bg} url('/textures/paper.png')`,
       backgroundRepeat: "repeat",
-      border: `4px solid ${PAPER.ink}`,
-      boxShadow: `12px 12px 0 ${PAPER.shadow}`,
+      border: `3px solid ${PAPER.ink}`,
+      boxShadow: `8px 8px 0 ${PAPER.shadow}`,
     }}
   >
     <Tape className="-top-4 left-10" rotate={-2} />

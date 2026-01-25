@@ -63,9 +63,7 @@ export default function Navbar() {
   const [hovered, setHovered] = React.useState<string | null>(null);
   const [activeId, setActiveId] = React.useState<string>("home");
 
-  const [isHidden, setIsHidden] = React.useState(false);
   const [hasScrolled, setHasScrolled] = React.useState(false);
-  const lastScrollY = React.useRef(0);
 
   const [isMobile, setIsMobile] = React.useState(false);
 
@@ -84,11 +82,6 @@ export default function Navbar() {
     const onScroll = () => {
       const y = window.scrollY;
       setHasScrolled(y > 80);
-
-      if (y > lastScrollY.current) setIsHidden(true);
-      else setIsHidden(false);
-
-      lastScrollY.current = y;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -315,134 +308,156 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -120 }}
-      animate={{ y: isHidden ? -120 : 0, opacity: 1 }}
-      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      className="fixed top-0 left-0 w-full z-50 pt-safe"
+      initial={{ y: -100 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      className="fixed top-0 left-0 w-full z-50"
+      style={{
+        background: hasScrolled 
+          ? `${PAPER.bg} url('/textures/paper.png')` 
+          : `${PAPER.bg} url('/textures/paper.png')`,
+        backdropFilter: hasScrolled ? "blur(10px)" : "none",
+        borderBottom: `4px solid ${PAPER.ink}`,
+        boxShadow: hasScrolled ? `0 4px 0 ${PAPER.shadow}` : "none",
+      }}
     >
-      <div className="flex justify-center w-full pt-4 px-4">
-        <div
-          className="flex flex-col items-center"
-          onMouseEnter={() => {
-            if (!isMobile) setIsExpanded(true);
-          }}
-          onMouseLeave={() => {
-            if (!isMobile) setIsExpanded(false);
-            setHovered(null);
-          }}
-        >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
           <button
             onClick={() => {
-              if (isMobile) setIsExpanded((p) => !p);
-              else router.push("/");
+              router.push("/");
               setActiveId("home");
             }}
-            className="flex items-center justify-center"
-            style={{
-              background: `${PAPER.bg} url('/textures/paper.png')`,
-              backdropFilter: "none",
-              width: isExpanded ? "58px" : "190px",
-              height: isExpanded ? "48px" : "56px",
-              borderRadius: isExpanded ? "14px" : "28px",
-              border: `4px solid ${PAPER.ink}`,
-              boxShadow: `6px 6px 0 ${PAPER.shadow}`,
-              transition: "all 700ms cubic-bezier(0.16,1,0.3,1)",
-              transform: "rotate(-0.8deg)",
-            }}
+            className="flex items-center"
           >
             <Image
               src="/assets/texus-color 3.png"
               alt="TEXUS Logo"
-              width={260}
-              height={90}
-              className="h-8 w-auto object-contain"
+              width={180}
+              height={60}
+              className="h-10 w-auto object-contain"
               priority
             />
           </button>
 
-          <div
-            className="mt-2"
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-3">
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeId === item.id;
+              const isHovered = hovered === item.id;
+              const Icon = item.icon;
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => go(item.href, item.id)}
+                  onMouseEnter={() => setHovered(item.id)}
+                  onMouseLeave={() => setHovered(null)}
+                  className="relative flex items-center gap-2 px-3 py-2 rounded-xl transition-transform active:translate-y-[1px]"
+                  title={item.name}
+                  style={{
+                    background: isActive ? PAPER.accent : "#FFFFFF",
+                    border: `3px solid ${PAPER.ink}`,
+                    boxShadow:
+                      isActive || isHovered
+                        ? `3px 3px 0 ${PAPER.shadow}`
+                        : `2px 2px 0 ${PAPER.shadow}`,
+                    transform: isHovered ? "translate(-1px,-1px)" : "none",
+                  }}
+                >
+                  <span
+                    className="text-xs font-extrabold tracking-wider"
+                    style={{
+                      color: PAPER.ink,
+                      opacity: isActive || isHovered ? 1 : 0.92,
+                    }}
+                  >
+                    {item.name}
+                  </span>
+                </button>
+              );
+            })}
+            <DesktopAuth />
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl active:translate-y-[1px]"
             style={{
-              opacity: isExpanded ? 1 : 0,
-              pointerEvents: isExpanded ? "auto" : "none",
-              transform: isExpanded
-                ? "translateY(0) scale(1)"
-                : "translateY(-14px) scale(0.96)",
-              transition:
-                "opacity 500ms cubic-bezier(0.16,1,0.3,1), transform 500ms cubic-bezier(0.16,1,0.3,1)",
+              background: "#FFFFFF",
+              border: `3px solid ${PAPER.ink}`,
+              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
             }}
           >
-            <div
-              className={[
-                "rounded-2xl",
-                "flex flex-col md:inline-flex md:flex-row md:items-center md:gap-4",
-                "p-4",
-                "w-[92vw] md:w-fit",
-                "max-w-[92vw]",
-              ].join(" ")}
-              style={{
-                background: `${PAPER.bg} url('/textures/paper.png')`,
-                border: `4px solid ${PAPER.ink}`,
-                boxShadow: `6px 6px 0 ${PAPER.shadow}`,
-              }}
+            <motion.div
+              animate={{ rotate: isExpanded ? 90 : 0 }}
+              transition={{ duration: 0.3 }}
             >
-              <div className="flex flex-wrap justify-center gap-2">
-                {NAV_ITEMS.map((item) => {
-                  const isActive = activeId === item.id;
-                  const isHovered = hovered === item.id;
-                  const Icon = item.icon;
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={PAPER.ink}
+                strokeWidth="3"
+                strokeLinecap="round"
+              >
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </motion.div>
+          </button>
+        </div>
 
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        if (isMobile) setIsExpanded(false);
-                        go(item.href, item.id);
-                      }}
-                      onMouseEnter={() => setHovered(item.id)}
-                      onMouseLeave={() => setHovered(null)}
-                      className="relative flex items-center gap-2 px-3 py-2 rounded-xl transition-transform"
-                      title={item.name}
-                      style={{
-                        background: isActive ? PAPER.accent : "#FFFFFF",
-                        border: `3px solid ${PAPER.ink}`,
-                        boxShadow:
-                          isActive || isHovered
-                            ? `3px 3px 0 ${PAPER.shadow}`
-                            : `2px 2px 0 ${PAPER.shadow}`,
-                        transform: isHovered ? "translate(-1px,-1px)" : "none",
-                      }}
-                    >
-                      <div style={{ color: PAPER.ink, flexShrink: 0 }}>
-                        <Icon className="w-4 h-4 md:hidden" />
-                      </div>
+        {/* Mobile Menu */}
+        <motion.div
+          initial={false}
+          animate={{
+            height: isExpanded ? "auto" : 0,
+            opacity: isExpanded ? 1 : 0,
+          }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="md:hidden overflow-hidden"
+        >
+          <div className="py-4 space-y-2">
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeId === item.id;
+              const Icon = item.icon;
 
-                      <span
-                        className="text-xs sm:text-sm font-extrabold tracking-wider"
-                        style={{
-                          color: PAPER.ink,
-                          opacity: isActive || isHovered ? 1 : 0.92,
-                        }}
-                      >
-                        {item.name}
-                      </span>
-
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="flex justify-center mt-2 md:mt-0">
-                <div className="hidden md:flex">
-                  <DesktopAuth />
-                </div>
-                <div className="md:hidden w-full">
-                  <MobileAuth />
-                </div>
-              </div>
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setIsExpanded(false);
+                    go(item.href, item.id);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl active:translate-y-[1px]"
+                  style={{
+                    background: isActive ? PAPER.accent : "#FFFFFF",
+                    border: `3px solid ${PAPER.ink}`,
+                    boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                  }}
+                >
+                  <div style={{ color: PAPER.ink }}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <span
+                    className="text-sm font-extrabold tracking-wider"
+                    style={{ color: PAPER.ink }}
+                  >
+                    {item.name}
+                  </span>
+                </button>
+              );
+            })}
+            <div className="pt-2">
+              <MobileAuth />
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </motion.nav>
   );

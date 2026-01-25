@@ -4,73 +4,17 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
+import {
+  PAPER,
+  headingFont,
+  bodyFont,
+  Tape,
+  DoodleLine,
+  PaperBase,
+  Vignette,
+} from "@/components/PaperComponents";
 
-const PAPER = {
-  bg: "#F2F2F2",
-  ink: "#12590F",
-  accent: "#79A677",
-  lightAccent: "#ABBFA8",
-  shadow: "#12590F",
-  white: "#FFFFFF",
-  purple: "#8B5CF6",
-  pink: "#EC4899",
-  green: "#10B981",
-};
-
-const headingFont =
-  "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)";
-const bodyFont =
-  "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)";
-
-const PaperBase = ({ className = "" }: { className?: string }) => (
-  <div
-    className={cn("absolute inset-0", className)}
-    style={{
-      background: `${PAPER.bg} url('/textures/paper.png')`,
-      backgroundRepeat: "repeat",
-    }}
-  />
-);
-
-const Vignette = () => (
-  <div
-    className="absolute inset-0 pointer-events-none"
-    style={{
-      background:
-        "radial-gradient(circle at center, rgba(242,242,242,0) 0%, rgba(242,242,242,0.45) 62%, rgba(242,242,242,0.95) 100%)",
-    }}
-  />
-);
-
-const Tape = ({
-  className = "",
-  rotate = 0,
-}: {
-  className?: string;
-  rotate?: number;
-}) => (
-  <img
-    src="/textures/tape.png"
-    alt="tape"
-    className={cn("absolute w-20 h-auto", className)}
-    style={{
-      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
-    }}
-  />
-);
-
-const DoodleLine = ({ className = "" }: { className?: string }) => (
-  <div
-    className={cn("h-[6px] w-28 sm:w-32 md:w-40 rounded-full", className)}
-    style={{
-      background: PAPER.accent,
-      transform: "rotate(-2deg)",
-      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
-      border: `2px solid ${PAPER.ink}`,
-    }}
-  />
-);
-
+// Updated PaperPanel to match Hero section style (simple border)
 const PaperPanel = ({
   children,
   className = "",
@@ -81,44 +25,46 @@ const PaperPanel = ({
   hover?: boolean;
 }) => (
   <motion.div
-    whileHover={hover ? { y: -5, rotate: -0.2 } : undefined}
-    transition={{ type: "spring", stiffness: 420, damping: 22 }}
-    className={cn("relative rounded-2xl", className)}
+    whileHover={
+      hover
+        ? {
+            scale: 1.02,
+            rotateZ: 1,
+            boxShadow: `12px 12px 0 ${PAPER.shadow}`,
+          }
+        : undefined
+    }
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    className={cn("relative p-6 sm:p-8 rounded-2xl", className)}
     style={{
       background: `${PAPER.bg} url("/textures/paper.png")`,
-      border: `4px solid ${PAPER.ink}`,
-      boxShadow: `10px 10px 0 ${PAPER.shadow}`,
+      border: `3px solid ${PAPER.ink}`,
+      boxShadow: `8px 8px 0 ${PAPER.shadow}`,
     }}
   >
     {children}
   </motion.div>
 );
 
+// Updated InkBadge to match Hero section style (simple border)
 const InkBadge = ({ text, color }: { text: string; color: string }) => (
   <motion.span
     whileHover={{ y: -2, rotate: -1 }}
     transition={{ type: "spring", stiffness: 500, damping: 22 }}
     className="inline-flex items-center px-4 py-2 rounded-full text-sm md:text-base font-extrabold tracking-wide select-none"
     style={{
-      background: "rgba(247,244,238,0.9)",
-      border: `3px solid ${PAPER.ink}`,
-      boxShadow: `4px 4px 0 ${PAPER.shadow}`,
+      background: color,
+      border: `2px solid ${PAPER.ink}`,
+      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
       color: PAPER.ink,
       fontFamily: headingFont,
     }}
   >
-    <span
-      className="inline-block w-3 h-3 rounded-full mr-2"
-      style={{
-        background: color,
-        border: `2px solid ${PAPER.ink}`,
-        boxShadow: `1px 1px 0 ${PAPER.shadow}`,
-      }}
-    />
     {text}
   </motion.span>
 );
 
+// Updated PaperButton to match Hero section style (simple border)
 const PaperButton = ({
   children,
   href,
@@ -130,15 +76,15 @@ const PaperButton = ({
 }) => {
   const btn = (
     <motion.button
-      whileHover={{ y: -3, rotate: -0.5, scale: 1.01 }}
+      whileHover={{ y: -2, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 450, damping: 18 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
       className="px-6 py-3 rounded-xl font-extrabold inline-flex justify-center items-center"
       style={{
         fontFamily: headingFont,
         background: tint,
-        border: `3px solid ${PAPER.ink}`,
-        boxShadow: `6px 6px 0 ${PAPER.shadow}`,
+        border: `2px solid ${PAPER.ink}`,
+        boxShadow: `3px 3px 0 ${PAPER.shadow}`,
         color: PAPER.ink,
       }}
     >
@@ -159,6 +105,7 @@ type Sponsor = {
   link?: string;
 };
 
+// Updated SponsorCard to match Hero section style (simple border)
 const SponsorCard = ({
   sponsor,
   className,
@@ -167,7 +114,11 @@ const SponsorCard = ({
   className?: string;
 }) => (
   <motion.div
-    whileHover={{ y: -4, rotate: -0.5 }}
+    whileHover={{
+      y: -4,
+      rotate: -0.5,
+      boxShadow: `10px 10px 0 ${PAPER.shadow}`,
+    }}
     transition={{ type: "spring", stiffness: 450, damping: 18 }}
     className="relative rounded-xl overflow-hidden"
     style={{
@@ -494,50 +445,50 @@ function CurrentSponsors() {
       </motion.div>
 
       <TierSection
-        title="Title Sponsors"
-        description="Our Flagship Partners"
-        badgeText="TITLE"
-        badgeColor={PAPER.purple}
-        sponsors={titleSponsors2025}
+        title="Platinum Sponsors"
+        description="Our exclusive premier partners"
+        badgeText="PLATINUM"
+        badgeColor={PAPER.accent}
+        sponsors={platinumSponsors2025}
       />
 
       <TierSection
         title="Gold Sponsors"
         description="Shining bright with support"
         badgeText="GOLD"
-          badgeColor="#FFD700"
-          sponsors={goldSponsors2024}
-        />
+        badgeColor={PAPER.accent}
+        sponsors={goldSponsors2025}
+      />
 
       <TierSection
         title="Silver Sponsors"
         description="Solid contributions making a difference"
         badgeText="SILVER"
-          badgeColor="#C0C0C0"
-          sponsors={silverSponsors2024}
-        />
-
-      <TierSection
-        title="Beauty Sponsors"
-        description="Bringing elegance to every detail"
-        badgeText="BEAUTY"
-        badgeColor={PAPER.pink}
-        sponsors={beautySponsors2025}
+        badgeColor={PAPER.accent}
+        sponsors={silverSponsors2025}
       />
 
       <TierSection
-        title="Food & Beverage Sponsors"
-        description="Nourishing partnerships for every moment"
-        badgeText="FOOD"
-        badgeColor={PAPER.green}
-        sponsors={foodSponsors2025}
+        title="Hackathon Sponsors"
+        description="Tech innovators powering our coding challenges"
+        badgeText="HACKATHON"
+        badgeColor={PAPER.accent}
+        sponsors={hackathonSponsors2025}
+      />
+
+      <TierSection
+        title="Mobility Partner"
+        description="Keeping our event connected"
+        badgeText="MOBILITY"
+        badgeColor={PAPER.accent}
+        sponsors={mobilitySponsors2025}
       />
 
       <TierSection
         title="Stall Sponsors"
         description="Valued collaborators enriching the event experience"
         badgeText="STALLS"
-        badgeColor={PAPER.lightAccent}
+        badgeColor={PAPER.accent}
         sponsors={stallSponsors2025}
       />
     </>
@@ -630,7 +581,7 @@ export default function Sponsors() {
           title="2024 Sponsors"
           description="Our valued partners who made TEXUS 2024 an incredible success"
           badgeText="2024"
-          badgeColor="#FFD700"
+          badgeColor={PAPER.accent}
           sponsors={sponsor2024}
         />
 
@@ -639,7 +590,7 @@ export default function Sponsors() {
           title="2023 Sponsors"
           description="Key supporters who brought excellence to TEXUS 2023"
           badgeText="2023"
-          badgeColor="#C0C0C0"
+          badgeColor={PAPER.accent}
           sponsors={sponsor2023}
         />
 

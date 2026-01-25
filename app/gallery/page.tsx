@@ -4,99 +4,36 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import {
+  PAPER,
+  headingFont,
+  bodyFont,
+  Tape,
+  CardTree,
+  DoodleLine,
+  PaperBase,
+  Vignette,
+} from "@/components/PaperComponents";
 
-const PAPER = {
-  bg: "#F2F2F2",
-  ink: "#12590F",
-  accent: "#79A677",
-  lightAccent: "#ABBFA8",
-  shadow: "#12590F",
-  white: "#FFFFFF",
-  purple: "#8B5CF6",
-  pink: "#EC4899",
-  green: "#10B981",
-};
-
-const headingFont =
-  "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)";
-const bodyFont =
-  "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)";
-
-const PaperBase = () => (
-  <div
-    className="fixed inset-0"
-    style={{
-      background: `${PAPER.bg} url('/textures/paper.png')`,
-      backgroundRepeat: "repeat",
-    }}
-  />
-);
-
-const Vignette = () => (
-  <div
-    className="fixed inset-0 pointer-events-none"
-    style={{
-      background:
-        "radial-gradient(circle at center, rgba(242,242,242,0) 0%, rgba(242,242,242,0.45) 62%, rgba(242,242,242,0.95) 100%)",
-    }}
-  />
-);
-
-const Tape = ({
-  className = "",
-  rotate = 0,
-}: {
-  className?: string;
-  rotate?: number;
-  tint?: string;
-}) => (
-  <img
-    src="/textures/tape.png"
-    alt="tape"
-    className={cn("absolute w-20 h-auto z-10", className)}
-    style={{
-      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
-    }}
-  />
-);
-
-const DoodleLine = ({ className = "" }: { className?: string }) => (
-  <div
-    className={cn("h-[6px] w-28 sm:w-32 md:w-40 rounded-full", className)}
-    style={{
-      background: PAPER.accent,
-      transform: "rotate(-2deg)",
-      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
-      border: `2px solid ${PAPER.ink}`,
-    }}
-  />
-);
-
+// Updated InkBadge to match Hero section style (simple border)
 const InkBadge = ({ text, color }: { text: string; color: string }) => (
   <motion.span
     whileHover={{ y: -2, rotate: -1 }}
     transition={{ type: "spring", stiffness: 500, damping: 22 }}
     className="inline-flex items-center px-4 py-2 rounded-full text-sm md:text-base font-extrabold tracking-wide select-none"
     style={{
-      background: "rgba(247,244,238,0.9)",
-      border: `3px solid ${PAPER.ink}`,
-      boxShadow: `4px 4px 0 ${PAPER.shadow}`,
+      background: color,
       color: PAPER.ink,
       fontFamily: headingFont,
+      border: `2px solid ${PAPER.ink}`,
+      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
     }}
   >
-    <span
-      className="inline-block w-3 h-3 rounded-full mr-2"
-      style={{
-        background: color,
-        border: `2px solid ${PAPER.ink}`,
-        boxShadow: `1px 1px 0 ${PAPER.shadow}`,
-      }}
-    />
     {text}
   </motion.span>
 );
 
+// Updated PolaroidCard to match Hero section style (simple border)
 const PolaroidCard = ({
   src,
   alt,
@@ -118,25 +55,28 @@ const PolaroidCard = ({
           ? { opacity: 1, y: 0, rotate: rotate }
           : { opacity: 0, y: 30, rotate: 0 }
       }
-      whileHover={{ y: -10, rotate: rotate + 2, scale: 1.05 }}
+      whileHover={{
+        y: -10,
+        rotate: rotate + 2,
+        scale: 1.05,
+        boxShadow: `12px 12px 0 ${PAPER.shadow}`,
+      }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="relative group"
       style={{ rotate: `${rotate}deg` }}
     >
       {/* Tape on top */}
       <Tape
-        className="-top-4 left-1/4"
+        className="-top-4 left-1/4 z-20"
         rotate={-6}
-        tint="rgba(166,129,96,0.4)"
       />
 
       <div
-        className="relative rounded-xl overflow-hidden"
+        className="relative rounded-xl overflow-hidden p-3"
         style={{
           background: PAPER.white,
-          border: `4px solid ${PAPER.ink}`,
+          border: `3px solid ${PAPER.ink}`,
           boxShadow: `8px 8px 0 ${PAPER.shadow}`,
-          padding: "12px",
         }}
       >
         <div className="relative w-full aspect-square overflow-hidden rounded-lg">
@@ -156,9 +96,13 @@ const PolaroidCard = ({
           />
         </div>
 
+        {/* Trees at bottom corners */}
+        <CardTree className="absolute bottom-1 left-1" side="left" size={40} />
+        <CardTree className="absolute bottom-1 right-1" side="right" size={40} />
+
         {/* Caption area */}
         <div
-          className="mt-3 text-center"
+          className="mt-3 text-center relative z-10"
           style={{
             fontFamily: bodyFont,
             color: PAPER.ink,

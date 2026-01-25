@@ -6,96 +6,42 @@ import Link from "next/link";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-
-const PAPER = {
-  bg: "#F2F2F2",
-  ink: "#12590F",
-  accent: "#79A677",
-  lightAccent: "#ABBFA8",
-  shadow: "#12590F",
-  white: "#FFFFFF",
-};
-
-const headingFont =
-  "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)";
-const bodyFont =
-  "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)";
-
-const PaperBase = ({ className = "" }: { className?: string }) => (
-  <div
-    className={cn("absolute inset-0", className)}
-    style={{
-      background: `${PAPER.bg} url('/textures/paper.png')`,
-      backgroundRepeat: "repeat",
-    }}
-  />
-);
-
-const Vignette = () => (
-  <div
-    className="absolute inset-0 pointer-events-none"
-    style={{
-      background:
-        "radial-gradient(circle at center, rgba(247,244,238,0) 0%, rgba(247,244,238,0.45) 62%, rgba(247,244,238,0.95) 100%)",
-    }}
-  />
-);
-
-const Tape = ({
-  className = "",
-  rotate = 0,
-}: {
-  className?: string;
-  rotate?: number;
-  tint?: string;
-}) => (
-  <img
-    src="/textures/tape.png"
-    alt="tape"
-    className={cn("absolute w-20 h-auto", className)}
-    style={{
-      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
-    }}
-  />
-);
+import {
+  PAPER,
+  headingFont,
+  bodyFont,
+  Tape,
+  CardTree,
+  DoodleLine,
+  PaperBase,
+  Vignette,
+} from "@/components/PaperComponents";
 
 const InkTag = ({ text, dot }: { text: string; dot: string }) => (
   <motion.span
-    whileHover={{ y: -2, rotate: -1 }}
-    transition={{ type: "spring", stiffness: 500, damping: 22 }}
-    className="inline-flex items-center px-3 py-1 rounded-full text-xs md:text-sm font-extrabold tracking-wide select-none"
+    whileHover={{ y: -2, scale: 1.05 }}
+    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+    className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold select-none"
     style={{
-      background: "rgba(247,244,238,0.9)",
-      border: `3px solid ${PAPER.ink}`,
-      boxShadow: `4px 4px 0 ${PAPER.shadow}`,
+      background: PAPER.lightAccent,
+      border: `2px solid ${PAPER.ink}`,
+      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
       color: PAPER.ink,
-      fontFamily: headingFont,
+      fontFamily: bodyFont,
     }}
   >
     <span
-      className="inline-block w-2.5 h-2.5 rounded-full mr-2"
+      className="inline-block w-2 h-2 rounded-full mr-2"
       style={{
         background: dot,
-        border: `2px solid ${PAPER.ink}`,
-        boxShadow: `1px 1px 0 ${PAPER.shadow}`,
+        border: `1.5px solid ${PAPER.ink}`,
       }}
     />
     {text}
   </motion.span>
 );
 
-const DoodleLine = ({ className = "" }: { className?: string }) => (
-  <div
-    className={cn("h-[6px] w-28 sm:w-32 md:w-40 rounded-full", className)}
-    style={{
-      background: PAPER.accent,
-      transform: "rotate(-2deg)",
-      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
-      border: `2px solid ${PAPER.ink}`,
-    }}
-  />
-);
-
+// Updated PaperPanel to match Hero section style (simple border, no torn corner)
 const PaperPanel = ({
   children,
   className = "",
@@ -106,21 +52,32 @@ const PaperPanel = ({
   hover?: boolean;
 }) => (
   <motion.div
-    whileHover={hover ? { y: -5, rotate: -0.2 } : undefined}
-    transition={{ type: "spring", stiffness: 420, damping: 22 }}
-    className={cn("relative rounded-2xl", className)}
+    whileHover={
+      hover
+        ? {
+            scale: 1.02,
+            rotateZ: 1,
+            boxShadow: `12px 12px 0 ${PAPER.shadow}`,
+          }
+        : undefined
+    }
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    className={cn("relative p-6 sm:p-8 rounded-2xl", className)}
     style={{
       background: `${PAPER.bg} url("/textures/paper.png")`,
-      border: `4px solid ${PAPER.ink}`,
-      boxShadow: `10px 10px 0 ${PAPER.shadow}`,
+      border: `3px solid ${PAPER.ink}`,
+      boxShadow: `8px 8px 0 ${PAPER.shadow}`,
     }}
   >
-    <Tape className="-top-4 left-10" rotate={-2} />
-    <Tape className="-top-4 right-10" rotate={2} />
+    <Tape className="-top-4 sm:-top-5 left-6 sm:left-8" rotate={-3} />
+    <Tape className="-top-4 sm:-top-5 right-6 sm:right-8" rotate={3} />
+    <CardTree className="bottom-2 left-2" side="left" size={50} />
+    <CardTree className="bottom-2 right-2" side="right" size={50} />
     {children}
   </motion.div>
 );
 
+// Updated PaperButton to match Hero section style (simple border)
 const PaperButton = ({
   children,
   href,
@@ -134,17 +91,17 @@ const PaperButton = ({
 }) => {
   const btn = (
     <motion.button
-      whileHover={{ y: -3, rotate: -0.5, scale: 1.01 }}
+      whileHover={{ y: -2, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 450, damping: 18 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
       onClick={onClick}
-      className="px-4 py-2 rounded-xl font-extrabold inline-flex justify-center items-center w-full sm:w-auto whitespace-nowrap"
+      className="px-3 sm:px-4 py-2 rounded-xl font-bold inline-flex justify-center items-center w-full sm:w-auto whitespace-nowrap"
       style={{
-        fontFamily: headingFont,
+        fontFamily: bodyFont,
         background: tint,
-        border: `3px solid ${PAPER.ink}`,
-        boxShadow: `6px 6px 0 ${PAPER.shadow}`,
         color: PAPER.ink,
+        border: `2px solid ${PAPER.ink}`,
+        boxShadow: `3px 3px 0 ${PAPER.shadow}`,
       }}
     >
       {children}
@@ -612,114 +569,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* SECTION 2 */}
-      <section
-        className="relative py-16 md:py-24 overflow-hidden"
-        style={{
-          background: `${PAPER.bg} url('/textures/paper.png')`,
-          backgroundRepeat: "repeat",
-        }}
-      >
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(18,56,89,0.10) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(18,56,89,0.10) 1px, transparent 1px)
-            `,
-            backgroundSize: "64px 64px",
-          }}
-        />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-120px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h2
-              className="text-3xl sm:text-4xl md:text-5xl font-extrabold"
-              style={{ fontFamily: headingFont, color: PAPER.ink }}
-            >
-              Two Phases. Two vibes.
-            </h2>
-            <div className="mt-3 flex justify-center">
-              <DoodleLine />
-            </div>
-          </motion.div>
-
-          <div className="mt-10 grid md:grid-cols-2 gap-6">
-            <motion.div
-              whileHover={{ y: -6 }}
-              transition={{ type: "spring", stiffness: 420, damping: 22 }}
-            >
-              <PaperPanel className="p-6 md:p-8">
-                <h3
-                  className="text-2xl md:text-3xl font-extrabold"
-                  style={{ fontFamily: headingFont, color: PAPER.ink }}
-                >
-                  Phase 1 — Global Summit
-                </h3>
-                <p
-                  className="mt-2"
-                  style={{
-                    fontFamily: bodyFont,
-                    color: "rgba(18,56,89,0.85)",
-                  }}
-                >
-                  Theme: sustainability, go-green, reusability, community impact.
-                  Talks, showcases, and themed activities.
-                </p>
-
-                <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3">
-                  <PaperButton tint="rgba(121,166,119,0.3)">
-                    Feb 14 & 15
-                  </PaperButton>
-                  <PaperButton href="/nilgiris" tint="rgba(171,191,168,0.3)">
-                    Open Phase 1 →
-                  </PaperButton>
-                </div>
-              </PaperPanel>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ y: -6 }}
-              transition={{ type: "spring", stiffness: 420, damping: 22 }}
-            >
-              <PaperPanel className="p-6 md:p-8">
-                <h3
-                  className="text-2xl md:text-3xl font-extrabold"
-                  style={{ fontFamily: headingFont, color: PAPER.ink }}
-                >
-                  Phase 2 — TEXUS ’26
-                </h3>
-                <p
-                  className="mt-2"
-                  style={{
-                    fontFamily: bodyFont,
-                    color: "rgba(18,56,89,0.85)",
-                  }}
-                >
-                  The main fest: tech + non-tech events, workshops, hackathon,
-                  stalls, and the grand music night.
-                </p>
-
-                <div className="mt-5 flex flex-col sm:flex-row flex-wrap gap-3">
-                  <PaperButton tint="rgba(121,166,119,0.3)">
-                    Feb 27 & 28
-                  </PaperButton>
-                  <PaperButton href="/#events" tint="rgba(171,191,168,0.3)">
-                    Explore Events →
-                  </PaperButton>
-                </div>
-              </PaperPanel>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
+      
       {/* SECTION 3 */}
       <section
         className="relative py-16 md:py-24 overflow-hidden"

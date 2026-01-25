@@ -271,7 +271,7 @@ const Hero = () => {
   }
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden">
+    <div className="relative w-full min-h-screen overflow-hidden pt-20">
       {/* Paper background with texture */}
       <div className="absolute inset-0">
         <div
@@ -343,23 +343,37 @@ const Hero = () => {
           <motion.div
             initial={{ opacity: 0, rotateX: -90, z: -200 }}
             animate={{ opacity: 1, rotateX: 0, z: 0 }}
+            whileHover={{ 
+              scale: 1.05,
+              rotateY: 5,
+              rotateZ: 2,
+              y: -10,
+              transition: { 
+                type: "spring", 
+                stiffness: 300, 
+                damping: 15 
+              }
+            }}
+            whileTap={{ 
+              scale: 0.95,
+              transition: { duration: 0.1 }
+            }}
             transition={{ delay: 0.3, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transformStyle: "preserve-3d" }}
+            style={{ transformStyle: "preserve-3d", cursor: "pointer" }}
             className="flex justify-center items-center"
           >
-            {/* Hero Logo Video */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
+            {/* Hero Logo Image */}
+            <motion.img
+              src="/assets/hero-logo.png"
+              alt="TEXUS Logo"
               className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
               style={{
                 filter: `drop-shadow(4px 4px 0 ${PAPER.shadow})`,
               }}
-            >
-              <source src="/assets/texus-animating.mp4" type="video/mp4" />
-            </video>
+              whileHover={{
+                filter: `drop-shadow(6px 6px 0 ${PAPER.shadow}) brightness(1.1)`,
+              }}
+            />
           </motion.div>
 
           {/* Subtitle with stagger effect */}
@@ -380,7 +394,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 2.2, duration: 0.6 }}
           >
-            {["🌱 Go Green", "🎨 Culture", "💻 Tech", "🎵 Music"].map((tag, i) => (
+            {["Go Green", "Culture", "Tech", "Music"].map((tag, i) => (
               <motion.span
                 key={tag}
                 whileHover={{ y: -5, scale: 1.05 }}

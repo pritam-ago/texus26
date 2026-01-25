@@ -4,74 +4,17 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
+import {
+  PAPER,
+  headingFont,
+  bodyFont,
+  Tape,
+  DoodleLine,
+  PaperBase,
+  Vignette,
+} from "@/components/PaperComponents";
 
-const PAPER = {
-  bg: "#F2F2F2",
-  ink: "#12590F",
-  accent: "#79A677",
-  lightAccent: "#ABBFA8",
-  shadow: "#12590F",
-  white: "#FFFFFF",
-  purple: "#8B5CF6",
-  pink: "#EC4899",
-  green: "#10B981",
-};
-
-const headingFont =
-  "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)";
-const bodyFont =
-  "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)";
-
-const PaperBase = ({ className = "" }: { className?: string }) => (
-  <div
-    className={cn("absolute inset-0", className)}
-    style={{
-      background: `${PAPER.bg} url('/textures/paper.png')`,
-      backgroundRepeat: "repeat",
-    }}
-  />
-);
-
-const Vignette = () => (
-  <div
-    className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle at center, rgba(242,242,242,0) 0%, rgba(242,242,242,0.45) 62%, rgba(242,242,242,0.95) 100%)",
-        }}
-  />
-);
-
-const Tape = ({
-  className = "",
-  rotate = 0,
-}: {
-  className?: string;
-  rotate?: number;
-  tint?: string;
-}) => (
-  <img
-    src="/textures/tape.png"
-    alt="tape"
-    className={cn("absolute w-20 h-auto", className)}
-    style={{
-      transform: `rotate(${rotate}deg) ${rotate > 0 ? 'scaleX(-1)' : ''}`,
-    }}
-  />
-);
-
-const DoodleLine = ({ className = "" }: { className?: string }) => (
-  <div
-    className={cn("h-[6px] w-28 sm:w-32 md:w-40 rounded-full", className)}
-    style={{
-      background: PAPER.accent,
-      transform: "rotate(-2deg)",
-      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
-      border: `2px solid ${PAPER.ink}`,
-    }}
-  />
-);
-
+// Updated PaperPanel to match Hero section style (simple border)
 const PaperPanel = ({
   children,
   className = "",
@@ -84,40 +27,41 @@ const PaperPanel = ({
   tint?: string;
 }) => (
   <motion.div
-    whileHover={hover ? { y: -5, rotate: -0.2 } : undefined}
-    transition={{ type: "spring", stiffness: 420, damping: 22 }}
-    className={cn("relative rounded-2xl", className)}
+    whileHover={
+      hover
+        ? {
+            scale: 1.02,
+            rotateZ: 1,
+            boxShadow: `12px 12px 0 ${PAPER.shadow}`,
+          }
+        : undefined
+    }
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    className={cn("relative p-6 sm:p-8 rounded-2xl", className)}
     style={{
       background: tint || `${PAPER.bg} url("/textures/paper.png")`,
-      border: `4px solid ${PAPER.ink}`,
-      boxShadow: `10px 10px 0 ${PAPER.shadow}`,
+      border: `3px solid ${PAPER.ink}`,
+      boxShadow: `8px 8px 0 ${PAPER.shadow}`,
     }}
   >
     {children}
   </motion.div>
 );
 
+// Updated InkBadge to match Hero section style (simple border)
 const InkBadge = ({ text, color }: { text: string; color: string }) => (
   <motion.span
     whileHover={{ y: -2, rotate: -1 }}
     transition={{ type: "spring", stiffness: 500, damping: 22 }}
     className="inline-flex items-center px-4 py-2 rounded-full text-sm md:text-base font-extrabold tracking-wide select-none"
     style={{
-      background: "rgba(247,244,238,0.9)",
-      border: `3px solid ${PAPER.ink}`,
-      boxShadow: `4px 4px 0 ${PAPER.shadow}`,
+      background: color,
+      border: `2px solid ${PAPER.ink}`,
+      boxShadow: `3px 3px 0 ${PAPER.shadow}`,
       color: PAPER.ink,
       fontFamily: headingFont,
     }}
   >
-    <span
-      className="inline-block w-3 h-3 rounded-full mr-2"
-      style={{
-        background: color,
-        border: `2px solid ${PAPER.ink}`,
-        boxShadow: `1px 1px 0 ${PAPER.shadow}`,
-      }}
-    />
     {text}
   </motion.span>
 );
@@ -130,6 +74,7 @@ type Sponsor = {
   className?: string;
 };
 
+// Updated SponsorCard to match Hero section style (simple border)
 const SponsorCard = ({
   sponsor,
   className,
@@ -140,7 +85,11 @@ const SponsorCard = ({
   darkBg?: boolean;
 }) => (
   <motion.div
-    whileHover={{ y: -4, rotate: -0.5 }}
+    whileHover={{
+      y: -4,
+      rotate: -0.5,
+      boxShadow: `10px 10px 0 ${PAPER.shadow}`,
+    }}
     transition={{ type: "spring", stiffness: 450, damping: 18 }}
     className="relative rounded-xl overflow-hidden"
     style={{
@@ -169,7 +118,6 @@ const TierSection = ({
   badgeColor,
   badgeText,
   sponsors,
-  tapeColor,
   darkBg = false,
 }: {
   title: string;
@@ -177,7 +125,6 @@ const TierSection = ({
   badgeColor: string;
   badgeText: string;
   sponsors: Sponsor[];
-  tapeColor?: string;
   darkBg?: boolean;
 }) => {
   const ref = useRef(null);
@@ -478,36 +425,32 @@ export default function CurrentSponsor() {
           title="Platinum Sponsors"
           description="Our exclusive premier partners making TEXUS 2025 possible"
           badgeText="PLATINUM"
-          badgeColor={PAPER.purple}
+          badgeColor={PAPER.accent}
           sponsors={platinumSponsors2025}
-          tapeColor="rgba(139,92,246,0.25)"
         />
 
         <TierSection
           title="Gold Sponsors"
           description="Our premium partners who make our event extraordinary"
           badgeText="GOLD"
-          badgeColor="#FFD700"
+          badgeColor={PAPER.accent}
           sponsors={goldSponsors2025}
-          tapeColor="rgba(255,215,0,0.25)"
         />
 
         <TierSection
           title="Silver Sponsors"
           description="Key supporters bringing excellence to our event"
           badgeText="SILVER"
-          badgeColor="#C0C0C0"
+          badgeColor={PAPER.accent}
           sponsors={silverSponsors2025}
-          tapeColor="rgba(192,192,192,0.25)"
         />
 
         <TierSection
           title="Hackathon Sponsors"
           description="Tech innovators powering our coding challenges and competition"
           badgeText="HACKATHON"
-          badgeColor={PAPER.pink}
+          badgeColor={PAPER.accent}
           sponsors={hackathonSponsors2025}
-          tapeColor="rgba(236,72,153,0.25)"
           darkBg={true}
         />
 
@@ -515,9 +458,8 @@ export default function CurrentSponsor() {
           title="Mobility Partner"
           description="Keeping our event connected and accessible"
           badgeText="MOBILITY"
-          badgeColor={PAPER.green}
+          badgeColor={PAPER.accent}
           sponsors={mobilitySponsors2025}
-          tapeColor="rgba(16,185,129,0.25)"
           darkBg={true}
         />
 
@@ -525,9 +467,8 @@ export default function CurrentSponsor() {
           title="Stall Sponsors"
           description="Valued collaborators enriching the event experience"
           badgeText="STALLS"
-          badgeColor={PAPER.lightAccent}
+          badgeColor={PAPER.accent}
           sponsors={stallSponsors2025}
-          tapeColor="rgba(171,191,168,0.3)"
         />
       </div>
     </div>

@@ -116,9 +116,9 @@ export default function Eventdata() {
       colorValue: "purple",
       bgColor: "bg-purple-500/10",
       borderColor: "border-purple-500/50",
-      buttonText: "Coming Soon",
+      buttonText: "Explore Now",
       buttonLink: "/events/technical",
-      disabled: true,
+      disabled: false,
       featured: true,
     },
     {
@@ -130,9 +130,9 @@ export default function Eventdata() {
       colorValue: "#E1DB90",
       bgColor: "bg-[#E1DB90]/10",
       borderColor: "border-[#E1DB90]/50",
-      buttonText: "Coming Soon",
+      buttonText: "Explore Now",
       buttonLink: "/events/nontechnical",
-      disabled: true,
+      disabled: false,
       featured: true,
     },
     {
@@ -144,9 +144,9 @@ export default function Eventdata() {
       colorValue: "blue",
       bgColor: "bg-blue-500/10",
       borderColor: "border-blue-500/50",
-      buttonText: "Coming Soon",
+      buttonText: "Explore Now",
       buttonLink: "/events/workshop",
-      disabled: true,
+      disabled: false,
       featured: false,
     },
     {
@@ -158,9 +158,9 @@ export default function Eventdata() {
       colorValue: "orange",
       bgColor: "bg-orange-500/10",
       borderColor: "border-orange-500/50",
-      buttonText: "Coming Soon",
+      buttonText: "Explore Now",
       buttonLink: "/events/hackathon",
-      disabled: true,
+      disabled: false,
       featured: false,
     },
     {
@@ -172,12 +172,12 @@ export default function Eventdata() {
       colorValue: "pink",
       bgColor: "bg-pink-500/10",
       borderColor: "border-pink-500/50",
-      buttonText: "Coming Soon",
+      buttonText: "Register Now",
       buttonLink:
         "https://docs.google.com/forms/d/e/1FAIpQLSc22ZwNER2sL7r51h2vx7gC86HiI6j4Sxx2gUNpnrK5uRgybg/viewform",
       isExternal: true,
       featured: false,
-      disabled: true,
+      disabled: false,
     },
     {
       id: "blood-donation",
@@ -188,12 +188,12 @@ export default function Eventdata() {
       colorValue: "red",
       bgColor: "bg-red-600/10",
       borderColor: "border-red-600/50",
-      buttonText: "Coming Soon",
+      buttonText: "Register Now",
       buttonLink:
         "https://docs.google.com/forms/d/e/1FAIpQLSc_xLDfYSDpkS6bpMiCqn4rlmOEXcH79L-76Lqco18oaDaTJQ/viewform?pli=1",
       isExternal: true,
       featured: false,
-      disabled: true,
+      disabled: false,
     },
 
     {
@@ -205,10 +205,10 @@ export default function Eventdata() {
       colorValue: "green",
       bgColor: "bg-green-500/10",
       borderColor: "border-green-500/50",
-      buttonText: "Coming Soon",
+      buttonText: "Learn More",
       buttonLink: "https://gogreener.texus.io",
       featured: false,
-      disabled: true,
+      disabled: false,
     },
   ];
 
