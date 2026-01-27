@@ -295,8 +295,18 @@ const Hero = () => {
         <div
           className="absolute inset-0"
           style={{
-            background: `${PAPER.bg} url('/textures/paper.png')`,
+            background: `${PAPER.bg} url('/assets/hero-bg.jpg')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `url('/textures/paper.png')`,
             backgroundRepeat: "repeat",
+            opacity: 0.5,
           }}
         />
       </div>

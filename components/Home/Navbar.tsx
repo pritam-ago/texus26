@@ -318,7 +318,6 @@ export default function Navbar() {
           : `${PAPER.bg} url('/textures/paper.png')`,
         backdropFilter: hasScrolled ? "blur(10px)" : "none",
         borderBottom: `4px solid ${PAPER.ink}`,
-        boxShadow: hasScrolled ? `0 4px 0 ${PAPER.shadow}` : "none",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
