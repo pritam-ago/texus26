@@ -73,7 +73,7 @@ const Hero = () => {
         style={{ willChange: "transform" }}
       >
         <Image
-          src={"/assets/hero-bg.webp"}
+          src={"/assets/Herobg.png"}
           alt="Texus26 Hero Background"
           width={1920}
           height={1080}
