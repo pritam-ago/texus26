@@ -174,7 +174,25 @@ const StaggeredText = ({
 };
 
 // Rotating badge
-const RotatingBadge = ({ text, radius = 50 }: { text: string; radius?: number }) => {
+const RotatingBadge = ({ text }: { text: string }) => {
+  const [radius, setRadius] = useState(30);
+
+  useEffect(() => {
+    const updateRadius = () => {
+      if (window.innerWidth >= 768) {
+        setRadius(45); // md and above
+      } else if (window.innerWidth >= 640) {
+        setRadius(38); // sm
+      } else {
+        setRadius(30); // mobile
+      }
+    };
+
+    updateRadius();
+    window.addEventListener('resize', updateRadius);
+    return () => window.removeEventListener('resize', updateRadius);
+  }, []);
+
   return (
     <motion.div
       className="relative"
@@ -325,7 +343,7 @@ const Hero = () => {
               boxShadow: `6px 6px 0 ${PAPER.shadow}`,
             }}
           >
-            <RotatingBadge text="★ FEB ★ 2026" radius={window.innerWidth < 640 ? 30 : 45} />
+            <RotatingBadge text="★ FEB ★ 2026" />
             <div
               className="absolute inset-0 flex items-center justify-center text-xl sm:text-2xl font-extrabold"
               style={{ fontFamily: headingFont, color: PAPER.ink }}
@@ -337,7 +355,7 @@ const Hero = () => {
 
         {/* Main title with 3D perspective */}
         <motion.div 
-          className="text-center mb-8 sm:mb-12 md:mb-16 mt-16 sm:mt-0" 
+          className="text-center mb-8 sm:mb-12 md:mb-16 mt-8 sm:mt-0 lg:-mt-8 xl:-mt-12" 
           style={{ perspective: "1000px" }}
         >
           <motion.div
@@ -366,7 +384,7 @@ const Hero = () => {
             <motion.img
               src="/assets/hero-logo.png"
               alt="TEXUS Logo"
-              className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
+              className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-4xl 2xl:max-w-5xl"
               style={{
                 filter: `drop-shadow(4px 4px 0 ${PAPER.shadow})`,
               }}
@@ -394,7 +412,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 2.2, duration: 0.6 }}
           >
-            {["Go Green", "Culture", "Tech", "Music"].map((tag, i) => (
+            {["Culture", "Tech", "Music"].map((tag, i) => (
               <motion.span
                 key={tag}
                 whileHover={{ y: -5, scale: 1.05 }}
