@@ -1,26 +1,53 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-
 import Link from "next/link";
 
-const Hero = () => {
-  const videoRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
+// Cursor trail particle type
+interface TrailParticle {
+  id: number;
+  x: number;
+  y: number;
+}
 
+const Hero = () => {
+  const [trailParticles, setTrailParticles] = useState<TrailParticle[]>([]);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const particleIdCounter = useRef(0);
+
+  // Cursor trail effect
   useEffect(() => {
-    const handleScroll = () => {
-      if (videoRef.current) {
-        const scrolled = window.scrollY;
-        videoRef.current.style.transform = `translateY(${scrolled * 0.5}px)`;
-      }
+    let throttleTimeout: NodeJS.Timeout | null = null;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Throttle particle creation
+      if (throttleTimeout) return;
+
+      throttleTimeout = setTimeout(() => {
+        throttleTimeout = null;
+      }, 50);
+
+      const newParticle: TrailParticle = {
+        id: ++particleIdCounter.current,
+        x: e.clientX,
+        y: e.clientY,
+      };
+
+      setTrailParticles((prev) => [...prev, newParticle]);
+
+      // Remove particle after animation
+      setTimeout(() => {
+        setTrailParticles((prev) => prev.filter((p) => p.id !== newParticle.id));
+      }, 1000);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (throttleTimeout) clearTimeout(throttleTimeout);
+    };
   }, []);
 
   // 3D effect for logo
@@ -35,7 +62,7 @@ const Hero = () => {
       const x = (e.clientX - left) / width;
       const y = (e.clientY - top) / height;
 
-      const rotateX = (y - 0.5) * 20; // Increased to 20 degrees for more noticeable effect
+      const rotateX = (y - 0.5) * 20;
       const rotateY = (x - 0.5) * 20;
 
       logo.style.transform = `
@@ -66,12 +93,39 @@ const Hero = () => {
 
   return (
     <div className="w-full relative bg-black h-screen overflow-hidden">
-      {/* Video Background */}
-      <div
-        ref={videoRef}
-        className="absolute inset-0 z-10 w-full h-full"
-        style={{ willChange: "transform" }}
-      >
+      {/* Cursor Trail Particles */}
+      <div className="fixed inset-0 z-50 pointer-events-none">
+        {trailParticles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            className="absolute rounded-full"
+            style={{
+              left: particle.x,
+              top: particle.y,
+              width: "8px",
+              height: "8px",
+              x: "-50%",
+              y: "-50%",
+            }}
+            initial={{
+              scale: 1,
+              opacity: 1,
+              background: "radial-gradient(circle, rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))",
+            }}
+            animate={{
+              scale: 0,
+              opacity: 0,
+            }}
+            transition={{
+              duration: 1,
+              ease: "easeOut",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Background Image */}
+      <div className="absolute inset-0 z-10 w-full h-full">
         <Image
           src={"/assets/Herobg.png"}
           alt="Texus26 Hero Background"
@@ -83,7 +137,6 @@ const Hero = () => {
         />
       </div>
 
-      {/* Animated Logo */}
       {/* Main Content Container */}
       <div className="absolute inset-0 z-30 flex flex-col justify-center items-center w-full px-4 mt-16 sm:mt-0">
         <motion.div

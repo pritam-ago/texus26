@@ -273,6 +273,7 @@ const GrassSVG = ({ className = "" }: { className?: string }) => (
 const Hero = () => {
   const [isClient, setIsClient] = useState(false);
   const [leaves, setLeaves] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const leafIdCounter = useRef(0); // Unique ID counter for leaves
 
   useEffect(() => {
     setIsClient(true);
@@ -284,7 +285,7 @@ const Hero = () => {
     // Create 8-12 leaves
     const leafCount = Math.floor(Math.random() * 5) + 8;
     const newLeaves = Array.from({ length: leafCount }, (_, i) => ({
-      id: Date.now() + i,
+      id: ++leafIdCounter.current, // Use incrementing counter for unique IDs
       x: (Math.random() - 0.5) * rect.width * 0.6, // Spread leaves across width from center
       y: rect.height * 0.7, // Start from 70% down the container
     }));
