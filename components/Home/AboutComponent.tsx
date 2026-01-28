@@ -668,11 +668,7 @@ export default function AboutPage() {
                         color: "rgba(18,56,89,0.86)",
                       }}
                     >
-                      SRM Institute of Science and Technology is known for its
-                      strong academic ecosystem, vibrant student culture, and
-                      industry exposure. SRM IST Ramapuram brings the energy —
-                      clubs, events, innovation, and a community that actually
-                      shows up.
+                      SRM Institute of Science and Technology is one of the top ranking universities in India with over 60000+ full time students and more than 4460+ faculty across all the campuses – Kattankulathur, Ramapuram, Vadapalani, Baburayanpettai Campus – all in and around Chennai, Tiruchirappalli (in TN), Modinagar (in UP) & Sonepat (in Haryana) – both of which are located near Delhi NCR, Amaravati (in AP), Gangtok (in Sikkim) – offering a wide range of undergraduate, postgraduate and doctoral programs in six Faculties – Engineering & Technology, Management, Medicine & Health Sciences, Science & Humanities, Law and Agricultural Sciences.
                     </p>
                     <div className="flex flex-wrap gap-2 pt-2">
                       <InkTag text="20,000+ students" dot={PAPER.accent} />

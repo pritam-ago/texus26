@@ -193,22 +193,91 @@ function PolaroidCard({
 export default function Page() {
   const departmentHeads = useMemo(
     () => [
-      { name: "Dr. J. Sutha", department: "CSE" },
-      { name: "Dr. Sankar Ram", department: "AIML & AI" },
-      { name: "Dr. J. Shiny Duela", department: "CS & GT" },
-      { name: "Dr. A. Umamageswari", department: "BDA & CC" },
-      { name: "Dr. Usha Ruby", department: "IoT & CSBS" },
-      { name: "Dr. Rajeswari Mukesh", department: "IT" },
-      { name: "Dr. N. V. S. Sree Rathna Lakshmi", department: "ECE" },
-      { name: "Dr. Srinivasan", department: "EEE" },
-      { name: "Dr. Mathivanan", department: "MECH" },
-      { name: "Dr. Senthil Velan", department: "Civil" },
-      { name: "Dr. Archana Hari", department: "Biotechnology" },
-      { name: "Dr. Ushus", department: "Bio Medical" },
-      { name: "Dr. Rema", department: "EFL" },
-      { name: "Dr. Balamurugan", department: "Physics" },
-      { name: "Dr. Shakila Sathish", department: "Maths" },
-      { name: "Dr. Helen P Kavitha", department: "Chemistry" },
+       {
+    name: "Dr. K. Raja",
+    designation: "Professor & Chairperson",
+    department: "SCSE",
+  },
+  {
+    name: "Dr. J. Sutha",
+    designation: "HoD",
+    department: "CSE",
+  },
+  {
+    name: "Dr. N. Sankar Ram",
+    designation: "HoD",
+    department: "AIML & AI",
+  },
+  {
+    name: "Dr. A. Umamageswari",
+    designation: "HoD",
+    department: "BDA & CC",
+  },
+  {
+    name: "Dr. J. Shiny Duela",
+    designation: "HoD",
+    department: "CS & GT",
+  },
+  {
+    name: "Dr. A. Usha Ruby",
+    designation: "HoD",
+    department: "CSBS & IoT",
+  },
+  {
+    name: "Dr. Rajeswari Mukesh",
+    designation: "HoD",
+    department: "IT",
+  },
+  {
+    name: "Dr. N. V. S. Sree Rathna Lakshmi",
+    designation: "HoD",
+    department: "ECE",
+  },
+  {
+    name: "Dr. K. N. Srinivas",
+    designation: "HoD",
+    department: "EEE",
+  },
+  {
+    name: "Dr. T. Mothilal",
+    designation: "HoD",
+    department: "Mechanical Engineering",
+  },
+  {
+    name: "Dr. R. Divahar",
+    designation: "HoD",
+    department: "Civil Engineering",
+  },
+  {
+    name: "Dr. R. V. Hemavathy",
+    designation: "HoD",
+    department: "Biotechnology",
+  },
+  {
+    name: "Dr. Ushus S. Kumar",
+    designation: "HoD",
+    department: "Biomedical Engineering",
+  },
+  {
+    name: "Dr. N. Balamurugan",
+    designation: "HoD",
+    department: "Physics",
+  },
+  {
+    name: "Dr. Helen P. Kavitha",
+    designation: "HoD",
+    department: "Chemistry",
+  },
+  {
+    name: "Dr. K. G. Nagaradhika",
+    designation: "HoD",
+    department: "LCS",
+  },
+  {
+    name: "Dr. R. Srinivasan",
+    designation: "HoD",
+    department: "Mathematics",
+  },
     ],
     []
   );
@@ -260,12 +329,34 @@ export default function Page() {
             </p>
           </motion.div>
 
-          {/* Layout: 1 big + 2 side */}
-          <div className="mt-10 grid gap-6 lg:grid-cols-3 lg:items-start">
-            {/* Convener (big) */}
-            <div className="lg:col-span-1 lg:sticky lg:top-24">
+{/* Convenor Section */}
+          <div className="mt-10 mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-120px" }}
+              transition={{ duration: 0.4 }}
+              className="text-center mb-8"
+            >
+              <h3
+                className="text-2xl sm:text-3xl font-extrabold mb-3"
+                style={{
+                  fontFamily: headingFont,
+                  color: PAPER.ink,
+                  letterSpacing: "0.04em",
+                }}
+              >
+                CONVENOR
+              </h3>
+              <div className="flex justify-center">
+                <DoodleLine />
+              </div>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              <div></div> {/* Empty space for centering */}
               <PolaroidCard
-                role="Convener"
+                role="Convenor"
                 name="Dr. M. Sakthi Ganesh"
                 img="/assets/aboutImg/DeanET.webp"
                 tint="rgba(65,159,217,0.16)"
@@ -277,32 +368,69 @@ export default function Page() {
                   </>
                 }
               />
+              <div></div> {/* Empty space for centering */}
             </div>
+          </div>
 
-            {/* Co conveners */}
-            <div className="lg:col-span-2 grid sm:grid-cols-2 gap-6">
-              <PolaroidCard
-                role="Co-Convener"
-                name="Dr. Raja Kothandaraman"
-                img="/assets/aboutImg/raja1.png"
-                tint="rgba(3,115,140,0.14)"
-                desc={
-                  <>
-                    Chairperson – School of Computer Science and Engineering
-                    <br />
-                    SRMIST, Ramapuram, Chennai
-                  </>
-                }
-              />
+          {/* Co-Convenor Section */}
+          <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-120px" }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="text-center mb-8"
+            >
+              <h3
+                className="text-2xl sm:text-3xl font-extrabold mb-3"
+                style={{
+                  fontFamily: headingFont,
+                  color: PAPER.ink,
+                  letterSpacing: "0.04em",
+                }}
+              >
+                CO-CONVENOR
+              </h3>
+              <div className="flex justify-center">
+                <DoodleLine />
+              </div>
+            </motion.div>
 
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
               <PolaroidCard
-                role="Co-Convener"
+                role="Co-Convenor"
                 name="Dr. Balika J. Chelliah"
                 img="/assets/aboutImg/vp.webp"
                 tint="rgba(140,117,3,0.14)"
                 desc={
                   <>
                     Vice Principal – Admin
+                    <br />
+                    SRMIST, Ramapuram, Chennai
+                  </>
+                }
+              />
+              <PolaroidCard
+                role="Co-Convenor"
+                name="Dr. Rama Chaithanya T"
+                img="/assets/aboutImg/raja1.png"
+                tint="rgba(3,115,140,0.14)"
+                desc={
+                  <>
+                    VP - Academics
+                    <br />
+                    SRMIST, Ramapuram, Chennai
+                  </>
+                }
+              />
+              <PolaroidCard
+                role="Co-Convenor"
+                name="Dr. Roopa M"
+                img="/assets/aboutImg/raja1.png"
+                tint="rgba(3,115,140,0.14)"
+                desc={
+                  <>
+                    VP - Research
                     <br />
                     SRMIST, Ramapuram, Chennai
                   </>
@@ -336,7 +464,7 @@ export default function Page() {
                 letterSpacing: "0.06em",
               }}
             >
-              HEADS OF DEPARTMENTS
+             ORGANISING COMMITTEE
             </h2>
             <div className="mt-3 flex justify-center">
               <DoodleLine />

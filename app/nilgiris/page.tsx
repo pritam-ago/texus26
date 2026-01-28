@@ -24,6 +24,7 @@ import {
   Video,
 } from "lucide-react";
 import ConferenceDetails from "./ConferenceDetails";
+import DelegateSpeakersPaper from "./DelegateSpeakersPaper";
 
 const NilgirisPage = () => {
   const { scrollYProgress } = useScroll();
@@ -234,6 +235,124 @@ const NilgirisPage = () => {
           </div>
         </div>
       </section>
+
+      {/* International Speaker Section */}
+      <section className="relative py-20 px-4 md:px-20 bg-white/40 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              International Speaker
+            </h2>
+            <p className="text-xl opacity-70">
+              Distinguished legal expert joining us from the United States
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            {/* Left - Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="relative"
+            >
+              <div className="relative rounded-2xl overflow-hidden border-4 shadow-lg"
+                   style={{
+                     borderColor: colors.primary,
+                     boxShadow: `12px 12px 0 ${colors.primary}`,
+                   }}>
+                <div className="relative w-full aspect-[5.7/6]">
+                  <Image
+                    src="/guests/Joshua.jpg"
+                    alt="Dr. Joshua Ryan Dalrymple"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right - Details */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="p-8 rounded-3xl border-4 shadow-lg"
+              style={{
+                background: "rgba(242, 232, 207, 0.9)",
+                borderColor: colors.primary,
+                boxShadow: `8px 8px 0 ${colors.primary}`,
+              }}
+            >
+              <h3
+                className="text-2xl md:text-3xl font-bold mb-3"
+                style={{ color: colors.darkGreen }}
+              >
+                Dr. Joshua Ryan Dalrymple
+              </h3>
+              
+              <div className="space-y-3 mb-6">
+                <p className="text-lg font-semibold" style={{ color: colors.text }}>
+                  Attorney and Lawyer
+                </p>
+                <p className="text-lg font-medium" style={{ color: colors.text }}>
+                  Virginia, USA
+                </p>
+              </div>
+
+              <div className="space-y-4 text-sm md:text-base leading-relaxed" style={{ color: colors.text }}>
+                <p>
+                  Dr. Joshua Ryan Dalrymple is an attorney and Executive Director of SRL Professional Services Pvt. Ltd., Hyderabad, and an Adjunct Professor of Law at Purdue University Global.
+                </p>
+                <p>
+                  A former Dean of School of Law at Woxsen University and faculty member at Liberty University School of Law, he brings nearly two decades of experience practicing and teaching law in United States and India.
+                </p>
+              </div>
+
+              {/* Highlight badges */}
+              <div className="flex flex-wrap gap-3 mt-6">
+                <span className="px-4 py-2 rounded-full text-sm font-semibold border-2 shadow-sm"
+                      style={{
+                        background: colors.primary,
+                        color: "white",
+                        borderColor: colors.darkGreen,
+                        boxShadow: `3px 3px 0 ${colors.darkGreen}`,
+                      }}>
+                  Legal Expert
+                </span>
+                <span className="px-4 py-2 rounded-full text-sm font-semibold border-2 shadow-sm"
+                      style={{
+                        background: colors.accent,
+                        color: colors.text,
+                        borderColor: colors.darkGreen,
+                        boxShadow: `3px 3px 0 ${colors.darkGreen}`,
+                      }}>
+                  International Speaker
+                </span>
+                <span className="px-4 py-2 rounded-full text-sm font-semibold border-2 shadow-sm"
+                      style={{
+                        background: colors.secondary,
+                        color: "white",
+                        borderColor: colors.darkGreen,
+                        boxShadow: `3px 3px 0 ${colors.darkGreen}`,
+                      }}>
+                  Academic Leader
+                </span>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Delegate Speakers Section */}
+      <DelegateSpeakersPaper />
 
       {/* Dynamic Content Section */}
       <AnimatePresence mode="wait">

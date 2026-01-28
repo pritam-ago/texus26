@@ -90,22 +90,23 @@ function PolaroidCard({
 export default function TexusAbout() {
   const departmentHeads = useMemo(
     () => [
-      { name: "Dr. J. Sutha", department: "CSE" },
-      { name: "Dr. Sankar Ram", department: "AIML & AI" },
-      { name: "Dr. J. Shiny Duela", department: "CS & GT" },
-      { name: "Dr. A. Umamageswari", department: "BDA & CC" },
-      { name: "Dr. Usha Ruby", department: "IoT & CSBS" },
-      { name: "Dr. Rajeswari Mukesh", department: "IT" },
-      { name: "Dr. N. V. S. Sree Rathna Lakshmi", department: "ECE" },
-      { name: "Dr. Srinivasan", department: "EEE" },
-      { name: "Dr. Mathivanan", department: "MECH" },
-      { name: "Dr. Senthil Velan", department: "Civil" },
-      { name: "Dr. Archana Hari", department: "Biotechnology" },
-      { name: "Dr. Ushus", department: "Bio Medical" },
-      { name: "Dr. Rema", department: "EFL" },
-      { name: "Dr. Balamurugan", department: "Physics" },
-      { name: "Dr. Shakila Sathish", department: "Maths" },
-      { name: "Dr. Helen P Kavitha", department: "Chemistry" },
+      { name: "Dr. K. Raja", department: "Prof. & Chairperson/SCSE" },
+      { name: "Dr. J. Sutha", department: "HoD (CSE)" },
+      { name: "Dr. N. Sankar Ram", department: "HoD (AIML & AI)" },
+      { name: "Dr. A. Umamageswari", department: "HoD (BDA&CC)" },
+      { name: "Dr. J. Shiny Duela", department: "HoD (CS&GT)" },
+      { name: "Dr. A. Usha Ruby", department: "HoD (CSBS & IoT)" },
+      { name: "Dr. Rajeswari Mukesh", department: "HoD (IT)" },
+      { name: "Dr. Sree Rathna Lakshmi.N.V.S", department: "HOD (ECE)" },
+      { name: "Dr. K. N. Srinivas", department: "HoD (EEE)" },
+      { name: "Dr. T. Mothilal", department: "HoD (Mech)" },
+      { name: "Dr. R. Divahar", department: "HoD (Civil)" },
+      { name: "Dr. R. V. Hemavathy", department: "HoD (Bio-Tech)" },
+      { name: "Dr. Ushus.S.Kumar", department: "HoD (Bio-Medical)" },
+      { name: "Dr. N. Balamurugan", department: "HoD (Physics)" },
+      { name: "Dr. Helen P. Kavitha", department: "HoD (Chemistry)" },
+      { name: "Dr. K. G. Nagaradhika", department: "HoD (LCS)" },
+      { name: "Dr. R. Srinivasan", department: "HoD (Maths)" },
     ],
     []
   );
@@ -233,12 +234,26 @@ export default function TexusAbout() {
             </p>
           </motion.div>
 
-          {/* Layout: 1 big + 2 side */}
-          <div className="grid gap-6 lg:grid-cols-3 lg:items-start">
-            {/* Convener (big) */}
-            <div className="lg:col-span-1 lg:sticky lg:top-24">
+{/* Convenor Section */}
+          <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-120px" }}
+              transition={{ duration: 0.4 }}
+              className="text-center mb-8"
+            >
+              <h3 className="text-white text-center font-thuast text-2xl md:text-3xl mb-3">
+                CONVENOR
+              </h3>
+              <div className="flex justify-center">
+                <div className="h-1 w-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+              </div>
+            </motion.div>
+
+            <div className="flex justify-center">
               <PolaroidCard
-                role="Convener"
+                role="Convenor"
                 name="Dr. M. Sakthi Ganesh"
                 img="/assets/aboutImg/DeanET.webp"
                 tint="rgba(65,159,217,0.2)"
@@ -251,11 +266,28 @@ export default function TexusAbout() {
                 }
               />
             </div>
+          </div>
 
-            {/* Co conveners */}
-            <div className="lg:col-span-2 grid sm:grid-cols-2 gap-6">
+          {/* Co-Convenor Section */}
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-120px" }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="text-center mb-8"
+            >
+              <h3 className="text-white text-center font-thuast text-2xl md:text-3xl mb-3">
+                CO-CONVENOR
+              </h3>
+              <div className="flex justify-center">
+                <div className="h-1 w-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+              </div>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
               <PolaroidCard
-                role="Co-Convener"
+                role="Co-Convenor"
                 name="Dr. Raja Kothandaraman"
                 img="/assets/aboutImg/raja1.png"
                 tint="rgba(3,115,140,0.2)"
@@ -269,7 +301,7 @@ export default function TexusAbout() {
               />
 
               <PolaroidCard
-                role="Co-Convener"
+                role="Co-Convenor"
                 name="Dr. Balika J. Chelliah"
                 img="/assets/aboutImg/vp.webp"
                 tint="rgba(140,117,3,0.2)"
@@ -299,7 +331,7 @@ export default function TexusAbout() {
             className="text-center mb-16"
           >
             <h2 className="text-white text-center font-thuast text-3xl md:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
-              HEADS OF DEPARTMENTS
+              ORGANISING COMMITTEE
             </h2>
             <div className="flex justify-center mb-4">
               <div className="h-1 w-32 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
