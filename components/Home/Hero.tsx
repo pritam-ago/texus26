@@ -271,10 +271,30 @@ const GrassSVG = ({ className = "" }: { className?: string }) => (
 
 const Hero = () => {
   const [isClient, setIsClient] = useState(false);
+  const [leaves, setLeaves] = useState<Array<{ id: number; x: number; y: number }>>([]);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const createLeaves = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    
+    // Create 8-12 leaves
+    const leafCount = Math.floor(Math.random() * 5) + 8;
+    const newLeaves = Array.from({ length: leafCount }, (_, i) => ({
+      id: Date.now() + i,
+      x: (Math.random() - 0.5) * rect.width * 0.6, // Spread leaves across width from center
+      y: rect.height * 0.7, // Start from 70% down the container
+    }));
+    
+    setLeaves((prev) => [...prev, ...newLeaves]);
+    
+    // Remove leaves after animation
+    setTimeout(() => {
+      setLeaves((prev) => prev.filter((leaf) => !newLeaves.find((nl) => nl.id === leaf.id)));
+    }, 3000);
+  };
 
   // Trees are now static (no animation)
 
@@ -388,7 +408,9 @@ const Hero = () => {
             }}
             transition={{ delay: 0.3, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             style={{ transformStyle: "preserve-3d", cursor: "pointer" }}
-            className="flex justify-center items-center"
+            className="flex justify-center items-center relative"
+            onMouseEnter={createLeaves}
+            onClick={createLeaves}
           >
             {/* Hero Logo Image */}
             <motion.img
@@ -402,6 +424,40 @@ const Hero = () => {
                 filter: `drop-shadow(6px 6px 0 ${PAPER.shadow}) brightness(1.1)`,
               }}
             />
+            
+            {/* Falling Leaves */}
+            {leaves.map((leaf) => (
+              <motion.img
+                key={leaf.id}
+                src="/textures/drowning-leaf.png"
+                alt="falling leaf"
+                className="absolute pointer-events-none"
+                initial={{
+                  left: "50%",
+                  top: leaf.y,
+                  x: leaf.x,
+                  y: 0,
+                  scale: 0.3 + Math.random() * 0.4,
+                  rotate: Math.random() * 360,
+                  opacity: 1,
+                }}
+                animate={{
+                  y: 400 + Math.random() * 200,
+                  x: leaf.x + (Math.random() - 0.5) * 200,
+                  rotate: Math.random() * 720 - 360,
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 2 + Math.random() * 1,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  zIndex: 100,
+                }}
+              />
+            ))}
           </motion.div>
 
           {/* Subtitle with stagger effect */}
