@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const PAPER = {
   bg: "#F2F2F2",
@@ -413,17 +414,25 @@ const Hero = () => {
             onClick={createLeaves}
           >
             {/* Hero Logo Image */}
-            <motion.img
-              src="/assets/hero-logo.png"
-              alt="TEXUS Logo"
-              className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-4xl 2xl:max-w-5xl"
-              style={{
-                filter: `drop-shadow(4px 4px 0 ${PAPER.shadow})`,
-              }}
+            <motion.div
+              className="w-full flex justify-center"
               whileHover={{
                 filter: `drop-shadow(6px 6px 0 ${PAPER.shadow}) brightness(1.1)`,
               }}
-            />
+              style={{
+                filter: `drop-shadow(4px 4px 0 ${PAPER.shadow})`,
+              }}
+            >
+              <Image
+                src="/assets/hero-logo.webp"
+                alt="TEXUS Logo"
+                width={8192}
+                height={5461}
+                className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-4xl 2xl:max-w-5xl"
+                priority
+                quality={95}
+              />
+            </motion.div>
             
             {/* Falling Leaves */}
             {leaves.map((leaf) => (
