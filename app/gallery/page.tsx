@@ -15,17 +15,17 @@ import {
   Vignette,
 } from "@/components/PaperComponents";
 
-// Updated InkBadge to match Hero section style (simple border)
-const InkBadge = ({ text, color }: { text: string; color: string }) => (
+// Updated InkBadge to match navbar active button style
+const InkBadge = ({ text }: { text: string }) => (
   <motion.span
-    whileHover={{ y: -2, rotate: -1 }}
+    whileHover={{ y: -2, scale: 1.05 }}
     transition={{ type: "spring", stiffness: 500, damping: 22 }}
-    className="inline-flex items-center px-4 py-2 rounded-full text-sm md:text-base font-extrabold tracking-wide select-none"
+    className="inline-flex items-center px-4 py-2 rounded-xl text-sm md:text-base font-extrabold tracking-wider select-none"
     style={{
-      background: color,
+      background: PAPER.accent,
       color: PAPER.ink,
       fontFamily: headingFont,
-      border: `2px solid ${PAPER.ink}`,
+      border: `3px solid ${PAPER.ink}`,
       boxShadow: `3px 3px 0 ${PAPER.shadow}`,
     }}
   >
@@ -121,12 +121,10 @@ const SectionHeader = ({
   title,
   subtitle,
   badgeText,
-  badgeColor,
 }: {
   title: string;
   subtitle: string;
   badgeText: string;
-  badgeColor: string;
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.5 });
@@ -140,7 +138,7 @@ const SectionHeader = ({
       className="text-center mb-12 px-4"
     >
       <div className="flex justify-center mb-4">
-        <InkBadge text={badgeText} color={badgeColor} />
+        <InkBadge text={badgeText} />
       </div>
 
       <h2
@@ -240,6 +238,20 @@ export default function Gallery() {
     { src: "/assets/gallery-assets/texus-2k24-gala/texus-2k24-gala (4).jpeg", alt: "2024 Gala 4" },
   ];
 
+  // Combine all 2025 images into one array
+  const allImages2025 = [
+    ...hackathon2025,
+    ...bloodDonation2025,
+    ...galaRemastered2025,
+    ...flashmob2025,
+  ];
+
+  // Combine all 2024 images into one array
+  const allImages2024 = [
+    ...hackathonImages2024,
+    ...galaImages2024,
+  ];
+
   // Generate 2023 images array
   const texus2023 = Array.from({ length: 20 }, (_, i) => ({
     src: `/assets/gallery-assets/texus-2k23/texus-2k23 (${i + 1}).jpg`,
@@ -310,142 +322,62 @@ export default function Gallery() {
           </p>
         </motion.div>
 
-        {/* TEXUS 2025 HACKATHON */}
+        {/* TEXUS 2025 - All Events */}
         <section className="mb-32">
           <SectionHeader
-            title="TEXUS 2025 Hackathon"
-            subtitle="Code your ideas, create the future, conquer challenges, and innovate endlessly!"
+            title="TEXUS 2025"
+            subtitle="Innovation, community, and unforgettable moments from our latest edition"
             badgeText="2025"
-            badgeColor={PAPER.purple}
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {hackathon2025.map((image, index) => (
-              <PolaroidCard
-                key={index}
-                src={image.src}
-                alt={image.alt}
-                rotate={getRandomRotation(index)}
-              />
+          <div className="flex flex-wrap justify-center gap-8">
+            {allImages2025.map((image, index) => (
+              <div key={index} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.333rem)]">
+                <PolaroidCard
+                  src={image.src}
+                  alt={image.alt}
+                  rotate={getRandomRotation(index)}
+                />
+              </div>
             ))}
           </div>
         </section>
 
-        {/* BLOOD DONATION */}
+        {/* TEXUS 2024 - All Events */}
         <section className="mb-32">
           <SectionHeader
-            title="Blood Donation Campaign"
-            subtitle="A drop of blood, a moment of hope"
-            badgeText="2025"
-            badgeColor={PAPER.pink}
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {bloodDonation2025.map((image, index) => (
-              <PolaroidCard
-                key={index}
-                src={image.src}
-                alt={image.alt}
-                rotate={getRandomRotation(index)}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* GALA REMASTERED */}
-        <section className="mb-32">
-          <SectionHeader
-            title="TEXUS 2025 Gala Remastered"
-            subtitle="When students come together, magic happens"
-            badgeText="2025"
-            badgeColor={PAPER.accent}
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {galaRemastered2025.map((image, index) => (
-              <PolaroidCard
-                key={index}
-                src={image.src}
-                alt={image.alt}
-                rotate={getRandomRotation(index)}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* FLASHMOB / LAUNCH */}
-        <section className="mb-32">
-          <SectionHeader
-            title="TEXUS 2025 Launch"
-            subtitle="Where rhythm meets unity—students come together to create unforgettable moments"
-            badgeText="2025"
-            badgeColor={PAPER.accent}
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {flashmob2025.map((image, index) => (
-              <PolaroidCard
-                key={index}
-                src={image.src}
-                alt={image.alt}
-                rotate={getRandomRotation(index)}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* 2024 HACKATHON */}
-        <section className="mb-32">
-          <SectionHeader
-            title="TEXUS 2K24 Hackathon"
-            subtitle="Where innovation meets code—teams collaborate, compete, and create solutions that shape the future"
+            title="TEXUS 2024"
+            subtitle="Where innovation meets code—celebrating last year's achievements"
             badgeText="2024"
-            badgeColor={PAPER.lightAccent}
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {hackathonImages2024.map((image, index) => (
-              <PolaroidCard
-                key={index}
-                src={image.src}
-                alt={image.alt}
-                rotate={getRandomRotation(index)}
-              />
+          <div className="flex flex-wrap justify-center gap-8">
+            {allImages2024.map((image, index) => (
+              <div key={index} className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.333rem)]">
+                <PolaroidCard
+                  src={image.src}
+                  alt={image.alt}
+                  rotate={getRandomRotation(index)}
+                />
+              </div>
             ))}
           </div>
         </section>
 
-        {/* 2024 GALA */}
-        <section className="mb-32">
-          <SectionHeader
-            title="TEXUS 2K24 Gala"
-            subtitle="A night of celebration, connection, and unforgettable memories"
-            badgeText="2024"
-            badgeColor={PAPER.accent}
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {galaImages2024.map((image, index) => (
-              <PolaroidCard
-                key={index}
-                src={image.src}
-                alt={image.alt}
-                rotate={getRandomRotation(index)}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* 2023 */}
+        {/* TEXUS 2023 - All Events */}
         <section className="mb-20">
           <SectionHeader
-            title="TEXUS 2K23"
+            title="TEXUS 2023"
             subtitle="Where it all began—celebrating the legacy of innovation and community"
             badgeText="2023"
-            badgeColor={PAPER.accent}
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {texus2023.map((image, index) => (
-              <PolaroidCard
-                key={index}
-                src={image.src}
-                alt={image.alt}
-                rotate={getRandomRotation(index)}
-              />
+              <div key={index} className="w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]">
+                <PolaroidCard
+                  src={image.src}
+                  alt={image.alt}
+                  rotate={getRandomRotation(index)}
+                />
+              </div>
             ))}
           </div>
         </section>

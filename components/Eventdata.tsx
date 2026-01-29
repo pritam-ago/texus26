@@ -1,21 +1,20 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { Button } from "./button";
+import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-// import TechnicalLottie from "@/public/assets/lottie/technical-event.json";
-// import NonTechnicalLottie from "@/public/assets/lottie/non-technical-event.json";
-// import WorkshopLottie from "@/public/assets/lottie/workshop.json";
-// import HackathonLottie from "@/public/assets/lottie/hackathon.json";
-// import Lottie from "lottie-react";
+import {
+  PaperCard,
+  PaperHeading,
+  PaperText,
+  PaperButton,
+  PAPER,
+} from "./PaperComponents";
 
 // Add type definitions
 interface EventCardProps {
   title: string;
   description: string | React.ReactNode;
   color: string;
-  bgColor?: string;
-  borderColor?: string;
   buttonText: string;
   buttonLink: string;
   isExternal?: boolean;
@@ -23,13 +22,11 @@ interface EventCardProps {
   index: number;
 }
 
-// Card component for grid layout
+// Card component for grid layout with paper theme
 const EventCard = ({
   title,
   description,
   color,
-  bgColor = "bg-black/40",
-  borderColor = "border-gray-800",
   buttonText,
   buttonLink,
   isExternal = false,
@@ -38,45 +35,74 @@ const EventCard = ({
 }: EventCardProps) => {
   return (
     <motion.div
-      className={`rounded-xl overflow-hidden border ${borderColor} backdrop-blur-sm ${bgColor} transition-all duration-300 hover:shadow-lg hover:shadow-${color}/20 h-full flex flex-col`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
+      className="h-full"
     >
-      {/* <Lottie
-        className="absolute top-0 left-0 w-full h-full"
-        animationData={lottie}
-        loop={true}
-      /> */}
-      <div className="p-5 flex-grow flex flex-col">
-        <h3 className={`${color} font-thuast text-xl md:text-2xl mb-3`}>
-          {title}
-        </h3>
-        <div className="flex-grow mb-4 text-sm md:text-base text-white/80 font-montserrat">
-          {description}
-        </div>
-        <Button
-          variant="outline"
-          asChild={!disabled}
-          className={`mt-auto w-full hover:${color.replace(
-            "text-",
-            "bg-"
-          )} transition-all duration-300`}
-          disabled={disabled}
-        >
+      <PaperCard className="h-full flex flex-col" withTape={true} withTrees={false}>
+        <div className="flex-grow flex flex-col">
+          <div
+            className="inline-block px-3 py-1.5 mb-3 rounded-full text-sm font-bold"
+            style={{
+              backgroundColor: PAPER.accent,
+              border: `2px solid ${PAPER.ink}`,
+              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+              color: PAPER.ink,
+            }}
+          >
+            {title}
+          </div>
+          <PaperText className="flex-grow mb-4 text-sm">
+            {description}
+          </PaperText>
           {disabled ? (
-            <span className="font-thuast">{buttonText}</span>
-          ) : isExternal ? (
-            <Link href={buttonLink} target="_blank" className="font-thuast">
+            <button
+              disabled={true}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-extrabold opacity-50 cursor-not-allowed"
+              style={{
+                background: "linear-gradient(135deg, #D9695F 0%, #F27E7E 100%)",
+                color: PAPER.white,
+                border: `3px solid ${PAPER.ink}`,
+                boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                fontFamily: "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)",
+              }}
+            >
               {buttonText}
+            </button>
+          ) : isExternal ? (
+            <Link href={buttonLink} target="_blank" className="w-full">
+              <button
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-extrabold transition-transform hover:scale-105 hover:-translate-y-1 active:translate-y-[1px]"
+                style={{
+                  background: "linear-gradient(135deg, #D9695F 0%, #F27E7E 100%)",
+                  color: PAPER.white,
+                  border: `3px solid ${PAPER.ink}`,
+                  boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                  fontFamily: "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)",
+                }}
+              >
+                {buttonText}
+              </button>
             </Link>
           ) : (
-            <Link href={buttonLink} className="font-thuast">
-              {buttonText}
+            <Link href={buttonLink} className="w-full">
+              <button
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-extrabold transition-transform hover:scale-105 hover:-translate-y-1 active:translate-y-[1px]"
+                style={{
+                  background: "linear-gradient(135deg, #D9695F 0%, #F27E7E 100%)",
+                  color: PAPER.white,
+                  border: `3px solid ${PAPER.ink}`,
+                  boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                  fontFamily: "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)",
+                }}
+              >
+                {buttonText}
+              </button>
             </Link>
           )}
-        </Button>
-      </div>
+        </div>
+      </PaperCard>
     </motion.div>
   );
 };
@@ -87,9 +113,6 @@ interface Event {
   title: string;
   shortDescription: string;
   color: string;
-  colorValue: string;
-  bgColor: string;
-  borderColor: string;
   buttonText: string;
   buttonLink: string;
   isExternal?: boolean;
@@ -97,25 +120,16 @@ interface Event {
   featured: boolean;
 }
 
-// Define Category interface
-interface Category {
-  name: string;
-  id: string;
-}
-
 // Category tabs with grid layout
 export default function Eventdata() {
-  // Define events data - removed 3D model related properties
+  // Define events data with paper theme colors
   const events: Event[] = [
     {
       id: "technical",
       title: "TECHNICAL EVENTS",
       shortDescription:
         "Experience 40+ exhilarating tech events at Texus Fest!",
-      color: "text-purple-500",
-      colorValue: "purple",
-      bgColor: "bg-purple-500/10",
-      borderColor: "border-purple-500/50",
+      color: PAPER.purple,
       buttonText: "Explore Now",
       buttonLink: "/events/technical",
       disabled: false,
@@ -126,10 +140,7 @@ export default function Eventdata() {
       title: "NON TECHNICAL EVENTS",
       shortDescription:
         "Embark on a journey of creativity with 15+ non-technical events!",
-      color: "text-[#E1DB90]",
-      colorValue: "#E1DB90",
-      bgColor: "bg-[#E1DB90]/10",
-      borderColor: "border-[#E1DB90]/50",
+      color: "#E1DB90",
       buttonText: "Explore Now",
       buttonLink: "/events/nontechnical",
       disabled: false,
@@ -140,10 +151,7 @@ export default function Eventdata() {
       title: "WORKSHOPS",
       shortDescription:
         "Enhance your skills with 7+ expert-led workshops designed for hands-on learning.",
-      color: "text-blue-500",
-      colorValue: "blue",
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/50",
+      color: "#3B82F6",
       buttonText: "Explore Now",
       buttonLink: "/events/workshop",
       disabled: false,
@@ -154,10 +162,7 @@ export default function Eventdata() {
       title: "HACKATHON",
       shortDescription:
         "Join HackVerse for a 24-hour in-person hackathon embracing Web3 innovation.",
-      color: "text-orange-500",
-      colorValue: "orange",
-      bgColor: "bg-orange-500/10",
-      borderColor: "border-orange-500/50",
+      color: "#F97316",
       buttonText: "Explore Now",
       buttonLink: "/events/hackathon",
       disabled: false,
@@ -168,10 +173,7 @@ export default function Eventdata() {
       title: "SOUVENIR",
       shortDescription:
         "Celebrate the spirit of TEXUS '26 with a collection of memories and creativity.",
-      color: "text-pink-500",
-      colorValue: "pink",
-      bgColor: "bg-pink-500/10",
-      borderColor: "border-pink-500/50",
+      color: PAPER.pink,
       buttonText: "Register Now",
       buttonLink:
         "https://docs.google.com/forms/d/e/1FAIpQLSc22ZwNER2sL7r51h2vx7gC86HiI6j4Sxx2gUNpnrK5uRgybg/viewform",
@@ -184,10 +186,7 @@ export default function Eventdata() {
       title: "BLOOD DONATION CAMP",
       shortDescription:
         "Make a difference by donating blood and helping those in need.",
-      color: "text-red-600",
-      colorValue: "red",
-      bgColor: "bg-red-600/10",
-      borderColor: "border-red-600/50",
+      color: "#DC2626",
       buttonText: "Register Now",
       buttonLink:
         "https://docs.google.com/forms/d/e/1FAIpQLSc_xLDfYSDpkS6bpMiCqn4rlmOEXcH79L-76Lqco18oaDaTJQ/viewform?pli=1",
@@ -195,16 +194,12 @@ export default function Eventdata() {
       featured: false,
       disabled: false,
     },
-
     {
       id: "go-greener",
       title: "GO GREENER",
       shortDescription:
         "Experience our eco-friendly initiative to create a sustainable future for our planet.",
-      color: "text-green-500",
-      colorValue: "green",
-      bgColor: "bg-green-500/10",
-      borderColor: "border-green-500/50",
+      color: PAPER.green,
       buttonText: "Learn More",
       buttonLink: "https://gogreener.texus.io",
       featured: false,
@@ -233,10 +228,24 @@ export default function Eventdata() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <h1 className="text-white text-center font-thuast text-4xl md:text-7xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+        <h1
+          className="text-center font-extrabold text-4xl md:text-7xl mb-6"
+          style={{
+            color: PAPER.ink,
+            WebkitTextStroke: `2px ${PAPER.ink}`,
+            fontFamily: "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)",
+          }}
+        >
           EVENTS
         </h1>
-        <p className="text-white text-sm md:text-lg font-montserrat text-center max-w-2xl mx-auto">
+        <p
+          className="text-sm md:text-lg text-center max-w-2xl mx-auto"
+          style={{
+            color: PAPER.ink,
+            opacity: 0.8,
+            fontFamily: "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)",
+          }}
+        >
           Experience 60+ exhilarating events at Texus Fest!
           <br />
           From workshops to coding challenges and much more
@@ -257,8 +266,6 @@ export default function Eventdata() {
             title={technicalEvent.title}
             description={technicalEvent.shortDescription}
             color={technicalEvent.color}
-            bgColor={technicalEvent.bgColor}
-            borderColor={technicalEvent.borderColor}
             buttonText={technicalEvent.buttonText}
             buttonLink={technicalEvent.buttonLink}
             isExternal={technicalEvent.isExternal}
@@ -273,8 +280,6 @@ export default function Eventdata() {
             title={nonTechnicalEvent.title}
             description={nonTechnicalEvent.shortDescription}
             color={nonTechnicalEvent.color}
-            bgColor={nonTechnicalEvent.bgColor}
-            borderColor={nonTechnicalEvent.borderColor}
             buttonText={nonTechnicalEvent.buttonText}
             buttonLink={nonTechnicalEvent.buttonLink}
             isExternal={nonTechnicalEvent.isExternal}
@@ -297,8 +302,6 @@ export default function Eventdata() {
             title={workshopEvent.title}
             description={workshopEvent.shortDescription}
             color={workshopEvent.color}
-            bgColor={workshopEvent.bgColor}
-            borderColor={workshopEvent.borderColor}
             buttonText={workshopEvent.buttonText}
             buttonLink={workshopEvent.buttonLink}
             isExternal={workshopEvent.isExternal}
@@ -313,8 +316,6 @@ export default function Eventdata() {
             title={hackathonEvent.title}
             description={hackathonEvent.shortDescription}
             color={hackathonEvent.color}
-            bgColor={hackathonEvent.bgColor}
-            borderColor={hackathonEvent.borderColor}
             buttonText={hackathonEvent.buttonText}
             buttonLink={hackathonEvent.buttonLink}
             isExternal={hackathonEvent.isExternal}
@@ -337,8 +338,6 @@ export default function Eventdata() {
             title={bloodDonationEvent.title}
             description={bloodDonationEvent.shortDescription}
             color={bloodDonationEvent.color}
-            bgColor={bloodDonationEvent.bgColor}
-            borderColor={bloodDonationEvent.borderColor}
             buttonText={bloodDonationEvent.buttonText}
             buttonLink={bloodDonationEvent.buttonLink}
             isExternal={bloodDonationEvent.isExternal}
@@ -353,8 +352,6 @@ export default function Eventdata() {
             title={souvenirEvent.title}
             description={souvenirEvent.shortDescription}
             color={souvenirEvent.color}
-            bgColor={souvenirEvent.bgColor}
-            borderColor={souvenirEvent.borderColor}
             buttonText={souvenirEvent.buttonText}
             buttonLink={souvenirEvent.buttonLink}
             isExternal={souvenirEvent.isExternal}
@@ -369,8 +366,6 @@ export default function Eventdata() {
             title={goGreenerEvent.title}
             description={goGreenerEvent.shortDescription}
             color={goGreenerEvent.color}
-            bgColor={goGreenerEvent.bgColor}
-            borderColor={goGreenerEvent.borderColor}
             buttonText={goGreenerEvent.buttonText}
             buttonLink={goGreenerEvent.buttonLink}
             isExternal={goGreenerEvent.isExternal}

@@ -10,6 +10,7 @@ import {
 } from "framer-motion";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { PAPER } from "../PaperComponents";
 
 const Proshows = () => {
   const containerRef = useRef(null);
@@ -69,8 +70,11 @@ const Proshows = () => {
     <div ref={containerRef} className="relative h-[150vh]">
       <div className="sticky top-0 h-screen overflow-hidden">
         <motion.div
-          className="flex flex-col w-full justify-center items-center bg-gradient-to-br from-[#241422] via-[#540148] to-[#030001] p-4 h-full"
-          style={{ opacity: contentOpacity }}
+          className="flex flex-col w-full justify-center items-center p-4 h-full"
+          style={{ 
+            opacity: contentOpacity,
+            background: `${PAPER.bg} url('/textures/paper.png')`,
+          }}
         >
           {/* Main content container - flex-col on mobile, flex-row on larger screens */}
           <div className="flex flex-col md:flex-row gap-4 w-full justify-center items-center mt-4">
@@ -83,7 +87,7 @@ const Proshows = () => {
                     className="w-full h-full flex justify-center items-center"
                   >
                     <Image
-                      src="/assets/proshow/purplevinyl.png"
+                      src="/assets/proshow/vinyl.png"
                       alt="vinyl disc"
                       width={isMobile ? 300 : 1920}
                       height={isMobile ? 300 : 1080}
@@ -111,7 +115,11 @@ const Proshows = () => {
             >
               <div className="flex flex-col md:flex-row md:gap-5 justify-center items-center">
                 <motion.h1
-                  className="text-transparent [-webkit-text-stroke:1px_#fff] text-4xl font-poppins font-black md:text-7xl"
+                  className="text-4xl font-poppins font-black md:text-7xl"
+                  style={{
+                    color: PAPER.ink,
+                    WebkitTextStroke: `1px ${PAPER.ink}`,
+                  }}
                   variants={dropAnimation}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
@@ -119,19 +127,13 @@ const Proshows = () => {
                 >
                   PROSHOWS
                 </motion.h1>
-                {/* <motion.h1
-                  className="text-transparent [-webkit-text-stroke:1px_#fff] text-4xl font-poppins font-extrabold md:text-7xl"
-                  variants={dropAnimation}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                  custom={1}
-                >
-                  ON
-                </motion.h1> */}
               </div>
               <div className="justify-center items-center gap-1 md:gap-4 flex flex-row">
                 <motion.h1
-                  className="text-white font-poppins text-4xl flex md:text-7xl font-extrabold"
+                  className="font-poppins text-4xl flex md:text-7xl font-extrabold"
+                  style={{
+                    color: PAPER.accent,
+                  }}
                   variants={dropAnimation}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
@@ -139,17 +141,11 @@ const Proshows = () => {
                 >
                   COMING
                 </motion.h1>
-                {/* <motion.h1
-                  className="text-white font-poppins text-4xl flex md:text-7xl font-extrabold mx-0"
-                  variants={dropAnimation}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                  custom={2.2}
-                >
-                  &
-                </motion.h1> */}
                 <motion.h1
-                  className="text-white font-poppins text-4xl w-full flex md:text-7xl font-extrabold"
+                  className="font-poppins text-4xl w-full flex md:text-7xl font-extrabold"
+                  style={{
+                    color: PAPER.accent,
+                  }}
                   variants={dropAnimation}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
@@ -159,7 +155,11 @@ const Proshows = () => {
                 </motion.h1>
               </div>
               <motion.h1
-                className="text-transparent [-webkit-text-stroke:1px_#fff] text-4xl md:text-7xl font-poppins font-extrabold"
+                className="text-4xl md:text-7xl font-poppins font-extrabold"
+                style={{
+                  color: PAPER.ink,
+                  WebkitTextStroke: `1px ${PAPER.ink}`,
+                }}
                 variants={dropAnimation}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
@@ -176,7 +176,13 @@ const Proshows = () => {
               >
                 <Link href="/events/musical-night">
                   <Button
-                    className="font-montserrat font-bold text-white text-xl bg-blue-600"
+                    className="font-montserrat font-bold text-xl"
+                    style={{
+                      backgroundColor: PAPER.accent,
+                      color: PAPER.ink,
+                      border: `3px solid ${PAPER.ink}`,
+                      boxShadow: `4px 4px 0 ${PAPER.shadow}`,
+                    }}
                   >
                     Let's Rock!
                   </Button>

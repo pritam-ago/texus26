@@ -266,16 +266,26 @@ const AboutPage = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: false, margin: "-100px" }}
           >
-            <motion.h1
-              className="text-4xl md:text-6xl font-thuast bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 mb-6"
+            <motion.div
+              className="mb-6 relative w-full max-w-2xl mx-auto"
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.5 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: false, margin: "-100px" }}
             >
-              ABOUT TEXUS
-            </motion.h1>
+              <Image
+                src="/assets/texts/texus 2026.png"
+                alt="ABOUT TEXUS"
+                width={600}
+                height={200}
+                className="w-full h-auto"
+                priority
+                style={{
+                  filter: "drop-shadow(0 0 30px rgba(147, 51, 234, 0.5))",
+                }}
+              />
+            </motion.div>
             <motion.div
               className="max-w-4xl mx-auto relative"
               initial={{ opacity: 0, y: 20 }}

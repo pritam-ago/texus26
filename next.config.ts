@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "smbptyczowctaonddpsx.supabase.co",
+      },
+      {
+        protocol: "https",
         hostname: "aceternity.com",
       },
       {

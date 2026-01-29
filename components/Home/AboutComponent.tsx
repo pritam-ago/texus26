@@ -537,17 +537,19 @@ export default function AboutPage() {
             </div>
 
             {/* Title */}
-            <h1
-              className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] px-4"
-              style={{
-                fontFamily: headingFont,
-                color: PAPER.ink,
-                letterSpacing: "0.06em",
-                textShadow: "2px 2px 0 rgba(14,42,68,0.15)",
-              }}
-            >
-              TEXUS'26
-            </h1>
+            <div className="relative w-full max-w-md mx-auto px-4">
+              <Image
+                src="/assets/texts/texus 2026.png"
+                alt="TEXUS'26"
+                width={500}
+                height={150}
+                className="w-full h-auto"
+                priority
+                style={{
+                  filter: "drop-shadow(2px 2px 0 rgba(14,42,68,0.15))",
+                }}
+              />
+            </div>
 
             <DoodleLine />
 
