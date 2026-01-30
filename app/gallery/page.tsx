@@ -180,6 +180,10 @@ export default function Gallery() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const hackathon2025 = [
+    { src: "/assets/gallery-hackathon/dj5.jpg", alt: "dj 5" },
+    { src: "/assets/gallery-hackathon/dj3.jpeg", alt: "dj 3" },
+    { src: "/assets/gallery-hackathon/dj1.jpeg", alt: "dj 1" },
+    { src: "/assets/gallery-hackathon/dj2.jpeg", alt: "dj 2" },
     { src: "/assets/gallery-hackathon/hackathon1.jpg", alt: "Hackathon 1" },
     { src: "/assets/gallery-hackathon/hackathon2.jpg", alt: "Hackathon 2" },
     { src: "/assets/gallery-hackathon/hackathon7.jpg", alt: "Hackathon 3" },

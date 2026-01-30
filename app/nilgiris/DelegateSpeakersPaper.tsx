@@ -17,16 +17,18 @@ const SpeakerCard = ({
   src,
   name,
   designation,
+  objectPosition = 'center center',
 }: {
   src: string;
   name: string;
   designation: string;
+  objectPosition?: string;
 }) => {
   return (
     <motion.div
       whileHover={{ y: -8, rotate: 2, scale: 1.05 }}
       transition={{ type: "spring", stiffness: 260, damping: 18 }}
-      className="relative mx-4 flex-shrink-0 w-56"
+      className="relative mx-10 flex-shrink-0 w-72"
     >
       <Tape className="-top-4 left-1/4 z-20" rotate={-6} />
 
@@ -38,13 +40,20 @@ const SpeakerCard = ({
           boxShadow: `8px 8px 0 ${PAPER.shadow}`,
         }}
       >
-        <div className="relative w-full aspect-square rounded-lg overflow-hidden">
-          <Image src={src} alt={name} fill className="object-cover" />
+        <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-gray-100">
+          <Image 
+            src={src} 
+            alt={name} 
+            fill 
+            className="object-cover"
+            style={{ objectPosition }}
+            sizes="288px"
+          />
         </div>
 
-        <div className="mt-3 text-center">
+        <div className="mt-2 text-center">
           <h3
-            className="text-sm font-extrabold"
+            className="text-sm font-extrabold leading-tight"
             style={{ fontFamily: headingFont, color: PAPER.ink }}
           >
             {name}
@@ -72,10 +81,12 @@ const ScrollRow = ({
   items: any[];
   reverse?: boolean;
 }) => {
-  const loop = [...items, ...items];
+  // Create a longer sequence to prevent visible duplicates
+  // By repeating 6 times, we ensure enough variety on screen
+  const loop = [...items, ...items, ...items, ...items, ...items, ...items];
 
   return (
-    <div className="overflow-hidden w-full py-10">
+    <div className="w-screen overflow-hidden py-6 -mx-4 md:-mx-0">
       <div
         className={`flex w-max ${
           reverse ? "animate-scroll-reverse" : "animate-scroll"
@@ -88,17 +99,15 @@ const ScrollRow = ({
 
       <style jsx>{`
         .animate-scroll {
-          animation: scrollX 28s linear infinite;
+          animation: scrollX 55s linear infinite;
         }
-        .animate-scroll-reverse {
-          animation: scrollX 28s linear infinite reverse;
-        }
+        
         @keyframes scrollX {
           from {
             transform: translateX(0);
           }
           to {
-            transform: translateX(-50%);
+            transform: translateX(-16.666%);
           }
         }
       `}</style>
@@ -113,6 +122,7 @@ export default function DelegateSpeakersPaper() {
       src: "/guests/Shakthivel.png",
       name: "Padma Shri Dr. A. Sakthivel",
       designation: "Founder, Poppys Group",
+      objectPosition: "center 15%"
     },
     {
       src: "/guests/Pavankumar.png",
@@ -123,6 +133,7 @@ export default function DelegateSpeakersPaper() {
       src: "/guests/Muruganathan.png",
       name: "Dr. A. Muruganathan",
       designation: "President, TN Medical Council",
+      objectPosition: "center 5%"
     },
     {
       src: "/guests/Madhura.png",
@@ -133,16 +144,19 @@ export default function DelegateSpeakersPaper() {
       src: "/guests/Balaji.png",
       name: "Dr. B. Balaji, IFS",
       designation: "Secretary, NBA",
+      objectPosition: "center 5%",
     },
     {
       src: "/guests/Soundrapandi.png",
       name: "Dr. J. Soundrapandi",
       designation: "National Biodiversity Authority",
+      objectPosition: "center 15%"
     },
     {
       src: "/guests/Annadurai.png",
       name: "Thiru. S. Annadurai, C.L.S.",
       designation: "Director, Tribal Welfare Dept",
+      objectPosition: "center 5%"
     },
     {
       src: "/guests/Komahan.png",
@@ -152,15 +166,15 @@ export default function DelegateSpeakersPaper() {
   ];
 
   return (
-    <section className="relative py-32 overflow-hidden bg-white/40 backdrop-blur-sm">
+    <section className="relative py-20 overflow-hidden bg-white/40 backdrop-blur-sm">
       {/* Background */}
       <PaperBase />
 
       {/* CONTENT */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4">
+      <div className="relative z-20">
         
         {/* TITLE – TOP */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 max-w-7xl mx-auto px-4">
           <h2
             className="text-4xl md:text-6xl font-extrabold"
             style={{
@@ -177,10 +191,10 @@ export default function DelegateSpeakersPaper() {
         </div>
 
         {/* LEFT SCROLL */}
-        <ScrollRow items={speakers.slice(0, 4)} />
+        <ScrollRow items={speakers.slice(0, 8)} />
 
         {/* RIGHT SCROLL */}
-        <ScrollRow items={speakers.slice(4)} reverse />
+       
       </div>
     </section>
   );
