@@ -413,11 +413,11 @@ export default function Page() {
               <PolaroidCard
                 role="Co-Convenor"
                 name="Dr. Rama Chaithanya T"
-                img="/assets/aboutImg/raja1.png"
+                img="/assets/aboutImg/Rama.jpeg"
                 tint="rgba(3,115,140,0.14)"
                 desc={
                   <>
-                    VP - Academics
+                    Vice Principal - Academics
                     <br />
                     SRMIST, Ramapuram, Chennai
                   </>
@@ -426,11 +426,11 @@ export default function Page() {
               <PolaroidCard
                 role="Co-Convenor"
                 name="Dr. Roopa M"
-                img="/assets/aboutImg/raja1.png"
+                img="/assets/aboutImg/Roopa.jpeg"
                 tint="rgba(3,115,140,0.14)"
                 desc={
                   <>
-                    VP - Research
+                    VPice Principal - Research
                     <br />
                     SRMIST, Ramapuram, Chennai
                   </>
