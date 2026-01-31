@@ -1729,8 +1729,12 @@ export default function EventDescriptionPageClient({
                     </h4>
                     {eventData?.faculty_coordinators?.map(
                       (coordinator: Studentcoordinator, index: number) => (
-                        <div key={index} className="text-gray-300 mb-2">
-                          <p className="font-montserrat">{coordinator.name}</p>
+                        <div 
+                          key={index} 
+                          className="mb-2"
+                          style={{ color: PAPER.ink }}
+                        >
+                          <p className="font-montserrat font-bold">{coordinator.name}</p>
                           <p className="text-sm font-montserrat">
                             {coordinator.contact}
                           </p>
