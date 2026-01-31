@@ -418,7 +418,7 @@ export default function Page() {
                 tint="rgba(3,115,140,0.14)"
                 desc={
                   <>
-                    Chair Person
+                    Chair Person SCSE
                     <br />
                     SRMIST, Ramapuram, Chennai
                   </>
