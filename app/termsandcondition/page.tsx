@@ -25,7 +25,7 @@ const TermsPage = () => {
         <div className="flex flex-col gap-6 mt-6">
           {policies?.map((policy, index) => {
             return (
-              <p key={index} className="text-slate-200 font-montserrat">
+              <p key={index} className="text-slate-200 font-montserrat text-justify">
                 {policy}
               </p>
             );

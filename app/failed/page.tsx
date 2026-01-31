@@ -42,7 +42,7 @@ export default async function PaymentFailedPage({
             </h1>
 
             {/* Description */}
-            <p className="text-gray-300 text-center mb-6">
+            <p className="text-gray-300 text-center mb-6 text-justify">
               Your transaction could not be completed. This could be due to
               insufficient funds, network issues, or the payment being declined
               by your bank.
@@ -75,7 +75,7 @@ export default async function PaymentFailedPage({
             </div>
 
             {/* Help text */}
-            <p className="text-gray-400 text-sm text-center mt-6">
+            <p className="text-gray-400 text-sm text-center mt-6 text-justify">
               If you continue to face issues, please contact support at{" "}
               <a
                 href="mailto:srmtexus24@gmail.com"

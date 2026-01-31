@@ -29,7 +29,7 @@ import DelegateSpeakersPaper from "./DelegateSpeakersPaper";
 const NilgirisPage = () => {
   const { scrollYProgress } = useScroll();
   const [activeCategory, setActiveCategory] = React.useState<string | null>(
-    "Conference"
+    "Conference",
   );
   const detailsRef = React.useRef<HTMLDivElement>(null);
 
@@ -117,7 +117,7 @@ const NilgirisPage = () => {
 
           <motion.p
             variants={fadeInUp}
-            className="text-xl md:text-2xl max-w-3xl mx-auto opacity-80 mb-12 leading-relaxed"
+            className="text-xl md:text-2xl max-w-3xl mx-auto opacity-80 mb-12 leading-relaxed "
           >
             Driving Innovation for Global SDG Goals through technology,
             inclusion, and collaborative action.
@@ -140,7 +140,7 @@ const NilgirisPage = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Summit Agenda
             </h2>
-            <p className="text-xl opacity-70">
+            <p className="text-xl opacity-70 ">
               Select an event below to explore detailed schedules and tracks
             </p>
           </motion.div>
@@ -216,7 +216,7 @@ const NilgirisPage = () => {
 
                   <div className="absolute bottom-0 left-0 p-8 text-white w-full">
                     <h3 className="text-3xl font-bold mb-2">{event.title}</h3>
-                    <p className="text-white/80 font-medium text-lg mb-4">
+                    <p className="text-white/80 font-medium text-lg mb-4 ">
                       {event.desc}
                     </p>
                     <div
@@ -248,7 +248,7 @@ const NilgirisPage = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               International Speaker
             </h2>
-            <p className="text-xl opacity-70">
+            <p className="text-xl opacity-70 ">
               Distinguished legal expert joining us from the United States
             </p>
           </motion.div>
@@ -262,11 +262,13 @@ const NilgirisPage = () => {
               transition={{ delay: 0.2 }}
               className="relative"
             >
-              <div className="relative rounded-2xl overflow-hidden border-4 shadow-lg"
-                   style={{
-                     borderColor: colors.primary,
-                     boxShadow: `12px 12px 0 ${colors.primary}`,
-                   }}>
+              <div
+                className="relative rounded-2xl overflow-hidden border-4 shadow-lg"
+                style={{
+                  borderColor: colors.primary,
+                  boxShadow: `12px 12px 0 ${colors.primary}`,
+                }}
+              >
                 <div className="relative w-full aspect-[5.7/6]">
                   <Image
                     src="/guests/Joshua.jpg"
@@ -297,52 +299,72 @@ const NilgirisPage = () => {
               >
                 Dr. Joshua Ryan Dalrymple
               </h3>
-              
+
               <div className="space-y-3 mb-6">
-                <p className="text-lg font-semibold" style={{ color: colors.text }}>
+                <p
+                  className="text-lg font-semibold"
+                  style={{ color: colors.text }}
+                >
                   Attorney and Lawyer
                 </p>
-                <p className="text-lg font-medium" style={{ color: colors.text }}>
+                <p
+                  className="text-lg font-medium"
+                  style={{ color: colors.text }}
+                >
                   Virginia, USA
                 </p>
               </div>
 
-              <div className="space-y-4 text-sm md:text-base leading-relaxed" style={{ color: colors.text }}>
+              <div
+                className="space-y-4 text-sm md:text-base leading-relaxed "
+                style={{ color: colors.text }}
+              >
                 <p>
-                  Dr. Joshua Ryan Dalrymple is an attorney and Executive Director of SRL Professional Services Pvt. Ltd., Hyderabad, and an Adjunct Professor of Law at Purdue University Global.
+                  Dr. Joshua Ryan Dalrymple is an attorney and Executive
+                  Director of SRL Professional Services Pvt. Ltd., Hyderabad,
+                  and an Adjunct Professor of Law at Purdue University Global.
                 </p>
                 <p>
-                  A former Dean of School of Law at Woxsen University and faculty member at Liberty University School of Law, he brings nearly two decades of experience practicing and teaching law in United States and India.
+                  A former Dean of School of Law at Woxsen University and
+                  faculty member at Liberty University School of Law, he brings
+                  nearly two decades of experience practicing and teaching law
+                  in United States and India.
                 </p>
               </div>
 
               {/* Highlight badges */}
               <div className="flex flex-wrap gap-3 mt-6">
-                <span className="px-4 py-2 rounded-full text-sm font-semibold border-2 shadow-sm"
-                      style={{
-                        background: colors.primary,
-                        color: "white",
-                        borderColor: colors.darkGreen,
-                        boxShadow: `3px 3px 0 ${colors.darkGreen}`,
-                      }}>
+                <span
+                  className="px-4 py-2 rounded-full text-sm font-semibold border-2 shadow-sm"
+                  style={{
+                    background: colors.primary,
+                    color: "white",
+                    borderColor: colors.darkGreen,
+                    boxShadow: `3px 3px 0 ${colors.darkGreen}`,
+                  }}
+                >
                   Legal Expert
                 </span>
-                <span className="px-4 py-2 rounded-full text-sm font-semibold border-2 shadow-sm"
-                      style={{
-                        background: colors.accent,
-                        color: colors.text,
-                        borderColor: colors.darkGreen,
-                        boxShadow: `3px 3px 0 ${colors.darkGreen}`,
-                      }}>
+                <span
+                  className="px-4 py-2 rounded-full text-sm font-semibold border-2 shadow-sm"
+                  style={{
+                    background: colors.accent,
+                    color: colors.text,
+                    borderColor: colors.darkGreen,
+                    boxShadow: `3px 3px 0 ${colors.darkGreen}`,
+                  }}
+                >
                   International Speaker
                 </span>
-                <span className="px-4 py-2 rounded-full text-sm font-semibold border-2 shadow-sm"
-                      style={{
-                        background: colors.secondary,
-                        color: "white",
-                        borderColor: colors.darkGreen,
-                        boxShadow: `3px 3px 0 ${colors.darkGreen}`,
-                      }}>
+                <span
+                  className="px-4 py-2 rounded-full text-sm font-semibold border-2 shadow-sm"
+                  style={{
+                    background: colors.secondary,
+                    color: "white",
+                    borderColor: colors.darkGreen,
+                    boxShadow: `3px 3px 0 ${colors.darkGreen}`,
+                  }}
+                >
                   Academic Leader
                 </span>
               </div>
@@ -429,7 +451,7 @@ const NilgirisPage = () => {
                         <p className="text-sm font-bold mb-2 opacity-90">
                           Focus:
                         </p>
-                        <p className="text-sm opacity-80 leading-relaxed">
+                        <p className="text-sm opacity-80 leading-relaxed ">
                           {panel.focus}
                         </p>
                       </div>
@@ -438,7 +460,7 @@ const NilgirisPage = () => {
                         <p className="text-sm font-bold mb-2 opacity-90">
                           Composition:
                         </p>
-                        <p className="text-sm opacity-80 leading-relaxed">
+                        <p className="text-sm opacity-80 leading-relaxed ">
                           {panel.composition}
                         </p>
                       </div>
@@ -466,7 +488,7 @@ const NilgirisPage = () => {
               <h2 className="text-4xl font-bold mb-4">
                 Hackathon Details Coming Soon
               </h2>
-              <p className="text-xl opacity-70">
+              <p className="text-xl opacity-70 ">
                 We are finalizing the problem statements and tracks for the
                 hackathon. Stay tuned for updates!
               </p>
@@ -495,13 +517,13 @@ const NilgirisPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-20">
               <div>
                 <h3 className="text-7xl font-bold mb-2">4</h3>
-                <p className="text-xl font-medium opacity-90">
+                <p className="text-xl font-medium opacity-90 ">
                   Padma Awardees honoring excellence in sustainability.
                 </p>
               </div>
               <div>
                 <h3 className="text-7xl font-bold mb-2">10+</h3>
-                <p className="text-xl font-medium opacity-90">
+                <p className="text-xl font-medium opacity-90 ">
                   Countries Represented in our international delegation.
                 </p>
               </div>
@@ -511,7 +533,7 @@ const NilgirisPage = () => {
               <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
                 <Target className="w-8 h-8 mb-4 opacity-80" />
                 <h4 className="text-xl font-bold mb-2">Honoring Excellence</h4>
-                <p className="text-sm opacity-80">
+                <p className="text-sm opacity-80 ">
                   Recognizing visionary leaders whose work exemplifies
                   sustainable development.
                 </p>
@@ -521,14 +543,14 @@ const NilgirisPage = () => {
                 <h4 className="text-xl font-bold mb-2">
                   Community Empowerment
                 </h4>
-                <p className="text-sm opacity-80">
+                <p className="text-sm opacity-80 ">
                   Amplifying grassroots voices and celebrating local solutions.
                 </p>
               </div>
               <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
                 <Globe className="w-8 h-8 mb-4 opacity-80" />
                 <h4 className="text-xl font-bold mb-2">Global Collaboration</h4>
-                <p className="text-sm opacity-80">
+                <p className="text-sm opacity-80 ">
                   Building bridges between traditional knowledge and modern
                   technology.
                 </p>

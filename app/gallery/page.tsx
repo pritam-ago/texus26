@@ -158,7 +158,7 @@ const SectionHeader = ({
       </div>
 
       <p
-        className="text-base md:text-lg max-w-2xl mx-auto italic"
+        className="text-base md:text-lg max-w-2xl mx-auto italic text-justify"
         style={{
           fontFamily: bodyFont,
           color: "rgba(18,56,89,0.85)",
@@ -316,7 +316,7 @@ export default function Gallery() {
             <DoodleLine />
           </div>
           <p
-            className="text-lg md:text-xl max-w-3xl mx-auto"
+            className="text-lg md:text-xl max-w-3xl mx-auto text-justify"
             style={{
               fontFamily: bodyFont,
               color: "rgba(18,56,89,0.85)",
@@ -327,7 +327,7 @@ export default function Gallery() {
         </motion.div>
 
         {/* TEXUS 2025 - All Events */}
-        <section className="mb-32">
+        <section className="mb-32 ">
           <SectionHeader
             title="TEXUS 2025"
             subtitle="Innovation, community, and unforgettable moments from our latest edition"

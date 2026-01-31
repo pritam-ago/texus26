@@ -99,7 +99,7 @@ const ConferenceDetails = ({
               <h3 className="text-3xl font-bold text-[#FFD700] font-thuast tracking-wide mb-2">
                 About the Conference
               </h3>
-              <div className="space-y-4 text-white/80 font-montserrat leading-relaxed text-justify">
+              <div className="space-y-4 text-white/80 font-montserrat leading-relaxed ">
                 <p>
                   <span className="font-bold text-white">
                     Rising with the Nilgiris to Accelerate SDGs – International
@@ -525,7 +525,7 @@ const ConferenceDetails = ({
               <h3 className="text-3xl font-bold text-white font-thuast tracking-wide">
                 Official Conference Flyer
               </h3>
-              <p className="text-white/60 font-montserrat">
+              <p className="text-white/60 font-montserrat ">
                 Download the complete conference details
               </p>
             </div>
@@ -575,7 +575,7 @@ const ConferenceDetails = ({
                     Co-Chairman
                   </span>
                 </p>
-                <p className="text-white/40 text-sm mt-2">
+                <p className="text-white/40 text-sm mt-2 ">
                   SRM Group of Institutions, Ramapuram, Trichy
                 </p>
               </div>
@@ -592,24 +592,24 @@ const ConferenceDetails = ({
                 <p className="text-white text-lg font-bold">
                   Dr. M. Sakthi Ganesh
                 </p>
-                <p className="text-white/60">Dean (E&T)</p>
+                <p className="text-white/60 ">Dean (E&T)</p>
               </div>
               <div>
                 <h4 className="text-[#76A665] text-xl font-bold font-montserrat uppercase tracking-widest mb-6">
                   Co-Conveners
                 </h4>
                 <div className="space-y-2">
-                  <p className="text-white font-medium">
+                  <p className="text-white font-medium ">
                     Dr. Balika J Chelliah{" "}
                     <span className="text-white/40 text-sm">- VP (Admin)</span>
                   </p>
-                  <p className="text-white font-medium">
+                  <p className="text-white font-medium ">
                     Dr. Rama Chaithanya T{" "}
                     <span className="text-white/40 text-sm">
                       - VP (Academics)
                     </span>
                   </p>
-                  <p className="text-white font-medium">
+                  <p className="text-white font-medium ">
                     Dr. Roopa M{" "}
                     <span className="text-white/40 text-sm">
                       - VP (Research)
@@ -650,7 +650,7 @@ const ConferenceDetails = ({
                     className="flex gap-4 items-start bg-white/5 p-4 rounded-xl border border-white/5 transition-colors hover:bg-white/10"
                   >
                     <div className="w-2 h-2 rounded-full bg-[#76A665] mt-2 shrink-0" />
-                    <p className="text-white/80 text-sm font-montserrat leading-relaxed">
+                    <p className="text-white/80 text-sm font-montserrat leading-relaxed ">
                       {name}
                     </p>
                   </div>
@@ -692,7 +692,7 @@ const ConferenceDetails = ({
                     key={i}
                     className="bg-white/5 rounded-xl p-4 border border-white/5 hover:border-[#76A665]/50 transition-colors text-center flex items-center justify-center min-h-[80px]"
                   >
-                    <p className="text-white/90 text-sm font-montserrat font-medium">
+                    <p className="text-white/90 text-sm font-montserrat font-medium ">
                       {name}
                     </p>
                   </div>
@@ -715,8 +715,12 @@ const ConferenceDetails = ({
                     EAI FELLOW
                   </p>
                   <div className="space-y-1 text-white/70 text-sm font-montserrat mb-4">
-                    <p>Visiting Professor, School of Engineering</p>
-                    <p>UNIVERSITY OF Diponegoro, Indonesia</p>
+                    <p className="">
+                      Visiting Professor, School of Engineering
+                    </p>
+                    <p className="">
+                      UNIVERSITY OF Diponegoro, Indonesia
+                    </p>
                     <a
                       href="mailto:vijayakumar.varadarajan@elektro.undip.ac.id"
                       className="text-[#76A665] hover:underline block mt-1"
@@ -750,8 +754,10 @@ const ConferenceDetails = ({
                     Vice Principal – Research
                   </p>
                   <div className="space-y-1 text-white/70 text-sm font-montserrat">
-                    <p>SRM Institute of Science and Technology</p>
-                    <p>Ramapuram Campus, Chennai</p>
+                    <p className="">
+                      SRM Institute of Science and Technology
+                    </p>
+                    <p className="">Ramapuram Campus, Chennai</p>
                     <div className="flex flex-col gap-1 mt-2">
                       <a
                         href="mailto:vp.research.rmp@srmist.edu.in"

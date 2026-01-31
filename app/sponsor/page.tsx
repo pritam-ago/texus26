@@ -445,16 +445,16 @@ function CurrentSponsors() {
           <DoodleLine />
         </div>
 
-        <p
-          className="text-base md:text-lg max-w-2xl mx-auto"
-          style={{
-            fontFamily: bodyFont,
-            color: "rgba(18,56,89,0.85)",
-          }}
-        >
-          We extend our deepest gratitude to all our sponsors who have made
-          TEXUS possible through their generous support and partnership.
-        </p>
+          <p
+            className="text-base md:text-lg max-w-2xl mx-auto "
+            style={{
+              fontFamily: bodyFont,
+              color: "rgba(18,56,89,0.85)",
+            }}
+          >
+            We extend our deepest gratitude to all our sponsors who have made
+            TEXUS possible through their generous support and partnership.
+          </p>
       </motion.div>
 
       <motion.div
@@ -630,16 +630,16 @@ export default function Sponsors() {
               <DoodleLine />
             </div>
 
-            <p
-              className="text-base md:text-lg max-w-2xl mx-auto mb-8"
-              style={{
-                fontFamily: bodyFont,
-                color: "rgba(18,56,89,0.85)",
-              }}
-            >
-              Join our community of supporters and gain visibility for your
-              brand at one of the most anticipated technical events.
-            </p>
+          <p
+            className="text-base md:text-lg max-w-2xl mx-auto text-justify"
+            style={{
+              fontFamily: bodyFont,
+              color: "rgba(18,56,89,0.85)",
+            }}
+          >
+            Join our community of supporters and gain visibility for your
+            brand at one of the most anticipated technical events.
+          </p>
 
             <PaperButton href="mailto:srmtexus24@gmail.com" tint="rgba(65,159,217,0.16)">
               Contact Us

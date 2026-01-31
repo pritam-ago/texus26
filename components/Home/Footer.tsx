@@ -197,13 +197,13 @@ function Footer() {
                 rotate={-5}
               />
               <div
-                className="text-sm sm:text-base font-semibold"
+                className="text-sm sm:text-base font-semibold text-justify"
                 style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.86)" }}
               >
                 “Two days. Too many memories.”
               </div>
               <div
-                className="mt-2 text-xs sm:text-sm"
+                className="mt-2 text-xs sm:text-sm text-justify"
                 style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.72)" }}
               >
                 Follow our socials for announcements, registrations, and updates.
@@ -288,15 +288,16 @@ function Footer() {
                   }}
                 >
                   <FaMapMarkerAlt style={{ color: PAPER.ink, marginTop: 2 }} />
-                  <div
-                    style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.86)" }}
-                  >
-                    SRM Institute of Science and Technology,
-                    <br />
-                    Ramapuram Campus,
-                    <br />
-                    Chennai - 600089
-                  </div>
+                <div
+                  className="text-justify"
+                  style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.86)" }}
+                >
+                  SRM Institute of Science and Technology,
+                  <br />
+                  Ramapuram Campus,
+                  <br />
+                  Chennai - 600089
+                </div>
                 </div>
               </div>
             </div>
@@ -333,7 +334,7 @@ function Footer() {
               </div>
 
               <div
-                className="mt-4 text-xs sm:text-sm"
+                className="mt-4 text-xs sm:text-sm text-justify"
                 style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.72)" }}
               >
                 Reels, posters, announcements — all there.

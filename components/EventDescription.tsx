@@ -629,7 +629,7 @@ export default function EventDescriptionPageClient({
                   Participation Eligibility
                 </h4>
                 <p 
-                  className="text-xs font-montserrat"
+                  className="text-xs font-montserrat text-justify"
                   style={{ color: PAPER.ink, opacity: 0.8 }}
                 >
                   Students from other institutions and colleges are allowed to

@@ -79,7 +79,7 @@ function PolaroidCard({
           {name}
         </h3>
 
-        <div className="mt-2 text-sm sm:text-[15px] leading-relaxed text-white/80 font-montserrat">
+        <div className="mt-2 text-sm sm:text-[15px] leading-relaxed text-white/80 font-montserrat text-justify">
           {desc}
         </div>
       </div>
@@ -141,9 +141,9 @@ export default function TexusAbout() {
             <div className="flex justify-center mb-6">
               <div className="h-1 w-32 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
             </div>
-            <p className="text-white/80 text-sm md:text-lg font-montserrat text-center max-w-2xl mx-auto">
-              Experience 60+ exhilarating events at Texus Fest! From workshops to coding challenges and much more
-            </p>
+        <p className="text-white/80 text-sm md:text-lg font-montserrat text-center max-w-2xl mx-auto text-justify">
+          Experience 60+ exhilarating events at Texus Fest! From workshops to coding challenges and much more
+        </p>
           </motion.div>
 
           {/* Hero Content */}
@@ -165,12 +165,12 @@ export default function TexusAbout() {
               <div className="flex justify-center mb-6">
                 <div className="h-1 w-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
               </div>
-              <p className="text-white/80 font-montserrat text-base md:text-lg max-w-4xl mx-auto leading-relaxed">
-                TEXUS is SRM Institute of Science and Technology's premier technical festival, bringing together
-                innovation, creativity, and technology. With over 60 events spanning technical competitions,
-                workshops, hackathons, and cultural celebrations, TEXUS provides a platform for students to
-                showcase their talents and push the boundaries of what's possible.
-              </p>
+        <p className="text-white/80 font-montserrat text-base md:text-lg max-w-4xl mx-auto leading-relaxed text-justify">
+          TEXUS is SRM Institute of Science and Technology's premier technical festival, bringing together
+          innovation, creativity, and technology. With over 60 events spanning technical competitions,
+          workshops, hackathons, and cultural celebrations, TEXUS provides a platform for students to
+          showcase their talents and push the boundaries of what's possible.
+        </p>
             </div>
           </motion.div>
 
@@ -200,9 +200,9 @@ export default function TexusAbout() {
                 <div className={`text-3xl md:text-4xl font-thuast mb-2 ${stat.color}`}>
                   {stat.number}
                 </div>
-                <div className="text-white/80 font-montserrat text-sm md:text-base">
-                  {stat.label}
-                </div>
+        <div className="text-white/80 font-montserrat text-sm md:text-base text-justify">
+          {stat.label}
+        </div>
               </motion.div>
             ))}
           </motion.div>
@@ -228,10 +228,10 @@ export default function TexusAbout() {
               <div className="h-1 w-32 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
             </div>
 
-            <p className="text-white/80 text-sm md:text-base font-montserrat text-center max-w-2xl mx-auto">
-              The people who make the fest happen — planning, approvals, chaos
-              control, and keeping the vibe alive.
-            </p>
+        <p className="text-white/80 text-sm md:text-base font-montserrat text-center max-w-2xl mx-auto text-justify">
+          The people who make the fest happen — planning, approvals, chaos
+          control, and keeping the vibe alive.
+        </p>
           </motion.div>
 
 {/* Convenor Section */}

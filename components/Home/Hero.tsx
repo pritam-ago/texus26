@@ -472,7 +472,7 @@ const Hero = () => {
 
           {/* Subtitle with stagger effect */}
           <motion.div
-            className="mt-4 sm:mt-6 md:mt-8 text-base sm:text-xl md:text-2xl lg:text-3xl px-4"
+            className="mt-4 sm:mt-6 md:mt-8 text-base sm:text-xl md:text-2xl lg:text-3xl px-4 text-justify"
             style={{
               fontFamily: bodyFont,
               color: PAPER.ink,
@@ -570,7 +570,7 @@ const Hero = () => {
 
               {/* Description */}
               <p
-                className="text-sm sm:text-base mb-3 sm:mb-4"
+                className="text-sm sm:text-base mb-3 sm:mb-4 text-justify"
                 style={{ fontFamily: bodyFont, color: PAPER.ink, opacity: 0.8 }}
               >
                 Sustainability • Go-Green • Community Impact
@@ -672,7 +672,7 @@ const Hero = () => {
 
               {/* Description */}
               <p
-                className="text-sm sm:text-base mb-3 sm:mb-4"
+                className="text-sm sm:text-base mb-3 sm:mb-4 text-justify"
                 style={{ fontFamily: bodyFont, color: PAPER.ink, opacity: 0.8 }}
               >
                 Tech Events • Workshops • Hackathon • Music Night

@@ -555,8 +555,8 @@ export default function AboutPage() {
 
             {/* Description Card */}
             <PaperPanel className="w-full max-w-4xl p-4 sm:p-5 md:p-6 lg:p-8">
-              <p
-                className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed"
+            <p
+                className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-justify"
                 style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.92)" }}
               >
                 TEXUS '26 is SRM IST Ramapuram's flagship fest where{" "}
@@ -664,7 +664,7 @@ export default function AboutPage() {
                     </h2>
                     <DoodleLine />
                     <p
-                      className="text-sm xs:text-base sm:text-base md:text-lg leading-relaxed"
+                      className="text-sm xs:text-base sm:text-base md:text-lg leading-relaxed text-justify"
                       style={{
                         fontFamily: bodyFont,
                         color: "rgba(18,56,89,0.86)",

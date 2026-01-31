@@ -64,7 +64,7 @@ const Maintenance = () => {
           Under Maintenance
         </h1>
 
-        <p className="text-xl text-white/80 max-w-2xl text-center mb-12 font-montserrat">
+        <p className="text-xl text-white/80 max-w-2xl text-center mb-12 font-montserrat text-justify">
           We&apos;re enhancing our website with exciting new features to elevate
           your experience. Thank you for your patience as we fine-tune TEXUS for
           you!
@@ -117,7 +117,7 @@ const Maintenance = () => {
         </div>
 
         {/* Static additional info */}
-        <p className="text-white/40 text-sm mt-16 text-center max-w-md">
+        <p className="text-white/40 text-sm mt-16 text-center max-w-md text-justify">
           Want to know when we&apos;re back? Follow our social media for instant
           updates on our relaunch.
         </p>

@@ -193,91 +193,91 @@ function PolaroidCard({
 export default function Page() {
   const departmentHeads = useMemo(
     () => [
-       {
-    name: "Dr. K. Raja",
-    designation: "Professor & Chairperson",
-    department: "SCSE",
-  },
-  {
-    name: "Dr. J. Sutha",
-    designation: "HoD",
-    department: "CSE",
-  },
-  {
-    name: "Dr. N. Sankar Ram",
-    designation: "HoD",
-    department: "AIML & AI",
-  },
-  {
-    name: "Dr. A. Umamageswari",
-    designation: "HoD",
-    department: "BDA & CC",
-  },
-  {
-    name: "Dr. J. Shiny Duela",
-    designation: "HoD",
-    department: "CS & GT",
-  },
-  {
-    name: "Dr. A. Usha Ruby",
-    designation: "HoD",
-    department: "CSBS & IoT",
-  },
-  {
-    name: "Dr. Rajeswari Mukesh",
-    designation: "HoD",
-    department: "IT",
-  },
-  {
-    name: "Dr. N. V. S. Sree Rathna Lakshmi",
-    designation: "HoD",
-    department: "ECE",
-  },
-  {
-    name: "Dr. K. N. Srinivas",
-    designation: "HoD",
-    department: "EEE",
-  },
-  {
-    name: "Dr. T. Mothilal",
-    designation: "HoD",
-    department: "Mechanical Engineering",
-  },
-  {
-    name: "Dr. R. Divahar",
-    designation: "HoD",
-    department: "Civil Engineering",
-  },
-  {
-    name: "Dr. R. V. Hemavathy",
-    designation: "HoD",
-    department: "Biotechnology",
-  },
-  {
-    name: "Dr. Ushus S. Kumar",
-    designation: "HoD",
-    department: "Biomedical Engineering",
-  },
-  {
-    name: "Dr. N. Balamurugan",
-    designation: "HoD",
-    department: "Physics",
-  },
-  {
-    name: "Dr. Helen P. Kavitha",
-    designation: "HoD",
-    department: "Chemistry",
-  },
-  {
-    name: "Dr. K. G. Nagaradhika",
-    designation: "HoD",
-    department: "LCS",
-  },
-  {
-    name: "Dr. R. Srinivasan",
-    designation: "HoD",
-    department: "Mathematics",
-  },
+      {
+        name: "Dr. K. Raja",
+        designation: "Professor & Chairperson",
+        department: "SCSE",
+      },
+      {
+        name: "Dr. J. Sutha",
+        designation: "HoD",
+        department: "CSE",
+      },
+      {
+        name: "Dr. N. Sankar Ram",
+        designation: "HoD",
+        department: "AIML & AI",
+      },
+      {
+        name: "Dr. A. Umamageswari",
+        designation: "HoD",
+        department: "BDA & CC",
+      },
+      {
+        name: "Dr. J. Shiny Duela",
+        designation: "HoD",
+        department: "CS & GT",
+      },
+      {
+        name: "Dr. A. Usha Ruby",
+        designation: "HoD",
+        department: "CSBS & IoT",
+      },
+      {
+        name: "Dr. Rajeswari Mukesh",
+        designation: "HoD",
+        department: "IT",
+      },
+      {
+        name: "Dr. N. V. S. Sree Rathna Lakshmi",
+        designation: "HoD",
+        department: "ECE",
+      },
+      {
+        name: "Dr. K. N. Srinivas",
+        designation: "HoD",
+        department: "EEE",
+      },
+      {
+        name: "Dr. T. Mothilal",
+        designation: "HoD",
+        department: "Mechanical Engineering",
+      },
+      {
+        name: "Dr. R. Divahar",
+        designation: "HoD",
+        department: "Civil Engineering",
+      },
+      {
+        name: "Dr. R. V. Hemavathy",
+        designation: "HoD",
+        department: "Biotechnology",
+      },
+      {
+        name: "Dr. Ushus S. Kumar",
+        designation: "HoD",
+        department: "Biomedical Engineering",
+      },
+      {
+        name: "Dr. N. Balamurugan",
+        designation: "HoD",
+        department: "Physics",
+      },
+      {
+        name: "Dr. Helen P. Kavitha",
+        designation: "HoD",
+        department: "Chemistry",
+      },
+      {
+        name: "Dr. K. G. Nagaradhika",
+        designation: "HoD",
+        department: "LCS",
+      },
+      {
+        name: "Dr. R. Srinivasan",
+        designation: "HoD",
+        department: "Mathematics",
+      },
     ],
     []
   );
@@ -321,17 +321,75 @@ export default function Page() {
               <DoodleLine />
             </div>
 
-            <p
-              className="mt-4 max-w-3xl mx-auto text-sm sm:text-base"
-              style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.82)" }}
-            >
-              The people who make the fest happen — planning, approvals, chaos
-              control, and keeping the vibe alive.
-            </p>
+          <p
+            className="mt-4 max-w-3xl mx-auto text-sm sm:text-base text-justify"
+            style={{ fontFamily: bodyFont, color: "rgba(18,56,89,0.82)" }}
+          >
+            The people who make the fest happen — planning, approvals, chaos
+            control, and keeping the vibe alive.
+          </p>
           </motion.div>
 
-{/* Convenor Section */}
+          {/* Chief Patrons Section */}
           <div className="mt-10 mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-120px" }}
+              transition={{ duration: 0.4 }}
+              className="text-center mb-8"
+            >
+              <h3
+                className="text-2xl sm:text-3xl font-extrabold mb-3"
+                style={{
+                  fontFamily: headingFont,
+                  color: PAPER.ink,
+                  letterSpacing: "0.04em",
+                }}
+              >
+                CHIEF PATRONS
+              </h3>
+              <div className="flex justify-center">
+                <DoodleLine />
+              </div>
+            </motion.div>
+
+            <div className="flex justify-center gap-6 max-w-6xl mx-auto">
+              <div className="w-full sm:w-1/3">
+                <PolaroidCard
+                  role="Chief Patron"
+                  name="Dr. R. Shivakumar"
+                  img="/assets/aboutImg/Shivakumar.webp"
+                  tint="rgba(65,159,217,0.16)"
+                  desc={
+                    <>
+                     Chairman
+                      <br />
+                      SRMIST, Ramapuram, Trichy.
+                    </>
+                  }
+                />
+              </div>
+              <div className="w-full sm:w-1/3">
+                <PolaroidCard
+                  role="Chief Patron"
+                  name="Mr. S. Niranjan"
+                  img="/assets/aboutImg/Niranjan.webp"
+                  tint="rgba(65,159,217,0.16)"
+                  desc={
+                    <>
+                      Co-Chairman
+                      <br />
+                      SRMIST, Ramapuram, Trichy
+                    </>
+                  }
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Convenor Section */}
+          <div className="mb-16">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -354,22 +412,22 @@ export default function Page() {
               </div>
             </motion.div>
 
-            <div className="grid sm:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              <div></div> {/* Empty space for centering */}
-              <PolaroidCard
-                role="Convenor"
-                name="Dr. M. Sakthi Ganesh"
-                img="/assets/aboutImg/DeanET.webp"
-                tint="rgba(65,159,217,0.16)"
-                desc={
-                  <>
-                    Dean – Engineering and Technology
-                    <br />
-                    SRMIST, Ramapuram, Chennai
-                  </>
-                }
-              />
-              <div></div> {/* Empty space for centering */}
+            <div className="flex justify-center max-w-6xl mx-auto">
+              <div className="w-full sm:w-[35%]">
+                <PolaroidCard
+                  role="Convenor"
+                  name="Dr. M. Sakthi Ganesh"
+                  img="/assets/aboutImg/DeanET.webp"
+                  tint="rgba(65,159,217,0.16)"
+                  desc={
+                    <>
+                      Dean – Engineering and Technology
+                      <br />
+                      SRMIST, Ramapuram, Chennai
+                    </>
+                  }
+                />
+              </div>
             </div>
           </div>
 
@@ -390,64 +448,38 @@ export default function Page() {
                   letterSpacing: "0.04em",
                 }}
               >
-                CO-CONVENOR
+                CO-CONVENORS
               </h3>
               <div className="flex justify-center">
                 <DoodleLine />
               </div>
             </motion.div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              <PolaroidCard
-                role="Co-Convenor"
-                name="Dr. Balika J. Chelliah"
-                img="/assets/aboutImg/vp.webp"
-                tint="rgba(140,117,3,0.14)"
-                desc={
-                  <>
-                    Vice Principal – Admin
-                    <br />
-                    SRMIST, Ramapuram, Chennai
-                  </>
-                }
-              />
-              <PolaroidCard
-                role="Co-Convenor"
-                name="Dr. K. Raja"
-                img="/assets/aboutImg/raja.png"
-                tint="rgba(3,115,140,0.14)"
-                desc={
-                  <>
-                    Chair Person SCSE
-                    <br />
-                    SRMIST, Ramapuram, Chennai
-                  </>
-                }
-              />
-              <PolaroidCard
-                role="Co-Convenor"
-                name="Dr. Rama Chaithanya T"
-                img="/assets/aboutImg/Rama.jpeg"
-                tint="rgba(3,115,140,0.14)"
-                desc={
-                  <>
-                    Vice Principal - Academics
-                    <br />
-                    SRMIST, Ramapuram, Chennai
-                  </>
-                }
-              />
-            </div>
-            <div className="flex justify-center mt-6 max-w-5xl mx-auto">
-              <div className="w-full sm:w-1/2 lg:w-1/3">
+            <div className="flex justify-center gap-6 max-w-6xl mx-auto">
+              <div className="w-full sm:w-1/3">
                 <PolaroidCard
                   role="Co-Convenor"
-                  name="Dr. Roopa M"
-                  img="/assets/aboutImg/Roopa.jpeg"
+                  name="Dr. Balika J. Chelliah"
+                  img="/assets/aboutImg/vp.webp"
+                  tint="rgba(140,117,3,0.14)"
+                  desc={
+                    <>
+                      Vice Principal – Admin
+                      <br />
+                      SRMIST, Ramapuram, Chennai
+                    </>
+                  }
+                />
+              </div>
+              <div className="w-full sm:w-1/3">
+                <PolaroidCard
+                  role="Co-Convenor"
+                  name="Dr. K. Raja"
+                  img="/assets/aboutImg/raja.png"
                   tint="rgba(3,115,140,0.14)"
                   desc={
                     <>
-                      Vice Principal - Research
+                      Chair Person - SCSE
                       <br />
                       SRMIST, Ramapuram, Chennai
                     </>
@@ -456,8 +488,6 @@ export default function Page() {
               </div>
             </div>
           </div>
-
-         
         </div>
       </section>
 
@@ -482,7 +512,7 @@ export default function Page() {
                 letterSpacing: "0.06em",
               }}
             >
-             ORGANISING COMMITTEE
+              ORGANISING COMMITTEE
             </h2>
             <div className="mt-3 flex justify-center">
               <DoodleLine />
@@ -585,7 +615,7 @@ export default function Page() {
 
               {/* Centered last item - Dr. R. Srinivasan */}
               <div className="flex justify-center mt-4">
-                <motion.li
+                <motion.div
                   whileHover={{ x: 6, rotate: 0.2 }}
                   transition={{ type: "spring", stiffness: 420, damping: 22 }}
                   className="p-4 rounded-2xl w-full md:w-1/2"
@@ -622,7 +652,7 @@ export default function Page() {
                       </div>
                     </div>
                   </div>
-                </motion.li>
+                </motion.div>
               </div>
             </PaperPanel>
           </div>

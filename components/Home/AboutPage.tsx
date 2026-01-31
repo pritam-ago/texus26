@@ -339,7 +339,7 @@ const AboutPage = () => {
                 {/* Glass Effect Background */}
               </motion.div>
 
-              <p className="text-white/90 text-lg font-montserrat mt-16 md:text-xl leading-relaxed relative z-10 p-8 rounded-2xl">
+              <p className="text-white/90 text-lg font-montserrat mt-16 md:text-xl leading-relaxed relative z-10 p-8 rounded-2xl text-justify">
                 TEXUS &apos;26, is the Flagship, International-level tech fest
                 organized by the Faculty of Engineering and Technology, SRM IST
                 Ramapuram. It is a two-day celebration of innovation and talent,
@@ -443,7 +443,7 @@ const AboutPage = () => {
                   <h2 className="text-3xl md:text-4xl font-thuast bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
                     {departmentData.title}
                   </h2>
-                  <p className="text-white/80 font-montserrat leading-relaxed">
+                  <p className="text-white/80 font-montserrat leading-relaxed text-justify">
                     {departmentData.desc}
                   </p>
                 </motion.div>
