@@ -283,7 +283,8 @@ export default function Page() {
   );
 
   const leftColumnHeads = departmentHeads.slice(0, 8);
-  const rightColumnHeads = departmentHeads.slice(8);
+  const rightColumnHeads = departmentHeads.slice(8, 16);
+  const lastHead = departmentHeads[16];
 
   return (
     <div className={cn("w-full", montserrat.variable)}>
@@ -412,6 +413,19 @@ export default function Page() {
               />
               <PolaroidCard
                 role="Co-Convenor"
+                name="Dr. K. Raja"
+                img="/assets/aboutImg/raja.png"
+                tint="rgba(3,115,140,0.14)"
+                desc={
+                  <>
+                    Chair Person
+                    <br />
+                    SRMIST, Ramapuram, Chennai
+                  </>
+                }
+              />
+              <PolaroidCard
+                role="Co-Convenor"
                 name="Dr. Rama Chaithanya T"
                 img="/assets/aboutImg/Rama.jpeg"
                 tint="rgba(3,115,140,0.14)"
@@ -423,19 +437,23 @@ export default function Page() {
                   </>
                 }
               />
-              <PolaroidCard
-                role="Co-Convenor"
-                name="Dr. Roopa M"
-                img="/assets/aboutImg/Roopa.jpeg"
-                tint="rgba(3,115,140,0.14)"
-                desc={
-                  <>
-                    VPice Principal - Research
-                    <br />
-                    SRMIST, Ramapuram, Chennai
-                  </>
-                }
-              />
+            </div>
+            <div className="flex justify-center mt-6 max-w-5xl mx-auto">
+              <div className="w-full sm:w-1/2 lg:w-1/3">
+                <PolaroidCard
+                  role="Co-Convenor"
+                  name="Dr. Roopa M"
+                  img="/assets/aboutImg/Roopa.jpeg"
+                  tint="rgba(3,115,140,0.14)"
+                  desc={
+                    <>
+                      Vice Principal - Research
+                      <br />
+                      SRMIST, Ramapuram, Chennai
+                    </>
+                  }
+                />
+              </div>
             </div>
           </div>
 
@@ -563,6 +581,48 @@ export default function Page() {
                     </motion.li>
                   ))}
                 </ul>
+              </div>
+
+              {/* Centered last item - Dr. R. Srinivasan */}
+              <div className="flex justify-center mt-4">
+                <motion.li
+                  whileHover={{ x: 6, rotate: 0.2 }}
+                  transition={{ type: "spring", stiffness: 420, damping: 22 }}
+                  className="p-4 rounded-2xl w-full md:w-1/2"
+                  style={{
+                    background: "rgba(255,255,255,0.45)",
+                    border: `3px solid rgba(18,56,89,0.20)`,
+                    boxShadow: `6px 6px 0 rgba(14,42,68,0.12)`,
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="mt-1 h-6 w-2 rounded-full"
+                      style={{
+                        background: PAPER.accent,
+                        border: `2px solid ${PAPER.ink}`,
+                        boxShadow: `2px 2px 0 ${PAPER.shadow}`,
+                      }}
+                    />
+                    <div>
+                      <div
+                        className="font-extrabold text-base sm:text-lg"
+                        style={{ fontFamily: headingFont, color: PAPER.ink }}
+                      >
+                        {lastHead.name}
+                      </div>
+                      <div
+                        className="text-sm"
+                        style={{
+                          fontFamily: bodyFont,
+                          color: "rgba(18,56,89,0.78)",
+                        }}
+                      >
+                        {lastHead.department}
+                      </div>
+                    </div>
+                  </div>
+                </motion.li>
               </div>
             </PaperPanel>
           </div>

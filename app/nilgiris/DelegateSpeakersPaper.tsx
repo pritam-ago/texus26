@@ -101,6 +101,9 @@ const ScrollRow = ({
         .animate-scroll {
           animation: scrollX 55s linear infinite;
         }
+          .animate-scroll-reverse {
+          animation: scrollX 75s linear infinite reverse;
+        }
         
         @keyframes scrollX {
           from {
@@ -191,10 +194,10 @@ export default function DelegateSpeakersPaper() {
         </div>
 
         {/* LEFT SCROLL */}
-        <ScrollRow items={speakers.slice(0, 8)} />
+        <ScrollRow items={speakers.slice(0, 4)} />
 
         {/* RIGHT SCROLL */}
-       
+        <ScrollRow items={speakers.slice(4)} reverse/>
       </div>
     </section>
   );
