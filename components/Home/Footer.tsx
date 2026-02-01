@@ -236,7 +236,7 @@ function Footer() {
               </h3>
               <div className="mt-3 space-y-2">
                 <LinkItem href="/about">About Us</LinkItem>
-                <LinkItem href="/#events">Events</LinkItem>
+                <LinkItem href="/events">Events</LinkItem>
                 <LinkItem href="/gallery">Gallery</LinkItem>
                 <LinkItem href="/sponsor">Sponsors</LinkItem>
               </div>
@@ -317,20 +317,20 @@ function Footer() {
 
               <div className="mt-3 flex items-center gap-3">
                 <IconBtn
-                  href="https://www.instagram.com/texus_2k25/"
+                  href="https://www.instagram.com/texus_2k26"
                   label="Instagram"
                   tint="rgba(121,166,119,0.3)"
                 >
                   <FaInstagram size={22} />
                 </IconBtn>
 
-                <IconBtn
+                {/* <IconBtn
                   href="https://whatsapp.com/channel/0029VaMS5354Spk9aQF91m3q"
                   label="WhatsApp"
                   tint="rgba(171,191,168,0.3)"
                 >
                   <FaWhatsapp size={22} />
-                </IconBtn>
+                </IconBtn> */}
               </div>
 
               <div
