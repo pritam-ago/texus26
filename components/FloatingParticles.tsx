@@ -40,6 +40,17 @@ const FloatingParticles = () => {
     const particleCount = 12; // Reduced for better performance
 
     for (let i = 0; i < particleCount; i++) {
+      const random = Math.random();
+      let leafImage: string;
+      
+      if (random < 0.25) {
+        leafImage = "/textures/leaf-1.png"; // 25% chance
+      } else if (random < 0.5) {
+        leafImage = "/textures/leaf-2.png"; // 25% chance
+      } else {
+        leafImage = "/textures/leaf-3.png"; // 50% chance
+      }
+      
       particleArray.push({
         id: i,
         x: Math.random() * 100, // Random horizontal position (%)
@@ -47,7 +58,7 @@ const FloatingParticles = () => {
         size: 40 + Math.random() * 60, // Larger: 40-100px
         duration: 10 + Math.random() * 15, // Faster falling: 10-25s
         delay: Math.random() * 10, // Random delay 0-10s
-        image: Math.random() > 0.5 ? "/textures/leaf-1.png" : "/textures/leaf-2.png",
+        image: leafImage,
         rotation: Math.random() * 360, // Random initial rotation
         sway: 30 + Math.random() * 50, // More horizontal movement: 30-80px
         repeatDelay: Math.random() * 3, // 0-3s pause between cycles
