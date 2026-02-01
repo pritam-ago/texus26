@@ -194,11 +194,6 @@ export default function Page() {
   const departmentHeads = useMemo(
     () => [
       {
-        name: "Dr. K. Raja",
-        designation: "Professor & Chairperson",
-        department: "SCSE",
-      },
-      {
         name: "Dr. J. Sutha",
         designation: "HoD",
         department: "CSE",
@@ -283,8 +278,7 @@ export default function Page() {
   );
 
   const leftColumnHeads = departmentHeads.slice(0, 8);
-  const rightColumnHeads = departmentHeads.slice(8, 16);
-  const lastHead = departmentHeads[16];
+  const rightColumnHeads = departmentHeads.slice(8);
 
   return (
     <div className={cn("w-full", montserrat.variable)}>
@@ -610,49 +604,7 @@ export default function Page() {
                       </div>
                     </motion.li>
                   ))}
-                </ul>
-              </div>
-
-              {/* Centered last item - Dr. R. Srinivasan */}
-              <div className="flex justify-center mt-4">
-                <motion.div
-                  whileHover={{ x: 6, rotate: 0.2 }}
-                  transition={{ type: "spring", stiffness: 420, damping: 22 }}
-                  className="p-4 rounded-2xl w-full md:w-1/2"
-                  style={{
-                    background: "rgba(255,255,255,0.45)",
-                    border: `3px solid rgba(18,56,89,0.20)`,
-                    boxShadow: `6px 6px 0 rgba(14,42,68,0.12)`,
-                  }}
-                >
-                  <div className="flex items-start gap-3">
-                    <div
-                      className="mt-1 h-6 w-2 rounded-full"
-                      style={{
-                        background: PAPER.accent,
-                        border: `2px solid ${PAPER.ink}`,
-                        boxShadow: `2px 2px 0 ${PAPER.shadow}`,
-                      }}
-                    />
-                    <div>
-                      <div
-                        className="font-extrabold text-base sm:text-lg"
-                        style={{ fontFamily: headingFont, color: PAPER.ink }}
-                      >
-                        {lastHead.name}
-                      </div>
-                      <div
-                        className="text-sm"
-                        style={{
-                          fontFamily: bodyFont,
-                          color: "rgba(18,56,89,0.78)",
-                        }}
-                      >
-                        {lastHead.department}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+                 </ul>
               </div>
             </PaperPanel>
           </div>
