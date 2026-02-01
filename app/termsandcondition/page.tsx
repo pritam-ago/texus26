@@ -2,6 +2,7 @@ import React from "react";
 
 const TermsPage = () => {
   const policies = [
+    "• Only engineering students are allowed to participate in TEXUS '26.",
     "• Students taking part in the events should register prior to the day of the fest. On-spot entry is not obliged.",
     "• Participants should go through the event rules and adhere to the specifics.",
     "• Participation, props, music, etc for certain events should be confirmed.",
