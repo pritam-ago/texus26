@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   PaperCard,
@@ -9,6 +10,7 @@ import {
   PaperButton,
   PAPER,
 } from "./PaperComponents";
+import { FaCode, FaPalette, FaTools, FaLaptopCode, FaTint, FaBook, FaSeedling } from "react-icons/fa";
 
 // Add type definitions
 interface EventCardProps {
@@ -20,6 +22,10 @@ interface EventCardProps {
   isExternal?: boolean;
   disabled?: boolean;
   index: number;
+  featured?: boolean;
+  icon?: React.ReactNode;
+  thumbnail?: string;
+  compact?: boolean;
 }
 
 // Card component for grid layout with paper theme
@@ -32,77 +38,187 @@ const EventCard = ({
   isExternal = false,
   disabled = false,
   index,
+  featured = false,
+  icon,
+  thumbnail,
+  compact = false,
 }: EventCardProps) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="h-full"
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ 
+        duration: 0.5, 
+        delay: index * 0.08,
+        type: "spring",
+        stiffness: 100
+      }}
+      whileHover={{ 
+        y: -8, 
+        rotate: featured ? -1 : -0.5,
+        transition: { type: "spring", stiffness: 300, damping: 20 }
+      }}
+      className="h-full group"
     >
-      <PaperCard className="h-full flex flex-col" withTape={true} withTrees={false}>
-        <div className="flex-grow flex flex-col">
-          <div
-            className="inline-block px-3 py-1.5 mb-3 rounded-full text-sm font-bold"
+      <div
+        className={`h-full flex flex-col relative rounded-2xl ${
+          featured ? 'md:row-span-2' : ''
+        }`}
+        style={{
+          background: `${PAPER.bg} url('/textures/paper.png')`,
+          backgroundRepeat: "repeat",
+          border: `4px solid ${PAPER.ink}`,
+          boxShadow: `8px 8px 0 ${PAPER.shadow}`,
+          transition: "all 0.3s ease",
+          maxHeight: compact ? '300px' : 'none',
+          overflow: 'visible',
+        }}
+      >
+        {/* Decorative corner fold */}
+        <div 
+          className="absolute top-0 right-0 w-16 h-16 overflow-hidden z-10"
+          style={{ 
+            filter: 'brightness(0.95)',
+          }}
+        >
+          <div 
+            className="absolute transform rotate-45 translate-x-8 -translate-y-8"
             style={{
-              backgroundColor: PAPER.accent,
+              width: '100px',
+              height: '100px',
+              background: PAPER.accent,
               border: `2px solid ${PAPER.ink}`,
-              boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+              opacity: 0.3,
+            }}
+          />
+        </div>
+
+        {/* Tape decoration */}
+        <img
+          src="/textures/tape.png"
+          alt="tape"
+          className="absolute -top-3 left-8 w-20 h-auto transform -rotate-3 z-30 opacity-80"
+        />
+
+        {/* Thumbnail Image */}
+        {thumbnail && (
+          <div className={`relative w-full ${featured ? 'h-48 md:h-64' : 'h-40'} rounded-t-2xl overflow-hidden`}>
+            <Image
+              src={thumbnail}
+              alt={title}
+              fill
+              className="object-cover"
+              style={{
+                filter: 'brightness(0.9) contrast(1.1)',
+              }}
+            />
+            {/* Overlay gradient */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to bottom, rgba(242,242,242,0) 0%, rgba(242,242,242,0.8) 100%)',
+              }}
+            />
+          </div>
+        )}
+        
+        <div className={`${compact ? 'p-4' : 'p-6'} ${featured ? 'md:p-8' : ''} flex flex-col flex-grow relative z-[1]`}>
+          {/* Icon and Badge */}
+          <div className="flex items-start justify-between mb-3">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold shadow-md"
+              style={{
+                backgroundColor: PAPER.accent,
+                border: `3px solid ${PAPER.ink}`,
+                boxShadow: `4px 4px 0 ${PAPER.shadow}`,
+                color: PAPER.ink,
+                fontSize: compact ? '0.75rem' : featured ? '1rem' : '0.875rem',
+              }}
+            >
+              {icon && <span className={compact ? 'text-base' : 'text-lg'}>{icon}</span>}
+              {title}
+            </div>
+          </div>
+
+          {/* Description */}
+          <div 
+            className={`flex-grow ${compact ? 'mb-3' : 'mb-6'} ${compact ? 'text-xs' : featured ? 'text-base md:text-lg' : 'text-sm'}`}
+            style={{
+              fontFamily: "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)",
               color: PAPER.ink,
+              opacity: 0.85,
+              lineHeight: '1.6',
             }}
           >
-            {title}
-          </div>
-          <PaperText className="flex-grow mb-4 text-sm">
             {description}
-          </PaperText>
+          </div>
+
+          {/* Button */}
           {disabled ? (
             <button
               disabled={true}
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-extrabold opacity-50 cursor-not-allowed"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-extrabold opacity-50 cursor-not-allowed transform transition-all"
               style={{
-                background: "linear-gradient(135deg, #D9695F 0%, #F27E7E 100%)",
-                color: PAPER.white,
+                background: PAPER.lightAccent,
+                color: PAPER.ink,
                 border: `3px solid ${PAPER.ink}`,
-                boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                boxShadow: `4px 4px 0 ${PAPER.shadow}`,
                 fontFamily: "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)",
+                width: 'fit-content',
               }}
             >
               {buttonText}
             </button>
           ) : isExternal ? (
-            <Link href={buttonLink} target="_blank" className="w-full">
-              <button
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-extrabold transition-transform hover:scale-105 hover:-translate-y-1 active:translate-y-[1px]"
+            <Link href={buttonLink} target="_blank">
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98, y: 0 }}
+                className={`inline-flex items-center justify-center gap-2 ${compact ? 'px-4 py-2 text-sm' : 'px-6 py-3'} rounded-xl font-extrabold transform transition-all`}
                 style={{
-                  background: "linear-gradient(135deg, #D9695F 0%, #F27E7E 100%)",
-                  color: PAPER.white,
+                  background: PAPER.lightAccent,
+                  color: PAPER.ink,
                   border: `3px solid ${PAPER.ink}`,
-                  boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                  boxShadow: `5px 5px 0 ${PAPER.shadow}`,
                   fontFamily: "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)",
+                  width: 'fit-content',
                 }}
               >
                 {buttonText}
-              </button>
+                <span className="text-lg">→</span>
+              </motion.button>
             </Link>
           ) : (
-            <Link href={buttonLink} className="w-full">
-              <button
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-extrabold transition-transform hover:scale-105 hover:-translate-y-1 active:translate-y-[1px]"
+            <Link href={buttonLink}>
+              <motion.button
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98, y: 0 }}
+                className={`inline-flex items-center justify-center gap-2 ${compact ? 'px-4 py-2 text-sm' : 'px-6 py-3'} rounded-xl font-extrabold transform transition-all`}
                 style={{
-                  background: "linear-gradient(135deg, #D9695F 0%, #F27E7E 100%)",
-                  color: PAPER.white,
+                  background: PAPER.lightAccent,
+                  color: PAPER.ink,
                   border: `3px solid ${PAPER.ink}`,
-                  boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+                  boxShadow: `5px 5px 0 ${PAPER.shadow}`,
                   fontFamily: "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)",
+                  width: 'fit-content',
                 }}
               >
                 {buttonText}
-              </button>
+                <span className="text-lg">→</span>
+              </motion.button>
             </Link>
           )}
         </div>
-      </PaperCard>
+
+        {/* Background doodle pattern */}
+        <div 
+          className="absolute bottom-0 right-0 w-32 h-32 opacity-5 pointer-events-none"
+          style={{
+            backgroundImage: `radial-gradient(circle, ${PAPER.ink} 1px, transparent 1px)`,
+            backgroundSize: '12px 12px',
+          }}
+        />
+      </div>
     </motion.div>
   );
 };
@@ -221,28 +337,54 @@ export default function Eventdata() {
   const goGreenerEvent = events.find((event) => event.id === "go-greener");
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-20">
+    <div className="max-w-7xl mx-auto px-4 py-20">
+      {/* Header */}
       <motion.div
-        className="flex flex-col items-center justify-center w-full mb-16"
+        className="flex flex-col items-center justify-center w-full mb-12"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <h1
-          className="text-center font-extrabold text-4xl md:text-7xl mb-6"
+        <motion.h1
+          className="text-center font-extrabold text-5xl md:text-7xl mb-4"
           style={{
             color: PAPER.ink,
             WebkitTextStroke: `2px ${PAPER.ink}`,
             fontFamily: "var(--font-cartoon, 'Comic Neue', 'Patrick Hand', 'Kalam', ui-rounded, system-ui)",
+            textShadow: "4px 4px 0 rgba(18, 89, 15, 0.2)",
+          }}
+          animate={{
+            y: [0, -5, 0],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut",
           }}
         >
           EVENTS
-        </h1>
+        </motion.h1>
+        
+        {/* Decorative underline */}
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: "120px" }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          style={{
+            height: "6px",
+            background: PAPER.accent,
+            border: `2px solid ${PAPER.ink}`,
+            boxShadow: `3px 3px 0 ${PAPER.shadow}`,
+            borderRadius: "9999px",
+            marginBottom: "1rem",
+          }}
+        />
+
         <p
-          className="text-sm md:text-lg text-center max-w-2xl mx-auto"
+          className="text-sm md:text-lg text-center max-w-2xl mx-auto leading-relaxed"
           style={{
             color: PAPER.ink,
-            opacity: 0.8,
+            opacity: 0.85,
             fontFamily: "var(--font-paper, 'Kalam', 'Patrick Hand', ui-rounded, system-ui)",
           }}
         >
@@ -252,27 +394,29 @@ export default function Eventdata() {
         </p>
       </motion.div>
 
-      {/* First row: Technical and Non-Technical (2 columns) */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
+      {/* Bento Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+        {/* Technical - Larger but not spanning 2 rows */}
         {technicalEvent && (
-          <EventCard
-            key="technical"
-            index={0}
-            title={technicalEvent.title}
-            description={technicalEvent.shortDescription}
-            color={technicalEvent.color}
-            buttonText={technicalEvent.buttonText}
-            buttonLink={technicalEvent.buttonLink}
-            isExternal={technicalEvent.isExternal}
-            disabled={technicalEvent.disabled}
-          />
+          <div className="md:col-span-2">
+            <EventCard
+              key="technical"
+              index={0}
+              title={technicalEvent.title}
+              description={technicalEvent.shortDescription}
+              color={technicalEvent.color}
+              buttonText={technicalEvent.buttonText}
+              buttonLink={technicalEvent.buttonLink}
+              isExternal={technicalEvent.isExternal}
+              disabled={technicalEvent.disabled}
+              featured={true}
+              icon={<FaCode />}
+              thumbnail="/events-thumbnail/technical.jpg"
+            />
+          </div>
         )}
 
+        {/* Non-Technical */}
         {nonTechnicalEvent && (
           <EventCard
             key="non-technical"
@@ -284,17 +428,12 @@ export default function Eventdata() {
             buttonLink={nonTechnicalEvent.buttonLink}
             isExternal={nonTechnicalEvent.isExternal}
             disabled={nonTechnicalEvent.disabled}
+            icon={<FaPalette />}
+            thumbnail="/events-thumbnail/non-technical.jpg"
           />
         )}
-      </motion.div>
 
-      {/* Second row: Workshop and Hackathon (2 columns) */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-      >
+        {/* Workshops */}
         {workshopEvent && (
           <EventCard
             key="workshops"
@@ -306,9 +445,12 @@ export default function Eventdata() {
             buttonLink={workshopEvent.buttonLink}
             isExternal={workshopEvent.isExternal}
             disabled={workshopEvent.disabled}
+            icon={<FaTools />}
+            thumbnail="/events-thumbnail/workshop.jpg"
           />
         )}
 
+        {/* Hackathon */}
         {hackathonEvent && (
           <EventCard
             key="hackathon"
@@ -320,17 +462,12 @@ export default function Eventdata() {
             buttonLink={hackathonEvent.buttonLink}
             isExternal={hackathonEvent.isExternal}
             disabled={hackathonEvent.disabled}
+            icon={<FaLaptopCode />}
+            thumbnail="/events-thumbnail/hackathon.jpg"
           />
         )}
-      </motion.div>
 
-      {/* Third row: Blood Donation, Souvenir, Go Greener (3 columns) */}
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
+        {/* Blood Donation */}
         {bloodDonationEvent && (
           <EventCard
             key="blood-donation"
@@ -342,13 +479,16 @@ export default function Eventdata() {
             buttonLink={bloodDonationEvent.buttonLink}
             isExternal={bloodDonationEvent.isExternal}
             disabled={bloodDonationEvent.disabled}
+            icon={<FaTint />}
+            thumbnail="/events-thumbnail/blood-donation.jpg"
           />
         )}
 
+        {/* Souvenir - No thumbnail */}
         {souvenirEvent && (
           <EventCard
             key="souvenir"
-            index={6}
+            index={5}
             title={souvenirEvent.title}
             description={souvenirEvent.shortDescription}
             color={souvenirEvent.color}
@@ -356,23 +496,28 @@ export default function Eventdata() {
             buttonLink={souvenirEvent.buttonLink}
             isExternal={souvenirEvent.isExternal}
             disabled={souvenirEvent.disabled}
+            icon={<FaBook />}
+            compact={true}
           />
         )}
 
+        {/* Go Greener - No thumbnail */}
         {goGreenerEvent && (
           <EventCard
             key="go-greener"
-            index={7}
+            index={6}
             title={goGreenerEvent.title}
             description={goGreenerEvent.shortDescription}
             color={goGreenerEvent.color}
             buttonText={goGreenerEvent.buttonText}
             buttonLink={goGreenerEvent.buttonLink}
             isExternal={goGreenerEvent.isExternal}
-            disabled={goGreenerEvent.disabled}  
+            disabled={goGreenerEvent.disabled}
+            icon={<FaSeedling />}
+            compact={true}
           />
         )}
-      </motion.div>
+      </div>
     </div>
   );
 }
